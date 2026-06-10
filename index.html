@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Magic Engraver — Put any picture on anything you own | Glowforge Premium</title>
+<meta name="description" content="Magic Engraver turns any photo into a laser-ready engraving — traced, fitted, and tuned for any laser. Try it free with your own image.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap header-inner">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true">◇</span>
+      <span class="brand-name">Magic&nbsp;Engraver</span>
+      <span class="brand-by">by Glowforge&nbsp;Premium</span>
+    </div>
+    <nav class="header-nav">
+      <span class="works-chip">Works with any laser</span>
+      <a class="signin-link" href="#" data-auth-link>Sign in</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+  <!-- ============ HERO + WIDGET ============ -->
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <p class="eyebrow">Glowforge Premium · Universal</p>
+        <h1>Put any picture<br>on anything you own.</h1>
+        <p class="hero-sub">
+          Magic Engraver turns a photo into a laser-ready engraving —
+          traced into clean vectors, fitted to your object, and tuned
+          for <em>your</em> machine. xTool, OmTech, Creality, K40, anything.
+        </p>
+        <ul class="hero-points">
+          <li><span class="pt-mono">01</span> Upload any picture — photo, sketch, logo</li>
+          <li><span class="pt-mono">02</span> We trace it &amp; fit it to your object</li>
+          <li><span class="pt-mono">03</span> Burn it with dialed-in settings</li>
+        </ul>
+        <p class="hero-trial-note">Free for 14 days in the app. No credit card.</p>
+      </div>
+
+      <!-- The widget -->
+      <div class="widget" id="widget" aria-label="Try Magic Engraver">
+        <div class="widget-titlebar">
+          <span class="widget-dot"></span>
+          <span class="widget-title">Try it now — no account needed</span>
+          <button class="widget-reset" id="widget-reset" hidden>start over</button>
+        </div>
+
+        <!-- STEP 1: pick art -->
+        <div class="widget-step" id="step-art">
+          <p class="step-label"><span class="step-num">1/2</span> Pick a picture</p>
+          <label class="dropzone" id="dropzone">
+            <input type="file" id="file-input" accept="image/*" hidden>
+            <svg viewBox="0 0 24 24" class="dz-icon" aria-hidden="true"><path d="M12 16V4m0 0l-4 4m4-4l4 4M4 16v3a1 1 0 001 1h14a1 1 0 001-1v-3" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span class="dz-main">Drop a photo here, or click to upload</span>
+            <span class="dz-sub">stays on your device for this demo</span>
+          </label>
+          <p class="or-rule"><span>or try a sample</span></p>
+          <div class="sample-row" id="sample-row"><!-- populated by JS --></div>
+        </div>
+
+        <!-- STEP 2: pick object -->
+        <div class="widget-step" id="step-object" hidden>
+          <p class="step-label"><span class="step-num">2/2</span> Put it on…</p>
+          <div class="chosen-art">
+            <img id="chosen-art-img" alt="Your selected picture">
+            <span id="chosen-art-name"></span>
+            <button class="mini-link" id="change-art">change</button>
+          </div>
+          <div class="object-grid" id="object-grid"><!-- populated by JS --></div>
+          <button class="cta-btn" id="engrave-btn" disabled>Generate my engraving →</button>
+        </div>
+
+        <!-- STEP 3: processing -->
+        <div class="widget-step" id="step-processing" hidden>
+          <p class="step-label"><span class="step-num">⚙</span> Working…</p>
+          <div class="proc-stage">
+            <div class="proc-visual" id="proc-visual">
+              <img id="proc-img" alt="Your picture being processed">
+              <div class="scanline"></div>
+            </div>
+            <ul class="proc-log" id="proc-log"><!-- populated by JS --></ul>
+          </div>
+        </div>
+
+        <!-- STEP 4: gated result -->
+        <div class="widget-step" id="step-result" hidden>
+          <div class="result-frame">
+            <div class="result-render" id="result-render"><!-- composited result --></div>
+            <div class="gate-overlay">
+              <p class="gate-ready"><span class="gate-check">✓</span> Your engraving is ready</p>
+              <p class="gate-meta" id="gate-meta"></p>
+              <a class="cta-btn gate-cta" href="#" data-auth-link data-deeplink>
+                Create a free account to reveal it →
+              </a>
+              <p class="gate-fine">Includes a 14-day Glowforge Premium trial — engrave this on the real thing. No credit card. Your design will be waiting in the app.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ MACHINE STRIP ============ -->
+  <section class="machine-strip" aria-label="Compatible laser brands">
+    <div class="wrap strip-inner">
+      <span class="strip-label">Tuned settings for</span>
+      <div class="strip-logos">
+        <span>xTool</span><span>OmTech</span><span>Creality Falcon</span><span>Thunder</span><span>K40</span><span>Epilog</span><span>LaserPecker</span><span>Atomstack</span><span>Glowforge</span><span class="strip-more">+ any GCode laser</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PIPELINE SHOWCASE ============ -->
+  <section class="pipeline" id="how">
+    <div class="wrap">
+      <p class="eyebrow">How the magic actually works</p>
+      <h2>Photo in. Vectors out. Object engraved.</h2>
+      <p class="section-sub">No prompt-roulette. Magic Engraver works from the picture you already have and shows its work at every step.</p>
+
+      <div class="pipe-grid">
+        <figure class="pipe-card">
+          <figcaption><span class="pipe-num">1</span> The photo you have</figcaption>
+          <div class="pipe-visual pipe-photo">
+            <svg viewBox="0 0 200 160" role="img" aria-label="A photo of a dog">
+              <defs>
+                <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0" stop-color="#9fb8c9"/><stop offset="1" stop-color="#d8cfc0"/>
+                </linearGradient>
+              </defs>
+              <rect width="200" height="160" fill="url(#sky)"/>
+              <ellipse cx="100" cy="150" rx="110" ry="24" fill="#7d8f6e"/>
+              <g id="dog-shape">
+                <path d="M70 132 q-6 -34 10 -52 q-12 -10 -8 -26 q14 2 20 12 q8 -6 22 -6 t22 6 q6 -10 20 -12 q4 16 -8 26 q16 18 10 52 q-2 10 -14 12 l-60 0 q-12 -2 -14 -12 z" fill="#8a6a4f"/>
+                <ellipse cx="100" cy="96" rx="26" ry="22" fill="#a8855f"/>
+                <ellipse cx="91" cy="88" rx="3.4" ry="4" fill="#241a12"/>
+                <ellipse cx="109" cy="88" rx="3.4" ry="4" fill="#241a12"/>
+                <path d="M93 102 q7 7 14 0 q-3 8 -7 8 t-7 -8z" fill="#241a12"/>
+                <ellipse cx="100" cy="99" rx="5" ry="3.6" fill="#241a12"/>
+              </g>
+            </svg>
+            <span class="pipe-chip">IMG_4318.jpg</span>
+          </div>
+        </figure>
+
+        <div class="pipe-arrow" aria-hidden="true">→</div>
+
+        <figure class="pipe-card">
+          <figcaption><span class="pipe-num">2</span> The vector we make</figcaption>
+          <div class="pipe-visual pipe-vector">
+            <svg viewBox="0 0 200 160" role="img" aria-label="The same dog traced as vector line art">
+              <rect width="200" height="160" fill="#101418"/>
+              <g fill="none" stroke="#7df2c8" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round">
+                <path d="M70 132 q-6 -34 10 -52 q-12 -10 -8 -26 q14 2 20 12 q8 -6 22 -6 t22 6 q6 -10 20 -12 q4 16 -8 26 q16 18 10 52 q-2 10 -14 12 l-60 0 q-12 -2 -14 -12 z"/>
+                <ellipse cx="100" cy="96" rx="26" ry="22"/>
+                <path d="M93 102 q7 7 14 0"/>
+              </g>
+              <g fill="#7df2c8">
+                <ellipse cx="91" cy="88" rx="3" ry="3.8"/>
+                <ellipse cx="109" cy="88" rx="3" ry="3.8"/>
+                <ellipse cx="100" cy="99" rx="4.6" ry="3.2"/>
+              </g>
+              <g fill="#39424d">
+                <rect x="68" y="78" width="4" height="4"/><rect x="128" y="78" width="4" height="4"/>
+                <rect x="68" y="128" width="4" height="4"/><rect x="128" y="128" width="4" height="4"/>
+              </g>
+            </svg>
+            <span class="pipe-chip">background removed · 14 paths · scalable</span>
+          </div>
+        </figure>
+
+        <div class="pipe-arrow" aria-hidden="true">→</div>
+
+        <figure class="pipe-card">
+          <figcaption><span class="pipe-num">3</span> The object you engrave</figcaption>
+          <div class="pipe-visual pipe-object">
+            <svg viewBox="0 0 200 160" role="img" aria-label="The dog engraved on a maple cutting board">
+              <defs>
+                <linearGradient id="maple" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0" stop-color="#e4c293"/><stop offset="1" stop-color="#caa06b"/>
+                </linearGradient>
+              </defs>
+              <rect width="200" height="160" fill="#181d23"/>
+              <rect x="22" y="14" width="156" height="132" rx="14" fill="url(#maple)"/>
+              <circle cx="160" cy="32" r="7" fill="#181d23"/>
+              <g stroke="#b88e58" stroke-width="1" opacity="0.5">
+                <path d="M30 40 q70 6 140 0M30 70 q70 -6 140 0M30 100 q70 6 140 0M30 130 q70 -6 140 0" fill="none"/>
+              </g>
+              <g transform="translate(34,12) scale(0.66)" fill="none" stroke="#4a2f17" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round" opacity="0.9">
+                <path d="M70 132 q-6 -34 10 -52 q-12 -10 -8 -26 q14 2 20 12 q8 -6 22 -6 t22 6 q6 -10 20 -12 q4 16 -8 26 q16 18 10 52 q-2 10 -14 12 l-60 0 q-12 -2 -14 -12 z"/>
+                <ellipse cx="100" cy="96" rx="26" ry="22"/>
+                <path d="M93 102 q7 7 14 0"/>
+                <g fill="#4a2f17" stroke="none">
+                  <ellipse cx="91" cy="88" rx="3" ry="3.8"/>
+                  <ellipse cx="109" cy="88" rx="3" ry="3.8"/>
+                  <ellipse cx="100" cy="99" rx="4.6" ry="3.2"/>
+                </g>
+              </g>
+            </svg>
+            <span class="pipe-chip">maple · power 70 · speed 1200 · 1 pass</span>
+          </div>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PROOF / GALLERY ============ -->
+  <section class="gallery">
+    <div class="wrap">
+      <p class="eyebrow">Made with Magic Engraver</p>
+      <h2>Pictures people had. Objects they own.</h2>
+      <div class="gallery-grid">
+        <div class="g-card"><div class="g-img g-1"></div><p>Kid's drawing → oak serving board</p></div>
+        <div class="g-card"><div class="g-img g-2"></div><p>Wedding photo → slate coaster set</p></div>
+        <div class="g-card"><div class="g-img g-3"></div><p>Shop logo → leather patches ×40</p></div>
+        <div class="g-card"><div class="g-img g-4"></div><p>Pet portrait → steel tumbler</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FAQ ============ -->
+  <section class="faq">
+    <div class="wrap faq-wrap">
+      <h2>Questions, answered straight.</h2>
+      <details>
+        <summary>Does it really work with my laser?</summary>
+        <p>If your machine takes SVG, DXF, or GCode, yes. Magic Engraver exports laser-ready files with suggested power/speed settings per material, tuned for popular machines from xTool, OmTech, Creality, Thunder, Epilog, and generic K40s — plus native support on Glowforge hardware.</p>
+      </details>
+      <details>
+        <summary>What exactly is gated behind the account?</summary>
+        <p>Trying the tool is free and anonymous. Seeing your finished engraving preview — and exporting the laser-ready file — requires a free Glowforge account, which starts your 14-day Premium trial. No credit card.</p>
+      </details>
+      <details>
+        <summary>What happens after the 14 days?</summary>
+        <p>Your designs stay yours. Magic Engraver and other Premium tools require a subscription after the trial; we'll tell you before anything changes, and there's no auto-charge because we never took a card.</p>
+      </details>
+      <details>
+        <summary>Is my photo private?</summary>
+        <p>Yes. Uploaded images are used only to generate your design, are never used to train models, and can be deleted from your account at any time.</p>
+      </details>
+    </div>
+  </section>
+
+  <!-- ============ FINAL CTA ============ -->
+  <section class="final-cta">
+    <div class="wrap final-inner">
+      <h2>Your picture is one pass away.</h2>
+      <p>Try it with your own image above — or jump straight in.</p>
+      <a class="cta-btn big" href="#" data-auth-link>Start my free 14-day trial →</a>
+      <p class="gate-fine">Works with any laser. No credit card.</p>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap footer-inner">
+    <span>© 2026 Glowforge, Inc.</span>
+    <nav><a href="#">Privacy</a><a href="#">Terms</a><a href="#">Support</a></nav>
+  </div>
+</footer>
+
+<!-- Placeholder auth modal: stands in for the real signup redirect -->
+<dialog id="auth-modal">
+  <p class="modal-eyebrow">placeholder · real flow documented in README</p>
+  <h3>This is where signup happens</h3>
+  <p>In production this button redirects to:</p>
+  <code id="auth-url"></code>
+  <p>After auth, the 14-day trial activates and the user deeplinks into the app where this design is already processing.</p>
+  <button class="cta-btn" id="modal-close">Got it</button>
+</dialog>
+
+<script src="app.js"></script>
+</body>
+</html>
