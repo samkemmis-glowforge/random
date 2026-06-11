@@ -1,0 +1,3076 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Glowforge Workspace Component System</title>
+    <style>
+      @font-face {
+        font-family: "Space Grotesk";
+        src: url("./design-system-assets/fonts/SpaceGrotesk-VariableFont_wght.ttf") format("truetype-variations"),
+             url("./design-system-assets/fonts/SpaceGrotesk-VariableFont_wght.ttf") format("truetype");
+        font-weight: 300 700;
+        font-style: normal;
+        font-display: swap;
+      }
+      @font-face {
+        font-family: "Exo 2";
+        src: url("./design-system-assets/fonts/Exo2-VariableFont_wght.ttf") format("truetype-variations"),
+             url("./design-system-assets/fonts/Exo2-VariableFont_wght.ttf") format("truetype");
+        font-weight: 300 700;
+        font-style: normal;
+        font-display: swap;
+      }
+      :root {
+        --magic-dark: #0a3036;
+        --magic-button: #1e93a5;
+        --magic-base: #26b8ce;
+        --magic-light: #a6e1eb;
+        --maple-base: #f8e5c7;
+        --maple-light: #fdf5e9;
+        --sunburst-base: #ffe56e;
+        --danger: #d14343;
+        --slate-950: #050607;
+        --slate-900: #12151a;
+        --slate-700: #424448;
+        --slate-500: #73777f;
+        --slate-300: #d8dadd;
+        --slate-200: #e8eaed;
+        --slate-100: #f5f5f5;
+        --white: #ffffff;
+        --cut: #ef4444;
+        --score: #3b82f6;
+        --engrave: #374151;
+        --font-display: "Space Grotesk", "Helvetica Neue", Arial, sans-serif;
+        --font-body: "Exo 2", "Helvetica Neue", Arial, sans-serif;
+        --radius-xs: 4px;
+        --radius-sm: 6px;
+        --radius-md: 12px;
+        --radius-lg: 24px;
+      }
+      * { box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
+      body {
+        margin: 0;
+        background: var(--white);
+        color: var(--slate-900);
+        font-family: var(--font-display);
+        letter-spacing: 0;
+      }
+      a { color: inherit; text-decoration: none; }
+      button, input, select { font: inherit; }
+      button { cursor: pointer; }
+      button:focus-visible,
+      input:focus-visible,
+      select:focus-visible,
+      a:focus-visible {
+        outline: 2px solid var(--magic-base);
+        outline-offset: 2px;
+      }
+      .page-shell {
+        min-height: 100vh;
+        display: grid;
+        grid-template-columns: 280px minmax(0, 1fr);
+      }
+      .docs-nav {
+        position: sticky;
+        top: 0;
+        height: 100vh;
+        overflow: auto;
+        border-right: 1px solid var(--slate-200);
+        background: var(--white);
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 22px 22px 18px;
+        border-bottom: 1px solid var(--slate-200);
+      }
+      .brand img { width: 32px; height: 32px; }
+      .brand strong { display: block; font-size: 15px; }
+      .brand span { display: block; margin-top: 3px; color: var(--slate-500); font: 12px/1.3 var(--font-body); }
+      .nav-section { padding: 18px 14px; }
+      .nav-kicker,
+      .spec-label {
+        margin: 0 0 10px;
+        color: var(--slate-500);
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+      .docs-nav a {
+        display: flex;
+        align-items: center;
+        min-height: 36px;
+        border-radius: var(--radius-sm);
+        padding: 7px 10px;
+        color: var(--slate-700);
+        font-size: 14px;
+        font-weight: 600;
+      }
+      .docs-nav a:hover {
+        background: var(--slate-100);
+        color: var(--magic-dark);
+      }
+      .content { min-width: 0; }
+      .hero {
+        padding: 64px clamp(32px, 6vw, 72px) 48px;
+        border-bottom: 1px solid var(--slate-200);
+        background:
+          linear-gradient(135deg, rgba(166, 225, 235, 0.32), transparent 38%),
+          linear-gradient(180deg, var(--white), var(--slate-100));
+      }
+      .eyebrow {
+        margin: 0 0 14px;
+        color: var(--magic-button);
+        font-size: 12px;
+        font-weight: 800;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+      }
+      h1,
+      h2,
+      h3,
+      h4,
+      p { margin-top: 0; }
+      h1 {
+        max-width: 900px;
+        margin-bottom: 20px;
+        color: var(--magic-dark);
+        font-size: clamp(44px, 7vw, 82px);
+        font-weight: 600;
+        line-height: 0.98;
+      }
+      .lead {
+        max-width: 780px;
+        margin-bottom: 0;
+        color: var(--slate-700);
+        font: 20px/1.55 var(--font-body);
+      }
+      .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+      .section {
+        padding: 52px clamp(28px, 5vw, 64px);
+        border-bottom: 1px solid var(--slate-200);
+      }
+      .section-header {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(260px, 360px);
+        gap: 32px;
+        align-items: start;
+        margin-bottom: 28px;
+      }
+      h2 {
+        margin-bottom: 12px;
+        color: var(--slate-950);
+        font-size: clamp(30px, 4vw, 48px);
+        line-height: 1.05;
+      }
+      h3 { margin-bottom: 12px; font-size: 22px; }
+      h4 { margin-bottom: 8px; font-size: 16px; }
+      .body {
+        color: var(--slate-700);
+        font: 15px/1.6 var(--font-body);
+      }
+      .metadata {
+        display: grid;
+        gap: 10px;
+        border: 1px solid var(--slate-200);
+        border-radius: var(--radius-sm);
+        padding: 14px;
+        background: var(--white);
+      }
+      .metadata-row {
+        display: grid;
+        grid-template-columns: 92px minmax(0, 1fr);
+        gap: 10px;
+        color: var(--slate-700);
+        font: 13px/1.45 var(--font-body);
+      }
+      .metadata-row strong { color: var(--slate-900); font-family: var(--font-display); }
+      .doc-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        gap: 24px;
+        align-items: start;
+      }
+      .card {
+        border: 1px solid var(--slate-200);
+        border-radius: var(--radius-sm);
+        background: var(--white);
+      }
+      .demo-card { overflow: hidden; }
+      .doc-grid > .demo-card { order: 2; }
+      .mode-subsection > .demo-card {
+        margin-top: 12px;
+      }
+      .mode-subsection > .demo-card .demo-header,
+      .mode-subsection > .demo-card .demo-context {
+        display: none;
+      }
+      .demo-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        min-height: 52px;
+        padding: 12px 16px;
+        border-bottom: 1px solid var(--slate-200);
+        background: var(--slate-100);
+      }
+      .demo-header strong { font-size: 14px; }
+      .demo-stage { padding: 18px; }
+      .guidelines {
+        display: grid;
+        gap: 18px;
+        order: 1;
+      }
+      .guideline {
+        border-left: 3px solid var(--magic-base);
+        padding-left: 14px;
+      }
+      .guideline p { margin-bottom: 0; }
+      .guideline ul,
+      .component-usage ul,
+      .mode-notes ul,
+      .demo-context ul,
+      .mode-subsection ul {
+        margin: 0;
+        padding-left: 20px;
+        color: var(--slate-700);
+        font: 15px/1.55 var(--font-body);
+      }
+      .guideline li + li,
+      .component-usage li + li,
+      .mode-notes li + li { margin-top: 6px; }
+      .component-usage,
+      .mode-spec {
+        display: grid;
+        gap: 14px;
+      }
+      .component-subhead {
+        margin: 0;
+        color: var(--magic-dark);
+        font-size: 20px;
+        font-weight: 800;
+      }
+      .mode-spec {
+        border-top: 1px solid var(--slate-200);
+        padding-top: 18px;
+      }
+      .mode-spec-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        flex-wrap: wrap;
+      }
+      .mode-panel { display: none; }
+      .mode-panel.is-active {
+        display: grid;
+        gap: 18px;
+      }
+      .mode-subsection {
+        display: grid;
+        gap: 10px;
+      }
+      .mode-subsection h4 {
+        margin: 0;
+        color: var(--slate-900);
+        font-size: 16px;
+        font-weight: 800;
+      }
+      .demo-context {
+        display: grid;
+        gap: 10px;
+        border-top: 1px solid var(--slate-200);
+        padding-top: 14px;
+      }
+      .demo-context h4 {
+        margin: 0;
+        color: var(--slate-900);
+        font-size: 16px;
+      }
+      .spec-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+      }
+      .spec {
+        min-height: 96px;
+        padding: 14px;
+      }
+      .spec code,
+      .code {
+        font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+        font-size: 12px;
+      }
+      .component-table {
+        width: 100%;
+        border-collapse: collapse;
+        overflow: hidden;
+        border: 1px solid var(--slate-200);
+        border-radius: var(--radius-sm);
+        font: 14px/1.5 var(--font-body);
+      }
+      .component-table th,
+      .component-table td {
+        padding: 13px 14px;
+        border-bottom: 1px solid var(--slate-200);
+        text-align: left;
+        vertical-align: top;
+      }
+      .component-table th {
+        background: var(--slate-100);
+        color: var(--slate-900);
+        font-family: var(--font-display);
+        font-size: 13px;
+      }
+      .component-table tr:last-child td { border-bottom: 0; }
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 40px;
+        border: 2px solid transparent;
+        border-radius: 999px;
+        padding: 8px 20px;
+        gap: 8px;
+        font-size: 14px;
+        font-weight: 700;
+        transition: background-color 100ms ease, border-color 100ms ease, color 100ms ease;
+      }
+      .btn-primary { border-color: var(--magic-button); background: var(--magic-button); color: var(--white); }
+      .btn-primary:hover { border-color: var(--magic-base); background: var(--magic-base); }
+      .btn-secondary { border-color: var(--magic-button); background: var(--white); color: var(--magic-button); }
+      .btn-secondary:hover { background: rgba(166, 225, 235, 0.28); color: var(--magic-base); }
+      .btn-danger { border-color: var(--danger); background: var(--danger); color: var(--white); }
+      .btn-danger:hover { border-color: #b83434; background: #b83434; }
+      .icon-button {
+        display: inline-grid;
+        width: 40px;
+        height: 40px;
+        place-items: center;
+        border: 1px solid transparent;
+        border-radius: var(--radius-xs);
+        background: transparent;
+        color: var(--slate-700);
+        transition: background-color 100ms ease, color 100ms ease;
+      }
+      .icon-button:hover { background: var(--slate-100); color: var(--magic-base); }
+      .workspace-demo {
+        display: grid;
+        min-height: 440px;
+        overflow: hidden;
+        grid-template-columns: 136px 320px minmax(0, 1fr);
+        border: 1px solid var(--slate-200);
+        border-radius: var(--radius-sm);
+        background: var(--white);
+      }
+      .mode-controls,
+      .code-controls {
+        display: inline-flex;
+        gap: 4px;
+        border-radius: 999px;
+        padding: 4px;
+        background: var(--slate-100);
+      }
+      .mode-button,
+      .code-button {
+        border: 0;
+        border-radius: 999px;
+        padding: 6px 12px;
+        background: transparent;
+        color: var(--slate-700);
+        font-size: 12px;
+        font-weight: 800;
+      }
+      .mode-button.is-active,
+      .code-button.is-active {
+        background: var(--white);
+        color: var(--magic-dark);
+      }
+      .code-sample {
+        display: none;
+        overflow: auto;
+        max-height: 240px;
+        border: 1px solid var(--slate-200);
+        border-radius: var(--radius-sm);
+        padding: 12px;
+        background: #0f172a;
+        color: #e2e8f0;
+        font: 12px/1.55 ui-monospace, SFMono-Regular, Menlo, monospace;
+        white-space: pre-wrap;
+      }
+      .code-sample.is-active { display: block; }
+      .mobile-callout {
+        border: 2px solid rgba(38, 184, 206, 0.32);
+        border-radius: var(--radius-md);
+        padding: 16px;
+        background: linear-gradient(180deg, rgba(166, 225, 235, 0.26), rgba(255,255,255,0.94));
+      }
+      .mobile-callout h3 {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 10px;
+        color: var(--magic-dark);
+      }
+      .mobile-callout h3::before {
+        content: "Mobile";
+        border-radius: 999px;
+        padding: 4px 8px;
+        background: var(--magic-button);
+        color: var(--white);
+        font-size: 10px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+      .object-rail {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        padding: 16px 12px;
+        border-right: 1px solid var(--slate-200);
+        background: var(--white);
+      }
+      .rail-section {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .rail-divider {
+        height: 1px;
+        background: rgba(158,159,161,0.36);
+      }
+      .rail-button {
+        display: grid;
+        width: 100%;
+        place-items: center;
+        gap: 8px;
+        border: 0;
+        border-radius: 16px;
+        padding: 14px 12px;
+        background: transparent;
+        color: var(--slate-700);
+        font-size: 12px;
+        font-weight: 500;
+        transition: background-color 100ms ease, color 100ms ease;
+      }
+      .rail-button svg { width: 18px; height: 18px; }
+      .rail-button:hover {
+        background: var(--slate-100);
+        color: var(--magic-base);
+      }
+      .rail-button.is-active {
+        background: rgba(166, 225, 235, 0.45);
+        color: var(--magic-dark);
+      }
+      .rail-bottom {
+        margin-top: auto;
+        border-top: 1px solid rgba(158,159,161,0.36);
+        padding-top: 12px;
+      }
+      /* In mobile demos the shell plays the phone viewport: the canvas fills it,
+         the dock is pinned to the bottom, and the sheet OVERLAYS the canvas
+         (mirroring the app's position: fixed sheets) instead of reflowing it. */
+      .workspace-demo.is-mobile {
+        display: block;
+        position: relative;
+        width: min(100%, 420px);
+        height: 760px;
+        min-height: 0;
+        margin-inline: auto;
+      }
+      .workspace-demo.is-mobile .canvas-demo {
+        position: absolute;
+        inset: 0 0 72px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        /* Mirror the app: the canvas re-centers in the space left above the
+           open sheet (Canvas applies a bottom inset equal to sheet height). */
+        padding-bottom: calc(var(--demo-sheet-height, 0px) + 20px);
+      }
+      .workspace-demo.is-mobile.is-sheet-closed .canvas-demo {
+        padding-bottom: 20px;
+      }
+      .workspace-demo.is-mobile .bed,
+      .panel-demo-shell.is-mobile .bed {
+        width: auto;
+        height: min(100%, 270px);
+        max-width: 100%;
+        aspect-ratio: 1.4;
+      }
+      .workspace-demo.is-mobile .command-panel {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 72px;
+        z-index: 10;
+        display: flex;
+        flex-direction: column;
+        height: var(--demo-sheet-height, 44%);
+        max-height: calc(100% - 88px);
+        overflow: hidden;
+        border-right: 0;
+        border-top: 1px solid var(--slate-200);
+        border-radius: 28px 28px 0 0;
+      }
+      .workspace-demo.is-mobile .command-panel .command-list {
+        flex: 1;
+        overflow-y: auto;
+        align-content: start;
+      }
+      .workspace-demo.is-mobile .object-rail {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 72px;
+        flex-direction: row;
+        gap: 8px;
+        overflow-x: auto;
+        border-top: 1px solid var(--slate-200);
+        border-right: 0;
+        padding: 6px 8px;
+        background: rgba(255,255,255,0.96);
+      }
+      .workspace-demo.is-mobile .rail-section {
+        flex-direction: row;
+        gap: 8px;
+      }
+      .workspace-demo.is-mobile .rail-bottom {
+        margin-top: 0;
+        border-top: 0;
+        padding-top: 0;
+      }
+      .workspace-demo.is-mobile .rail-divider {
+        width: 1px;
+        height: auto;
+        min-height: 48px;
+      }
+      .workspace-demo.is-mobile .rail-button {
+        min-width: 72px;
+        min-height: 60px;
+        padding: 8px 10px;
+        gap: 4px;
+        border-radius: 16px;
+        font-size: 11px;
+      }
+      .workspace-demo.is-mobile.is-sheet-closed .command-panel,
+      .panel-demo-shell.is-mobile.is-sheet-closed .command-panel,
+      .hero-demo-shell.is-mobile.is-sheet-closed .overlay-controls {
+        display: none;
+      }
+      .panel-demo-shell {
+        display: grid;
+        grid-template-columns: 320px minmax(0, 1fr);
+        overflow: hidden;
+        min-height: 520px;
+        border: 1px solid var(--slate-200);
+        border-radius: var(--radius-sm);
+        background: var(--slate-100);
+      }
+      .panel-demo-shell .command-panel {
+        width: 320px;
+        max-width: none;
+        border-right: 1px solid var(--slate-200);
+      }
+      .panel-demo-shell:not(.is-mobile) .mobile-grip {
+        display: none !important;
+      }
+      .workspace-demo:not(.is-mobile) .mobile-grip,
+      .hero-demo-shell:not(.is-mobile) .hero-mobile-grip,
+      .hero-overlay .hero-mobile-grip {
+        display: none !important;
+      }
+      [data-sheet-drag] {
+        touch-action: none;
+        cursor: grab;
+      }
+      [data-sheet-drag]:active { cursor: grabbing; }
+      .hero-mobile-grip {
+        display: flex;
+        width: 100%;
+        height: 24px;
+        align-items: center;
+        justify-content: center;
+        border: 0;
+        background: var(--white);
+        touch-action: none;
+      }
+      .hero-mobile-grip span {
+        display: block;
+        width: 36px;
+        height: 4px;
+        border-radius: 999px;
+        background: var(--slate-300);
+      }
+      .panel-demo-canvas {
+        display: grid;
+        place-items: center;
+        padding: 20px;
+      }
+      .panel-demo-shell.is-mobile {
+        display: block;
+        position: relative;
+        width: min(100%, 420px);
+        height: 760px;
+        min-height: 0;
+        margin-inline: auto;
+        background: var(--slate-100);
+      }
+      .panel-demo-shell.is-mobile .panel-demo-canvas {
+        position: absolute;
+        inset: 0 0 72px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding-bottom: calc(var(--demo-sheet-height, 0px) + 20px);
+      }
+      .panel-demo-shell.is-mobile.is-sheet-closed .panel-demo-canvas {
+        padding-bottom: 20px;
+      }
+      .panel-demo-shell.is-mobile .command-panel {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 72px;
+        z-index: 10;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        height: var(--demo-sheet-height, 44%);
+        max-height: calc(100% - 88px);
+        overflow: hidden;
+        border-right: 0;
+        border-top: 1px solid var(--slate-200);
+        border-radius: 28px 28px 0 0;
+      }
+      .panel-demo-shell.is-mobile .command-panel .command-list {
+        flex: 1;
+        overflow-y: auto;
+        align-content: start;
+      }
+      .panel-demo-shell.is-mobile .image-action-card,
+      .workspace-demo.is-mobile .image-action-card {
+        min-height: 72px;
+        border-radius: 12px;
+        padding: 12px;
+      }
+      .panel-demo-shell.is-mobile .image-action-card span:not(.tile-icon),
+      .workspace-demo.is-mobile .image-action-card span:not(.tile-icon) {
+        display: none;
+      }
+      .panel-demo-shell.is-mobile .image-action-card strong,
+      .workspace-demo.is-mobile .image-action-card strong {
+        margin-top: 8px;
+      }
+      .mobile-dock-demo {
+        display: none;
+        min-height: 72px;
+        align-items: center;
+        gap: 8px;
+        overflow-x: auto;
+        border-top: 1px solid var(--slate-200);
+        background: rgba(255,255,255,0.96);
+        padding: 6px 8px;
+      }
+      .panel-demo-shell.is-mobile .mobile-dock-demo {
+        display: flex;
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 72px;
+      }
+      .mobile-dock-demo .rail-button {
+        min-width: 72px;
+        min-height: 60px;
+        width: auto;
+        padding: 8px 10px;
+        gap: 4px;
+        font-size: 11px;
+      }
+      .command-panel {
+        border-right: 1px solid var(--slate-200);
+        background: var(--white);
+      }
+      .panel-title {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        min-height: 56px;
+        padding: 0 16px;
+        border-bottom: 1px solid var(--slate-200);
+      }
+      .panel-title h3 { margin-bottom: 0; }
+      .command-list {
+        display: grid;
+        gap: 10px;
+        padding: 16px;
+      }
+      .implemented-note {
+        border: 1px solid rgba(38, 184, 206, 0.34);
+        border-radius: var(--radius-sm);
+        padding: 12px 14px;
+        background: rgba(166, 225, 235, 0.18);
+        color: var(--magic-dark);
+        font: 13px/1.5 var(--font-body);
+      }
+      .panel-section-label {
+        margin: 0;
+        color: var(--slate-500);
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+      }
+      .image-actions-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+      }
+      .image-action-card {
+        min-height: 92px;
+        border: 1px solid var(--slate-200);
+        border-radius: 16px;
+        padding: 14px;
+        background: var(--white);
+        text-align: left;
+        transition: border-color 100ms ease;
+      }
+      .image-action-card:hover {
+        border-color: rgba(38, 184, 206, 0.42);
+      }
+      .image-action-card strong {
+        display: block;
+        margin-top: 12px;
+        color: var(--slate-900);
+        font-size: 14px;
+      }
+      .image-action-card span {
+        display: block;
+        margin-top: 4px;
+        color: var(--slate-500);
+        font: 12px/1.35 var(--font-body);
+      }
+      .command-tile {
+        display: grid;
+        grid-template-columns: 44px minmax(0, 1fr);
+        gap: 12px;
+        width: 100%;
+        align-items: start;
+        border: 1px solid var(--slate-200);
+        border-radius: 16px;
+        padding: 16px;
+        background: var(--white);
+        text-align: left;
+        transition: border-color 100ms ease;
+      }
+      .command-tile:hover {
+        border-color: #99f6e4;
+      }
+      .tile-icon {
+        display: grid;
+        width: 42px;
+        height: 42px;
+        place-items: center;
+        border-radius: var(--radius-md);
+        background: var(--slate-100);
+        color: var(--magic-dark);
+      }
+      .command-tile .tile-icon { width: 44px; height: 44px; border-radius: 16px; color: var(--slate-700); }
+      .command-tile strong { display: block; margin-bottom: 3px; font-size: 14px; }
+      .command-tile span { color: var(--slate-500); font: 12px/1.45 var(--font-body); }
+      .panel-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+      }
+      .panel-card {
+        display: flex;
+        min-height: 84px;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid #f3f4f6;
+        border-radius: 12px;
+        padding: 12px;
+        background: #f9fafb;
+        color: var(--slate-900);
+        text-align: center;
+        font-size: 14px;
+        font-weight: 600;
+        transition: background-color 100ms ease;
+      }
+      .panel-card:hover { background: var(--slate-100); }
+      .panel-see-all {
+        justify-self: start;
+        border: 0;
+        padding: 0;
+        background: transparent;
+        color: var(--slate-500);
+        font-size: 11px;
+        transition: color 100ms ease;
+      }
+      .panel-see-all:hover { color: var(--slate-900); }
+      .panel-action-row {
+        display: flex;
+        width: 100%;
+        align-items: center;
+        gap: 10px;
+        border: 1px solid rgba(158, 159, 161, 0.45);
+        border-radius: var(--radius-sm);
+        padding: 12px 14px;
+        background: var(--white);
+        color: var(--slate-900);
+        text-align: left;
+        font-size: 14px;
+        font-weight: 600;
+        transition: background-color 100ms ease, border-color 100ms ease, color 100ms ease;
+      }
+      .panel-action-row:hover {
+        border-color: var(--magic-light);
+        background: var(--slate-100);
+        color: var(--magic-button);
+      }
+      .canvas-demo {
+        display: grid;
+        place-items: center;
+        min-width: 0;
+        padding: 20px;
+        background: var(--slate-100);
+      }
+      .bed {
+        position: relative;
+        width: min(100%, 440px);
+        aspect-ratio: 1.4;
+        border: 1px dashed var(--slate-300);
+        border-radius: var(--radius-sm);
+        background: var(--white);
+      }
+      .sample-object {
+        position: absolute;
+        inset: 22% 27%;
+        display: grid;
+        place-items: center;
+        border: 2px solid var(--magic-base);
+        border-radius: var(--radius-sm);
+        background: linear-gradient(135deg, rgba(38, 184, 206, 0.14), rgba(255, 229, 110, 0.24));
+        color: var(--magic-dark);
+        font-weight: 800;
+      }
+      .hero-overlay {
+        position: fixed;
+        inset: 32px;
+        z-index: 30;
+        display: none;
+        grid-template-columns: 420px minmax(0, 1fr);
+        overflow: hidden;
+        border: 1px solid var(--slate-200);
+        border-radius: 32px;
+        background: #edf1f6;
+      }
+      .hero-overlay.is-open { display: grid; }
+      .hero-demo-shell {
+        display: grid;
+        grid-template-columns: 420px minmax(0, 1fr);
+        overflow: hidden;
+        min-height: 520px;
+        border: 1px solid var(--slate-200);
+        border-radius: 32px;
+        background: #edf1f6;
+      }
+      .hero-demo-shell.is-mobile {
+        display: block;
+        position: relative;
+        width: min(100%, 420px);
+        height: 720px;
+        min-height: 0;
+        margin-inline: auto;
+      }
+      .hero-demo-shell.is-mobile .overlay-preview {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        /* Mirror the app: preview gets paddingBottom equal to the sheet height. */
+        padding-bottom: calc(var(--demo-sheet-height, 0px) + 16px);
+      }
+      .hero-demo-shell.is-mobile.is-sheet-closed .overlay-preview {
+        padding-bottom: 16px;
+      }
+      .hero-demo-shell.is-mobile .preview-stage {
+        min-height: 0;
+        height: 100%;
+        width: 100%;
+        padding: 0;
+      }
+      .hero-demo-shell.is-mobile .selected-preview-image {
+        height: 100%;
+        max-height: 100%;
+      }
+      .hero-demo-shell.is-mobile .overlay-controls {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 10;
+        height: var(--demo-sheet-height, 48%);
+        border-right: 0;
+        border-top: 1px solid var(--slate-200);
+        border-radius: 24px 24px 0 0;
+      }
+      .overlay-preview {
+        display: grid;
+        place-items: center;
+        min-width: 0;
+        min-height: 0;
+        padding: 28px;
+        background: #e9edf3;
+      }
+      .preview-stage {
+        position: relative;
+        display: flex;
+        min-height: 520px;
+        width: min(100%, 780px);
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        padding: 0;
+        background: transparent;
+      }
+      .selected-preview-image {
+        display: block;
+        width: 100%;
+        height: 100%;
+        max-width: 100%;
+        max-height: min(72vh, 640px);
+        object-fit: contain;
+        object-position: center;
+      }
+      .overlay-controls {
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+        border-right: 1px solid var(--slate-200);
+        background: var(--white);
+      }
+      .overlay-top {
+        display: flex;
+        align-items: start;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 20px;
+        border-bottom: 1px solid var(--slate-200);
+      }
+      .overlay-body {
+        display: grid;
+        gap: 18px;
+        padding: 20px;
+        overflow-y: auto;
+      }
+      .overlay-pane { display: none; }
+      .overlay-pane.is-active {
+        display: grid;
+        gap: 18px;
+      }
+      .style-card-grid,
+      .recent-design-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+      }
+      .style-card,
+      .recent-design-card {
+        position: relative;
+        overflow: hidden;
+        border: 1px solid var(--slate-200);
+        border-radius: 16px;
+        background: var(--white);
+        padding: 8px;
+        text-align: left;
+        transition: border-color 100ms ease;
+      }
+      .style-card:hover,
+      .recent-design-card:hover {
+        border-color: #99f6e4;
+      }
+      .style-card.is-selected,
+      .recent-design-card.is-selected {
+        border-color: #2dd4bf;
+      }
+      .style-card-badge {
+        position: absolute;
+        left: 8px;
+        top: 8px;
+        border-radius: 999px;
+        padding: 2px 8px;
+        background: #14b8a6;
+        color: var(--white);
+        font-size: 10px;
+        font-weight: 800;
+      }
+      .style-card-preview,
+      .recent-design-preview {
+        display: grid;
+        height: 96px;
+        place-items: center;
+        border: 1px solid var(--slate-200);
+        border-radius: 12px;
+        background: #f8f8f8;
+        color: var(--slate-900);
+        font-size: 28px;
+        font-weight: 800;
+      }
+      .style-card-preview.is-teal {
+        border-color: #99f6e4;
+        background: #fffdf2;
+        color: var(--magic-button);
+      }
+      .style-card-copy,
+      .recent-design-copy {
+        padding: 8px 4px 4px;
+      }
+      .style-card-copy strong,
+      .recent-design-copy strong {
+        display: block;
+        color: var(--slate-900);
+        font-size: 13px;
+      }
+      .style-card-copy span,
+      .recent-design-copy span {
+        display: block;
+        margin-top: 4px;
+        color: var(--slate-500);
+        font: 11px/1.35 var(--font-body);
+      }
+      .recent-design-card {
+        min-height: 220px;
+        display: flex;
+        flex-direction: column;
+      }
+      .recent-design-preview {
+        height: 128px;
+        background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+      }
+      .control-row {
+        display: grid;
+        gap: 8px;
+      }
+      .control-row label {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        color: var(--slate-700);
+        font-size: 13px;
+        font-weight: 700;
+      }
+      input[type="range"] {
+        width: 100%;
+        accent-color: var(--magic-button);
+      }
+      .tabs {
+        display: flex;
+        gap: 32px;
+        border-bottom: 1px solid var(--slate-200);
+      }
+      .tab {
+        border: 0;
+        border-bottom: 3px solid transparent;
+        padding: 0 0 14px;
+        background: transparent;
+        color: #475569;
+        font-size: 14px;
+        font-weight: 600;
+        transition: color 100ms ease, border-color 100ms ease;
+      }
+      .tab:hover { color: var(--slate-900); }
+      .tab.is-active {
+        border-bottom-color: #06b6d4;
+        color: #0891b2;
+      }
+      .segments {
+        display: inline-flex;
+        flex-wrap: wrap;
+        gap: 4px;
+        border-radius: 999px;
+        padding: 4px;
+        background: var(--slate-100);
+      }
+      .segment {
+        min-height: 34px;
+        border: 0;
+        border-radius: 999px;
+        padding: 6px 14px;
+        background: transparent;
+        color: var(--slate-700);
+        font-size: 13px;
+        font-weight: 700;
+      }
+      .segment.is-active {
+        background: var(--white);
+        color: var(--magic-dark);
+      }
+      .switch {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        color: var(--slate-700);
+        font: 14px/1.4 var(--font-body);
+      }
+      .switch input {
+        appearance: none;
+        position: relative;
+        width: 64px;
+        height: 36px;
+        margin: 0;
+        border: 1px solid transparent;
+        border-radius: 999px;
+        background: #9e9fa1;
+        transition: background-color 100ms ease, border-color 100ms ease;
+      }
+      .switch input::after {
+        content: "";
+        position: absolute;
+        left: 4px;
+        top: 4px;
+        width: 26px;
+        height: 26px;
+        border-radius: 999px;
+        background: var(--white);
+        transition: transform 100ms ease;
+      }
+      .switch input:checked {
+        border-color: var(--magic-base);
+        background: var(--magic-button);
+      }
+      .switch input:checked::after { transform: translateX(28px); }
+      .selection-toolbar {
+        display: inline-flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 4px;
+        border: 1px solid var(--slate-200);
+        border-radius: var(--radius-md);
+        padding: 6px;
+        background: var(--white);
+      }
+      .chip-row { display: flex; flex-wrap: wrap; gap: 8px; }
+      .chip {
+        border: 0;
+        border-radius: 999px;
+        padding: 6px 12px;
+        background: var(--slate-100);
+        color: #475569;
+        font-size: 12px;
+        font-weight: 600;
+        transition: background-color 100ms ease, color 100ms ease;
+      }
+      .chip.is-active {
+        background: var(--slate-900);
+        color: var(--white);
+      }
+      .filter-group {
+        display: grid;
+        gap: 10px;
+      }
+      .filter-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 8px;
+      }
+      .filter-square {
+        aspect-ratio: 1;
+        border: 1px solid var(--slate-200);
+        border-radius: 16px;
+        padding: 8px;
+        background: var(--white);
+        color: var(--slate-700);
+        text-align: center;
+        font-size: 10px;
+        font-weight: 700;
+        line-height: 1.15;
+      }
+      .filter-square.is-active {
+        border-color: #2dd4bf;
+        background: #f0fdfa;
+        color: #0f766e;
+      }
+      .filter-thumb {
+        display: block;
+        width: 36px;
+        height: 36px;
+        margin: 0 auto 8px;
+        border-radius: 12px;
+        background: var(--slate-100);
+      }
+      .filter-square.is-active .filter-thumb { background: #99f6e4; }
+      .mobile-pill {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 4px;
+        min-height: 54px;
+        width: 272px;
+        max-width: 100%;
+        border: 1px solid var(--slate-200);
+        border-radius: 999px;
+        padding: 6px 8px;
+        background: rgba(255,255,255,0.95);
+      }
+      .mobile-pill .icon-button { border-radius: 999px; }
+      .context-menu {
+        position: absolute;
+        z-index: 5;
+        display: none;
+        width: 224px;
+        overflow: hidden;
+        border: 1px solid rgba(158,159,161,0.45);
+        border-radius: var(--radius-sm);
+        padding: 4px 0;
+        background: var(--white);
+      }
+      .context-menu.is-open { display: block; }
+      .context-menu-header {
+        border-bottom: 1px solid var(--slate-100);
+        padding: 12px 16px;
+      }
+      .context-menu button {
+        display: flex;
+        width: 100%;
+        align-items: center;
+        gap: 12px;
+        border: 0;
+        padding: 10px 16px;
+        background: transparent;
+        color: var(--slate-900);
+        text-align: left;
+        font-size: 14px;
+        transition: background-color 100ms ease, color 100ms ease;
+      }
+      .context-menu button svg { width: 16px; height: 16px; flex: none; }
+      .context-menu button:hover {
+        background: var(--slate-100);
+        color: var(--magic-button);
+      }
+      .shortcut {
+        margin-left: auto;
+        color: #94a3b8;
+        font-size: 12px;
+      }
+      .mobile-pill .icon-button svg { width: 20px; height: 20px; }
+      .feedback-demo {
+        display: grid;
+        gap: 14px;
+      }
+      .alert {
+        border-radius: var(--radius-sm);
+        padding: 12px 14px;
+        color: var(--magic-dark);
+        background: rgba(166, 225, 235, 0.36);
+        font: 14px/1.5 var(--font-body);
+      }
+      .progress {
+        overflow: hidden;
+        height: 8px;
+        border-radius: 999px;
+        background: var(--slate-200);
+      }
+      .progress span {
+        display: block;
+        width: 58%;
+        height: 100%;
+        border-radius: inherit;
+        background: var(--magic-button);
+      }
+      .snackbar {
+        position: fixed;
+        left: 50%;
+        bottom: 24px;
+        z-index: 40;
+        display: none;
+        align-items: center;
+        gap: 14px;
+        min-height: 48px;
+        transform: translateX(-50%);
+        border-radius: var(--radius-sm);
+        padding: 10px 14px;
+        background: var(--slate-950);
+        color: var(--white);
+        font: 14px/1.4 var(--font-body);
+      }
+      .snackbar.is-open { display: flex; }
+      .swatch-grid {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 10px;
+      }
+      .swatch { overflow: hidden; }
+      .swatch div:first-child { height: 64px; }
+      .swatch p { margin: 0; padding: 10px; font-size: 12px; font-weight: 700; }
+      .footer {
+        padding: 28px clamp(28px, 5vw, 64px);
+        color: var(--slate-500);
+        font: 13px/1.5 var(--font-body);
+      }
+      @media (max-width: 1180px) {
+        .page-shell { grid-template-columns: 236px minmax(0, 1fr); }
+        .doc-grid,
+        .section-header { grid-template-columns: 1fr; }
+      }
+      @media (max-width: 780px) {
+        .page-shell { display: block; }
+        .docs-nav {
+          position: static;
+          height: auto;
+          border-right: 0;
+          border-bottom: 1px solid var(--slate-200);
+        }
+        .nav-section {
+          display: flex;
+          overflow-x: auto;
+          gap: 6px;
+          padding: 10px 12px;
+        }
+        .nav-section:first-of-type { display: block; }
+        .docs-nav a { white-space: nowrap; }
+        .hero { padding: 38px 20px 34px; }
+        .section { padding: 36px 20px; }
+        .spec-grid,
+        .swatch-grid { grid-template-columns: 1fr; }
+        .workspace-demo {
+          grid-template-columns: 1fr;
+          min-height: 0;
+        }
+        .object-rail {
+          flex-direction: row;
+          overflow-x: auto;
+          border-right: 0;
+          border-bottom: 1px solid var(--slate-200);
+        }
+        .rail-button { min-width: 78px; }
+        .command-panel {
+          border-right: 0;
+          border-bottom: 1px solid var(--slate-200);
+        }
+        .hero-overlay {
+          inset: auto 0 0;
+          max-height: 90vh;
+          grid-template-columns: 1fr;
+          border-radius: 24px 24px 0 0;
+        }
+        .overlay-controls {
+          order: 2;
+          max-height: 52vh;
+          border-right: 0;
+          border-top: 1px solid var(--slate-200);
+          border-radius: 24px 24px 0 0;
+        }
+        .overlay-preview {
+          min-height: 38vh;
+          padding: 16px;
+        }
+        .preview-stage {
+          min-height: 260px;
+          padding: 0;
+        }
+        .image-action-card {
+          min-height: 72px;
+          padding: 12px;
+        }
+        .image-action-card strong {
+          margin-top: 0;
+        }
+        .image-action-card span {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page-shell">
+      <aside class="docs-nav" aria-label="Component documentation navigation">
+        <div class="brand">
+          <img src="./design-system-assets/icons/glowforge-icon.svg" alt="" />
+          <div>
+            <strong>Workspace Components</strong>
+            <span>Material-style guide for MUI-based Glowforge UX</span>
+          </div>
+        </div>
+        <nav class="nav-section">
+          <p class="nav-kicker">Components</p>
+          <a href="#overview">Overview</a>
+          <a href="#inventory">Component inventory</a>
+          <a href="#object-navigation">Object navigation</a>
+          <a href="#command-panel">Object command panel</a>
+          <a href="#hero-operation">Hero operation UI</a>
+          <a href="#bottom-sheet">Bottom sheet</a>
+          <a href="#buttons">Buttons and icon buttons</a>
+          <a href="#context-menu">Context menu</a>
+          <a href="#forms">Forms and controls</a>
+          <a href="#cards">Cards and command tiles</a>
+          <a href="#feedback">Feedback surfaces</a>
+          <a href="#tokens">UX spec tokens</a>
+        </nav>
+      </aside>
+
+      <main class="content">
+        <header class="hero" id="overview">
+          <p class="eyebrow">Design system documentation</p>
+          <h1>Material-style component guide for agents.</h1>
+          <p class="lead">Use this page like a local Material/MUI reference for the Glowforge workspace. It documents the implemented app first, then states the agent rule. If the code and a proposed rule disagree, inspect the React component before extending the pattern.</p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#object-navigation">Start with object navigation</a>
+            <a class="btn btn-secondary" href="https://github.com/gfbonny/workspace-redesign">App source</a>
+          </div>
+        </header>
+
+        <section class="section" id="inventory">
+          <div class="section-header">
+            <div>
+              <p class="eyebrow">Component index</p>
+              <h2>Predefined workspace components</h2>
+              <p class="body">Agents should choose from this set before inventing new UI. The MUI primitive column names the closest implementation base or composition.</p>
+            </div>
+            <div class="metadata">
+              <div class="metadata-row"><strong>Style model</strong><span>Material.io component documentation structure with Glowforge brand tokens.</span></div>
+              <div class="metadata-row"><strong>MUI model</strong><span>Theme-first components composed from Button, Drawer, Paper, Tabs, Slider, Chip, Dialog, Snackbar, and related primitives.</span></div>
+            </div>
+          </div>
+          <table class="component-table">
+            <thead><tr><th>Glowforge component</th><th>MUI primitive mapping</th><th>Workspace use</th></tr></thead>
+            <tbody>
+              <tr><td>Object navigation</td><td>NavigationRail pattern, Tabs, ButtonBase, Tooltip</td><td>Five object types in rail order: Text, Images, Shapes, Draw, Templates. Layout appears only when selection exists.</td></tr>
+              <tr><td>Object command panel</td><td>Drawer, Paper, List, Card, Button</td><td>Left panel commands for the active object type.</td></tr>
+              <tr><td>Hero operation UI</td><td>Dialog, Drawer, Modal, Paper, AppBar</td><td>Focused workspace for commands with preview, sub-options, or risk.</td></tr>
+              <tr><td>Bottom sheet</td><td>Drawer (anchor bottom), Paper</td><td>Mobile-only draggable container used by the object command panel and hero operation controls. Never used on desktop.</td></tr>
+              <tr><td>Context menu</td><td>Toolbar, IconButton, Menu, Tooltip</td><td>Mobile selection pill overflow and desktop right-click menu for selected objects.</td></tr>
+              <tr><td>Forms and controls</td><td>TextField, Slider, Switch, ToggleButtonGroup, Select</td><td>Precise values and modes for object properties.</td></tr>
+              <tr><td>Command tiles</td><td>Card, CardActionArea, Chip, ImageList</td><td>Visual command choices, templates, filters, shape previews.</td></tr>
+              <tr><td>Feedback surfaces</td><td>Snackbar, Alert, LinearProgress, Dialog</td><td>Status, progress, confirmation, and errors.</td></tr>
+            </tbody>
+          </table>
+          <div class="implemented-note" style="margin-top:16px;">Source-of-truth rule: before adding or changing a component, inspect the matching implementation in <code>src/components</code>. This guide should describe what the app does today, then identify desired agent rules separately. Do not add invented sizes, placements, or option styles.</div>
+        </section>
+
+        <section class="section" id="object-navigation">
+          <div class="section-header">
+            <div>
+              <p class="eyebrow">Navigation</p>
+              <h2>Object navigation</h2>
+              <p class="body">Object navigation chooses what kind of object the user is working with. The global object model has five authoring types, in rail order: Text, Images bitmap, Shapes ready-made or parameterized vectors, Draw freeform vector edits, and Templates ready-made designs that may or may not be parameterized.</p>
+            </div>
+            <div class="metadata">
+              <div class="metadata-row"><strong>Use when</strong><span>The user needs to switch between object authoring modes.</span></div>
+              <div class="metadata-row"><strong>Also in bar</strong><span>My Designs stays at the top and Ask is pinned to the bottom of the bar, separated by divider lines because they are global affordances, not object types.</span></div>
+              <div class="metadata-row"><strong>MUI</strong><span>ButtonBase items in a rail, with Tooltip on collapsed or icon-only variants.</span></div>
+            </div>
+          </div>
+
+          <div class="doc-grid">
+            <div class="demo-card card" data-demo-for="object-demo">
+              <div class="demo-header">
+                <strong>Interactive example</strong>
+                <div class="mode-controls" aria-label="Object navigation demo mode">
+                  <button class="mode-button is-active" type="button" data-mode-target="object-demo" data-mode="desktop">Desktop</button>
+                  <button class="mode-button" type="button" data-mode-target="object-demo" data-mode="mobile">Mobile</button>
+                </div>
+              </div>
+              <div class="workspace-demo" id="object-demo">
+                <nav class="object-rail" aria-label="Object navigation demo">
+                  <div class="rail-section">
+                    <button class="rail-button" type="button" data-object="my-designs" aria-pressed="false">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 7h6l2 2h10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+                      My Designs
+                    </button>
+                  </div>
+                  <div class="rail-divider"></div>
+                  <div class="rail-section">
+                    <button class="rail-button" type="button" data-object="text" aria-pressed="false">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 6h16"/><path d="M12 6v14"/><path d="M8 20h8"/></svg>
+                      Text
+                    </button>
+                    <button class="rail-button is-active" type="button" data-object="images" aria-pressed="true">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="4" y="5" width="16" height="14" rx="2"/><circle cx="9" cy="10" r="1.5"/><path d="m7 17 4-4 3 3 2-2 3 3"/></svg>
+                      Images
+                    </button>
+                    <button class="rail-button" type="button" data-object="shapes" aria-pressed="false">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 4 8 11h8z"/><rect x="4" y="14" width="6" height="6" rx="1"/><circle cx="17" cy="17" r="3"/></svg>
+                      Shapes
+                    </button>
+                    <button class="rail-button" type="button" data-object="draw" aria-pressed="false">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="m4 4 6 16 3-7 7-3z"/><path d="m12 12 4 4"/></svg>
+                      Draw
+                    </button>
+                    <button class="rail-button" type="button" data-object="templates" aria-pressed="false">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="4" y="4" width="6" height="6" rx="1.5"/><rect x="14" y="14" width="6" height="6" rx="1.5"/><path d="M10 7h4"/><path d="M17 10v4"/></svg>
+                      Templates
+                    </button>
+                  </div>
+                  <div class="rail-divider"></div>
+                  <div class="rail-section">
+                    <button class="rail-button" type="button" data-object="layout" aria-pressed="false">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 4v16"/><path d="M4 11h16"/></svg>
+                      Layout
+                    </button>
+                  </div>
+                  <div class="rail-section rail-bottom">
+                    <button class="rail-button" type="button" data-object="ask" aria-pressed="false">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z"/></svg>
+                      Ask
+                    </button>
+                  </div>
+                </nav>
+                <aside class="command-panel" aria-live="polite">
+                  <button type="button" class="mobile-grip" data-sheet-drag="left-panel" aria-label="Drag Images sheet" style="display:block;width:100%;height:24px;border:0;background:white;">
+                    <span style="display:inline-block;width:40px;height:6px;border-radius:999px;background:#d1d5db;"></span>
+                  </button>
+                  <div class="panel-title">
+                    <h3 id="panel-heading">Images</h3>
+                    <button class="icon-button" type="button" aria-label="Close panel">&times;</button>
+                  </div>
+                  <div class="command-list" id="command-list"></div>
+                </aside>
+                <div class="canvas-demo">
+                  <div class="bed">
+                    <div class="sample-object" id="sample-object">Image</div>
+                  </div>
+                </div>
+              </div>
+              <div class="demo-context">
+                <h4>Written context</h4>
+                <ul>
+                  <li>Use the object rail to switch the command panel to the active object type.</li>
+                  <li>Keep My Designs at the top and Ask pinned to the bottom of the rail as global affordances separated by divider lines.</li>
+                  <li>Show Layout in this navigation only when one or more canvas objects are selected (the demo shows it because a sample object is on the bed).</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="guidelines">
+              <div class="component-usage">
+                <h3 class="component-subhead">Usage</h3>
+                <ul>
+                  <li>Object navigation is the top level of the workspace. It holds the five authoring object types — Text, Images, Shapes, Draw, Templates — plus the global My Designs and Ask entries, and Layout while objects are selected. Every workspace command lives inside one of these.</li>
+                  <li>Agents should not add, remove, or reorder navigation items. A new command belongs inside the panel of the object type it operates on — never as a new rail entry.</li>
+                  <li>Clicking a navigation item opens that object type's command panel; clicking the active item again closes it.</li>
+                  <li>Layout appears in the rail only while one or more canvas objects are selected; it disappears (and its panel closes) when the selection empties.</li>
+                  <li>If a command does not clearly belong to one object type or to selected-object Layout, flag it for the user instead of guessing a home for it.</li>
+                </ul>
+              </div>
+              <div class="mode-spec">
+                <div class="mode-spec-header">
+                  <h3 class="component-subhead">Mobile/Desktop</h3>
+                  <div class="mode-controls" aria-label="Object navigation written mode">
+                    <button class="mode-button is-active" type="button" data-mode-target="object-demo" data-mode="desktop">Desktop</button>
+                    <button class="mode-button" type="button" data-mode-target="object-demo" data-mode="mobile">Mobile</button>
+                  </div>
+                </div>
+                <div class="mode-panel is-active" data-mode-panel="object-demo" data-mode="desktop">
+                  <div class="mode-subsection">
+                    <h4>Interactive example</h4>
+                    <ul>
+                      <li>The example below shows the desktop rail on the left, command panel next to it, and canvas to the right.</li>
+                      <li>Buttons use icon-over-label rail items and full-width active states.</li>
+                    </ul>
+                  </div>
+                  <div class="mode-subsection">
+                    <h4>Code snippets</h4>
+                    <pre class="code-sample is-active">LeftSidebar desktop:
+md:w-[128px] lg:w-[136px]
+md:relative md:h-auto md:border-r
+button: md:w-full rounded-2xl md:px-3 md:py-3.5
+LeftPanel desktop:
+md:w-[320px] md:h-full md:border-r</pre>
+                  </div>
+                  <div class="mode-subsection">
+                    <h4>Anatomy</h4>
+                    <ul>
+                      <li>Rail container width: 128px desktop and 136px large desktop.</li>
+                      <li>Rail item: 18px icon, 12px medium-weight (500) label, active fill, hover state, focus outline.</li>
+                      <li>Divider separates global affordances, object types, and contextual selection tools; Ask sits at the bottom of the rail.</li>
+                    </ul>
+                  </div>
+                  <div class="mode-subsection">
+                    <h4>Behaviors</h4>
+                    <ul>
+                      <li>Only one object type is active at a time.</li>
+                      <li>Clicking a rail item swaps command-panel content to that object type.</li>
+                      <li>Active fill uses <code>magic-light 45%</code>; hover uses a gray fill with cyan text; focus uses the 2px cyan outline.</li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="mode-panel" data-mode-panel="object-demo" data-mode="mobile">
+                  <div class="mode-subsection">
+                    <h4>Interactive example</h4>
+                    <ul>
+                      <li>The example below switches to the implemented mobile shape: bottom dock, pull-up command card, and canvas above.</li>
+                      <li>Drag the grip at the top of the card: it snaps near the middle, closes near the bottom, and otherwise stays where you release it.</li>
+                      <li>Object buttons are horizontally scrollable with 72px minimum item width.</li>
+                    </ul>
+                  </div>
+                  <div class="mode-subsection">
+                    <h4>Code snippets</h4>
+                    <pre class="code-sample is-active">LeftSidebar mobile:
+fixed body portal, h-[72px], top calc(100dvh - 72px)
+overflow-x-auto, min item width 72px
+LeftPanel mobile:
+initial sheetHeight 44vh
+drag clamp 18-88vh
+release: close when pointerUp clientY >= viewportHeight * 0.9
+release: snap to 50vh when abs(releaseHeight - 50) <= 12
+release: otherwise keep releaseHeight, clamped 22-88vh</pre>
+                  </div>
+                  <div class="mode-subsection">
+                    <h4>Anatomy</h4>
+                    <ul>
+                      <li>Dock is fixed at the bottom of the viewport at 72px height.</li>
+                      <li>Dock is portaled to the document body and sits at z-index 1000.</li>
+                      <li>Command panel opens as a pull-up card above the dock.</li>
+                    </ul>
+                  </div>
+                  <div class="mode-subsection">
+                    <h4>Behaviors</h4>
+                    <ul>
+                      <li>The mobile panel is a <a href="#bottom-sheet" style="text-decoration:underline;">Bottom sheet</a> (command-panel variant): it overlays the canvas above the 72px dock and follows the shared drag rules — snap to 50vh near the midpoint, close near the bottom, otherwise stay where released (22-88vh).</li>
+                      <li>Panel starts at 44vh; dragging is clamped to 18-88vh.</li>
+                      <li>Tapping a dock item reopens a closed panel.</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="section" id="command-panel">
+          <div class="section-header">
+            <div>
+              <p class="eyebrow">Side sheets</p>
+              <h2>Object command panel</h2>
+              <p class="body">The command panel answers, "What can I do to this object type now?" It stays object-specific: creation/import at the top, selected-object actions when a matching object is selected, and subviews or hero UI for deeper operations.</p>
+            </div>
+            <div class="metadata">
+              <div class="metadata-row"><strong>Use when</strong><span>The active object type needs creation, selected-object commands, browse/search, or compact properties.</span></div>
+              <div class="metadata-row"><strong>MUI</strong><span>Drawer plus Paper, List, CardActionArea, Button, TextField, Divider.</span></div>
+            </div>
+          </div>
+          <div class="doc-grid">
+            <div class="demo-card card" data-demo-for="panel-demo">
+              <div class="demo-header">
+                <strong>Interactive example</strong>
+                <div class="mode-controls" aria-label="Object command panel demo mode">
+                  <button class="mode-button is-active" type="button" data-mode-target="panel-demo" data-mode="desktop">Desktop</button>
+                  <button class="mode-button" type="button" data-mode-target="panel-demo" data-mode="mobile">Mobile</button>
+                </div>
+              </div>
+              <div class="demo-stage">
+                <div class="panel-demo-shell" id="panel-demo">
+                <aside class="command-panel card">
+                  <button type="button" class="mobile-grip" data-sheet-drag="left-panel" aria-label="Drag Images sheet" style="display:block;width:100%;height:24px;border:0;background:white;">
+                    <span style="display:inline-block;width:40px;height:6px;border-radius:999px;background:#d1d5db;"></span>
+                  </button>
+                  <div class="panel-title">
+                    <h3>Images</h3>
+                    <button class="icon-button" type="button" aria-label="Close panel">&times;</button>
+                  </div>
+                  <div class="command-list" style="gap:18px;">
+                    <button class="btn btn-primary" type="button" style="width:100%;justify-content:flex-start;">Create</button>
+                    <section style="display:grid;gap:12px;">
+                      <div>
+                        <p class="panel-section-label">Selected image actions</p>
+                        <div style="margin-top:10px;border-top:1px solid var(--slate-200);"></div>
+                      </div>
+                      <div class="image-actions-grid">
+                        <button class="image-action-card" type="button"><span class="tile-icon">Tr</span><strong>Trace outline</strong><span>Create a clean cut path</span></button>
+                        <button class="image-action-card" type="button" data-open-overlay><span class="tile-icon">Tu</span><strong>Tune</strong><span>Adjust light and style effects</span></button>
+                        <button class="image-action-card" type="button"><span class="tile-icon">Di</span><strong>Dithering</strong><span>Create engravable dot patterns</span></button>
+                        <button class="image-action-card" type="button"><span class="tile-icon">Rb</span><strong>Remove background</strong><span>Cut out the subject</span></button>
+                        <button class="image-action-card" type="button"><span class="tile-icon">Me</span><strong>Magic Erase</strong><span>Remove unwanted image parts</span></button>
+                        <button class="image-action-card" type="button"><span class="tile-icon">Gt</span><strong>Grab Text</strong><span>Pull text from images</span></button>
+                      </div>
+                    </section>
+                  </div>
+                </aside>
+                <div class="panel-demo-canvas">
+                  <div class="bed">
+                    <div class="sample-object">Image</div>
+                  </div>
+                </div>
+                <nav class="mobile-dock-demo" aria-label="Mobile bottom dock example">
+                  <button class="rail-button" type="button">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 7h6l2 2h10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+                    My Designs
+                  </button>
+                  <button class="rail-button" type="button">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 6h16"/><path d="M12 6v14"/><path d="M8 20h8"/></svg>
+                    Text
+                  </button>
+                  <button class="rail-button is-active" type="button">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="4" y="5" width="16" height="14" rx="2"/><circle cx="9" cy="10" r="1.5"/><path d="m7 17 4-4 3 3 2-2 3 3"/></svg>
+                    Images
+                  </button>
+                  <button class="rail-button" type="button">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 4 8 11h8z"/><rect x="4" y="14" width="6" height="6" rx="1"/><circle cx="17" cy="17" r="3"/></svg>
+                    Shapes
+                  </button>
+                  <button class="rail-button" type="button">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="m4 4 6 16 3-7 7-3z"/><path d="m12 12 4 4"/></svg>
+                    Draw
+                  </button>
+                  <button class="rail-button" type="button">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="4" y="4" width="6" height="6" rx="1.5"/><rect x="14" y="14" width="6" height="6" rx="1.5"/><path d="M10 7h4"/><path d="M17 10v4"/></svg>
+                    Templates
+                  </button>
+                </nav>
+                </div>
+              </div>
+              <div class="demo-context">
+                <h4>Written context</h4>
+                <ul>
+                  <li>The image panel example uses the implemented full-width Create action and selected-image command grid.</li>
+                  <li>The same selector changes the visual example and the written desktop/mobile guidance below.</li>
+                  <li>Do not place broad option browsing in a cramped panel; promote it to a hero operation UI.</li>
+                </ul>
+              </div>
+            </div>
+            <div class="guidelines">
+              <div class="component-usage">
+                <h3 class="component-subhead">Usage</h3>
+                <ul>
+                  <li>Use for object-specific commands only.</li>
+                  <li>Show creation/import at the top of the active object panel.</li>
+                  <li>Show selected-object actions only when the active or selected object matches that panel type.</li>
+                  <li>Keep immediate or compact commands in the panel.</li>
+                  <li>Open hero operation UI for extensive tweaking, async work, large option sets, preview-heavy choices, or See All browsing.</li>
+                </ul>
+              </div>
+              <div class="component-usage">
+                <h3 class="component-subhead">When the panel shows and hides</h3>
+                <ul>
+                  <li><strong>Initial state:</strong> on desktop the workspace opens with the Shapes panel already open; on mobile it opens with the panel closed and only the bottom dock visible.</li>
+                  <li><strong>Opening:</strong> the panel opens when the user clicks a rail or dock item, when they choose Edit on the selection pill or context menu (which opens the matching object-type panel directly in that object's edit tools), or when they choose Layout from the pill or menu.</li>
+                  <li><strong>Selection never toggles the panel.</strong> Selecting an object, switching the selection to a different object, or clicking empty canvas to deselect all leave the currently open panel exactly as it is. Panel content may adapt to the selection (for example, selected-image actions appear), but the panel itself does not open, close, or switch type.</li>
+                  <li><strong>Opening a panel with a matching selection:</strong> clicking a rail item while an object of that type is selected opens the panel directly in that object's edit tools.</li>
+                  <li><strong>Closing:</strong> the panel closes only via its close button, by clicking the active rail item a second time, or when a global overlay such as My Designs opens. Exception: the Layout panel also closes automatically when the selection becomes empty.</li>
+                </ul>
+              </div>
+              <div class="mode-spec">
+                <div class="mode-spec-header">
+                  <h3 class="component-subhead">Mobile/Desktop</h3>
+                  <div class="mode-controls" aria-label="Object command panel written mode">
+                    <button class="mode-button is-active" type="button" data-mode-target="panel-demo" data-mode="desktop">Desktop</button>
+                    <button class="mode-button" type="button" data-mode-target="panel-demo" data-mode="mobile">Mobile</button>
+                  </div>
+                </div>
+                <div class="mode-panel is-active" data-mode-panel="panel-demo" data-mode="desktop">
+                  <div class="mode-subsection">
+                    <h4>Interactive example</h4>
+                    <ul>
+                      <li>The example below shows the desktop command panel as a fixed-width left side sheet.</li>
+                      <li>The canvas remains visible beside the panel so selection context is preserved.</li>
+                    </ul>
+                  </div>
+                  <div class="mode-subsection">
+                    <h4>Code snippets</h4>
+                    <pre class="code-sample is-active">LeftPanel desktop:
+desktopWidthClassName = md:w-[320px]
+md:relative md:bottom-0 md:h-full
+md:border-r md:border-t-0
+md:rounded-none
+(shadow classes in code are suppressed globally; the panel renders flat)</pre>
+                  </div>
+                  <div class="mode-subsection">
+                    <h4>Anatomy</h4>
+                    <ul>
+                      <li>Panel width is 320px.</li>
+                      <li>Header height is 56px with the panel title and a close button; there is no descriptive copy line.</li>
+                      <li>Body is scrollable with 16px padding, section label, divider, and two-column action cards.</li>
+                    </ul>
+                  </div>
+                  <div class="mode-subsection">
+                    <h4>Behaviors</h4>
+                    <ul>
+                      <li>Desktop opens with the Shapes panel by default.</li>
+                      <li>Panel stays open while editing properties, navigating panel subviews, selecting objects, switching selection, or clicking empty canvas — selection changes never open or close it.</li>
+                      <li>After an object is added, keep users in object context and show selected actions when applicable.</li>
+                      <li>Panel closes via its close button, by clicking the active rail item again, or when a global overlay opens; the Layout panel also closes when selection empties.</li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="mode-panel" data-mode-panel="panel-demo" data-mode="mobile">
+                  <div class="mode-subsection">
+                    <h4>Interactive example</h4>
+                    <ul>
+                      <li>The example below shows the object command panel as a pull-up card over the canvas.</li>
+                      <li>Drag the grip to feel the bands: snap near the middle, close near the bottom, stay-put anywhere else.</li>
+                      <li>The bottom object dock remains visible below the sheet.</li>
+                    </ul>
+                  </div>
+                  <div class="mode-subsection">
+                    <h4>Code snippets</h4>
+                    <pre class="code-sample is-active">LeftPanel mobile:
+initial sheetHeight = 44vh
+position fixed, top calc(100dvh - 72px - sheetHeight)
+bottom dock offset = 72px
+drag clamp = 18-88vh
+snap to 50vh if abs(releaseHeight - 50) <= 12
+close if pointerUp clientY >= viewportHeight * 0.9</pre>
+                  </div>
+                  <div class="mode-subsection">
+                    <h4>Anatomy</h4>
+                    <ul>
+                      <li>Sheet has a drag grip and 28px rounded top corners; surfaces render flat (no shadow).</li>
+                      <li>Sheet sits above the 72px bottom dock.</li>
+                      <li>Action cards remain two columns; descriptions are hidden on small widths.</li>
+                    </ul>
+                  </div>
+                  <div class="mode-subsection">
+                    <h4>Behaviors</h4>
+                    <ul>
+                      <li>The mobile panel is a <a href="#bottom-sheet" style="text-decoration:underline;">Bottom sheet</a> (command-panel variant): 44vh initial, 18-88vh drag clamp, anchored above the 72px dock, shared snap/close/stay release rules.</li>
+                      <li>Mobile opens with the sheet closed; tapping a dock item opens it.</li>
+                      <li>Selection changes never open or close the sheet — selecting, switching, or deselecting objects leaves it as it is.</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="section" id="hero-operation">
+          <div class="section-header">
+            <div>
+              <p class="eyebrow">Focused surfaces</p>
+              <h2>Hero operation UI</h2>
+              <p class="body">Hero operation UI is for object work that needs enough room to make decisions: a large preview, a large option set, multi-step generation, compare/review states, or extensive tuning. It follows the implemented `ImageCommandOverlay`: controls are a left sheet on desktop, preview is the large right-side stage, and mobile turns the controls into a draggable bottom sheet over the preview.</p>
+            </div>
+            <div class="metadata">
+              <div class="metadata-row"><strong>Use when</strong><span>The command cannot be comfortably completed as a single panel action because the user must browse, compare, preview, tune, generate, or review before committing.</span></div>
+              <div class="metadata-row"><strong>MUI</strong><span>Dialog or Drawer with Paper, AppBar, Slider, Tabs, Button, LinearProgress.</span></div>
+            </div>
+          </div>
+          <div class="doc-grid">
+            <div class="demo-card card" data-demo-for="hero-demo">
+              <div class="demo-header">
+                <strong>Interactive example</strong>
+                <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+                  <div class="mode-controls" aria-label="Hero operation demo mode">
+                    <button class="mode-button is-active" type="button" data-mode-target="hero-demo" data-mode="desktop">Desktop</button>
+                    <button class="mode-button" type="button" data-mode-target="hero-demo" data-mode="mobile">Mobile</button>
+                  </div>
+                  <button class="btn btn-primary" type="button" data-open-overlay>Open hero</button>
+                </div>
+              </div>
+              <div class="demo-stage">
+                <div class="hero-demo-shell" id="hero-demo">
+                  <aside class="overlay-controls">
+                    <button type="button" class="hero-mobile-grip" data-sheet-drag="hero" aria-label="Drag Create sheet"><span></span></button>
+                    <div class="overlay-top">
+                      <div>
+                        <h3>Create</h3>
+                        <p class="body">Describe your image</p>
+                      </div>
+                      <button class="icon-button" type="button" aria-label="Close create">X</button>
+                    </div>
+                    <div class="overlay-body">
+                      <div class="tabs" role="tablist" aria-label="Create image views">
+                        <button class="tab is-active" type="button" data-create-tab="new">New</button>
+                        <button class="tab" type="button" data-create-tab="recent">Recent Designs</button>
+                      </div>
+                      <div class="overlay-pane is-active" data-create-pane="new">
+                        <section style="display:grid;gap:12px;">
+                          <textarea aria-label="Describe what you want" style="min-height:112px;width:100%;resize:none;border:1px solid var(--slate-200);border-radius:16px;padding:14px;color:var(--slate-900);" placeholder="Suspenseful turtle race on a mossy log"></textarea>
+                          <button class="btn btn-primary" type="button" style="width:100%;min-height:48px;">Make Magic!</button>
+                        </section>
+                        <section style="display:grid;gap:12px;">
+                          <div class="chip-row" data-style-filters>
+                            <button class="chip is-active" type="button" data-style-category="all">All Styles</button>
+                            <button class="chip" type="button" data-style-category="engraving">Great for Engraving</button>
+                            <button class="chip" type="button" data-style-category="artsy">Artsy</button>
+                            <button class="chip" type="button" data-style-category="branding">Stylish Branding</button>
+                            <button class="chip" type="button" data-style-category="kids">Fun for Kids</button>
+                            <button class="chip" type="button" data-style-category="bold">Bold Graphics</button>
+                            <button class="chip" type="button" data-style-category="cutting">Great for Cutting</button>
+                          </div>
+                          <div class="style-card-grid" data-style-grid>
+                            <button class="style-card is-selected" type="button" data-style-card data-category="engraving" aria-label="Choose for me!"><span class="style-card-badge">NEW</span><div class="style-card-preview is-teal">✦</div><div class="style-card-copy"><strong>Choose for me!</strong><span>Custom to your prompt</span></div></button>
+                            <button class="style-card" type="button" data-reference-card aria-label="Use a reference image"><div class="style-card-preview">↑</div><div class="style-card-copy"><strong>Use a reference image</strong><span>Start from an uploaded image</span></div></button>
+                            <button class="style-card" type="button" data-style-card data-category="branding" aria-label="Benjamin"><div class="style-card-preview">100</div><div class="style-card-copy"><strong>Benjamin</strong><span>Engrave</span></div></button>
+                            <button class="style-card" type="button" data-style-card data-category="engraving" aria-label="Holiday Lights"><span class="style-card-badge">NEW</span><div class="style-card-preview">◌</div><div class="style-card-copy"><strong>Holiday Lights</strong><span>Engrave</span></div></button>
+                            <button class="style-card" type="button" data-style-card data-category="engraving" aria-label="Linocut"><span class="style-card-badge">NEW</span><div class="style-card-preview">◧</div><div class="style-card-copy"><strong>Linocut</strong><span>Engrave</span></div></button>
+                            <button class="style-card" type="button" data-style-card data-category="engraving" aria-label="Botanical Engraving"><div class="style-card-preview">❀</div><div class="style-card-copy"><strong>Botanical Engraving</strong><span>Engrave</span></div></button>
+                            <button class="style-card" type="button" data-style-card data-category="cutting" aria-label="Ribbon"><div class="style-card-preview">𝓢</div><div class="style-card-copy"><strong>Ribbon</strong><span>Cut, Score, Engrave</span></div></button>
+                            <button class="style-card" type="button" data-style-card data-category="kids" aria-label="Kawaii"><div class="style-card-preview">⌂</div><div class="style-card-copy"><strong>Kawaii</strong><span>Cut, Score, Engrave</span></div></button>
+                            <button class="style-card" type="button" data-style-card data-category="bold" aria-label="T-Shirt"><div class="style-card-preview">LOVE</div><div class="style-card-copy"><strong>T-Shirt</strong><span>Cut, Score, Engrave</span></div></button>
+                            <button class="style-card" type="button" data-style-card data-category="artsy" aria-label="Watercolor"><div class="style-card-preview">◓</div><div class="style-card-copy"><strong>Watercolor</strong><span>Engrave</span></div></button>
+                          </div>
+                        </section>
+                      </div>
+                      <div class="overlay-pane" data-create-pane="recent">
+                        <div class="recent-design-grid">
+                          <button class="recent-design-card is-selected" type="button"><div class="recent-design-preview"><img class="selected-preview-image" src="./demo-photo.jpg" alt="Autumn Leaf Border preview" /></div><div class="recent-design-copy"><strong>Decorative border with layered leaves and acorns</strong><span>Autumn Leaf Border</span></div></button>
+                          <button class="recent-design-card" type="button"><div class="recent-design-preview">☾</div><div class="recent-design-copy"><strong>Moon and stars crest with engraving-friendly outlines</strong><span>Celestial Crest</span></div></button>
+                          <button class="recent-design-card" type="button"><div class="recent-design-preview">✿</div><div class="recent-design-copy"><strong>Elegant floral corners for a wedding sign</strong><span>Floral Corner Set</span></div></button>
+                        </div>
+                      </div>
+                    </div>
+                  </aside>
+                  <div class="overlay-preview">
+                    <div class="preview-stage">
+                      <img class="selected-preview-image" src="./demo-photo.jpg" alt="Selected image preview" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="demo-context">
+                <h4>Written context</h4>
+                <ul>
+                  <li>Use the hero surface when an object command needs room for inputs, tabs, preview, generation, or review.</li>
+                  <li>Use internal tabs when one operation contains meaningfully different command sets under the same goal.</li>
+                  <li>The desktop/mobile selector changes both the example layout and the implementation guidance below.</li>
+                </ul>
+              </div>
+            </div>
+            <div class="guidelines">
+              <div class="component-usage">
+                <h3 class="component-subhead">Usage</h3>
+                <ul>
+                  <li><strong>The test:</strong> a command earns hero UI when the user has to see and judge a result before committing. If the result needs a big preview, a set of options to compare, or a wait, it is a hero operation. If the result lands on the canvas instantly and needs no review, it is a panel command.</li>
+                  <li><strong>Big preview to judge:</strong> Tune shows the filter applied to the whole photo before the user accepts it; Dithering needs the dot pattern shown at size; Remove background needs the user to check the mask against the subject.</li>
+                  <li><strong>Many options to compare:</strong> Create shows a grid of style cards (Linocut, Watercolor, Kawaii...) next to the prompt — the user compares before generating. A cramped panel cannot host that comparison.</li>
+                  <li><strong>Waiting on generation:</strong> "Make Magic!" runs async image generation; the hero preview is where progress and the finished result appear for review.</li>
+                  <li><strong>Stays in the panel:</strong> one-tap commands with immediate, obvious results — Add text, inserting a Circle, Smart Fit. No preview, no options, no wait: no hero UI.</li>
+                  <li><strong>Internal tabs</strong> are for peer paths to the same goal: Create has "New" (generate from a prompt) and "Recent Designs" (reuse an earlier result) — two ways to get an image. Do not use tabs to bundle unrelated commands into one hero surface.</li>
+                </ul>
+              </div>
+              <div class="component-usage">
+                <h3 class="component-subhead">Hero mode behavior</h3>
+                <ul>
+                  <li><strong>Object navigation is hidden while hero UI is open.</strong> On mobile the bottom dock is removed (<code>ImagePanel</code> focus mode → <code>hideMobileDock</code>); on desktop the full-viewport overlay covers the rail. The user finishes or exits the operation before switching object types.</li>
+                  <li><strong>The X button always exits.</strong> Every hero surface has a close button in its controls header that exits without applying; Escape and, on desktop, clicking the scrim do the same.</li>
+                </ul>
+              </div>
+              <div class="mode-spec">
+                <div class="mode-spec-header">
+                  <h3 class="component-subhead">Mobile/Desktop</h3>
+                  <div class="mode-controls" aria-label="Hero operation written mode">
+                    <button class="mode-button is-active" type="button" data-mode-target="hero-demo" data-mode="desktop">Desktop</button>
+                    <button class="mode-button" type="button" data-mode-target="hero-demo" data-mode="mobile">Mobile</button>
+                  </div>
+                </div>
+                <div class="mode-panel is-active" data-mode-panel="hero-demo" data-mode="desktop">
+                  <div class="mode-subsection">
+                    <h4>Interactive example</h4>
+                    <ul>
+                      <li>The example below shows desktop controls on the left and a large preview stage on the right.</li>
+                      <li>The Create example includes internal New and Recent Designs tabs.</li>
+                      <li>Style tags filter the visible style-card button collection.</li>
+                    </ul>
+                  </div>
+                  <div class="mode-subsection">
+                    <h4>Code snippets</h4>
+                    <pre class="code-sample is-active">ImageCommandOverlay desktop:
+fixed inset-0 md:z-[80] md:bg-slate-950/20
+inner shell: md:p-6, md:max-w-[1560px], md:max-h-[880px]
+layout: md:flex-row
+controls: md:w-[340px] default; md:w-[420px] in the Create image overlay
+preview: flex-1, single selected image with object-fit: contain</pre>
+                  </div>
+                  <div class="mode-subsection">
+                    <h4>Anatomy</h4>
+                    <ul>
+                      <li>Full viewport overlay with 24px padding.</li>
+                      <li>Shell max width is 1560px, max height is 880px, and radius is 32px.</li>
+                      <li>Control sheet is 340px wide by default and 420px in the Create image overlay, with title, description, close button, tabs, scrollable controls, and optional footer.</li>
+                      <li>Preview stage fills remaining width and contains one selected image fitted with preserved aspect ratio.</li>
+                    </ul>
+                  </div>
+                  <div class="mode-subsection">
+                    <h4>Behaviors</h4>
+                    <ul>
+                      <li>Opening preserves canvas selection.</li>
+                      <li>Escape closes the overlay.</li>
+                      <li>Clicking the scrim closes; clicking inside controls or preview does not.</li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="mode-panel" data-mode-panel="hero-demo" data-mode="mobile">
+                  <div class="mode-subsection">
+                    <h4>Interactive example</h4>
+                    <ul>
+                      <li>The example below switches controls to a bottom sheet over the preview.</li>
+                      <li>The same internal tabs remain inside the sheet.</li>
+                      <li>Dragging the handle changes sheet height before Code snippets, Anatomy, and Behaviors.</li>
+                    </ul>
+                  </div>
+                  <div class="mode-subsection">
+                    <h4>Code snippets</h4>
+                    <pre class="code-sample is-active">ImageCommandOverlay mobile:
+viewport switch: window.innerWidth < 1120
+default sheet: 48vh
+expanded sheet: 88vh
+drag clamp: 8-92vh
+snap: 50vh when abs(releaseHeight - 50) <= 12
+released height clamp: 22-88vh
+close: releaseFromBottom <= viewportHeight * 0.1</pre>
+                  </div>
+                  <div class="mode-subsection">
+                    <h4>Anatomy</h4>
+                    <ul>
+                      <li>Controls become a fixed bottom sheet.</li>
+                      <li>Default sheet height is 48vh; expanded sheet height is 88vh.</li>
+                      <li>Preview remains behind the sheet and is not replaced by a separate mobile page.</li>
+                    </ul>
+                  </div>
+                  <div class="mode-subsection">
+                    <h4>Behaviors</h4>
+                    <ul>
+                      <li>The mobile controls are a <a href="#bottom-sheet" style="text-decoration:underline;">Bottom sheet</a> (hero variant): anchored to the screen bottom with an 8-92vh drag clamp and the shared snap/close/stay release rules.</li>
+                      <li>Release near the bottom closes the overlay; reopening requires re-running the command.</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="section" id="bottom-sheet">
+          <div class="section-header">
+            <div>
+              <p class="eyebrow">Mobile chrome</p>
+              <h2>Bottom sheet</h2>
+              <p class="body">The bottom sheet is the single mobile-only container for workspace controls. The object command panel and the hero operation controls both become bottom sheets on mobile — same grip, same drag physics, same release rules. It overlays the canvas or preview rather than reflowing it, and it is never used on desktop.</p>
+            </div>
+            <div class="metadata">
+              <div class="metadata-row"><strong>Source</strong><span><code>LeftPanel.tsx</code> (command panel sheet) and <code>ImageCommandOverlay.tsx</code> (hero sheet).</span></div>
+              <div class="metadata-row"><strong>MUI</strong><span>Drawer with bottom anchor, Paper.</span></div>
+              <div class="metadata-row"><strong>Try it</strong><span>Drag the grips in the <a href="#object-navigation" style="text-decoration:underline;">object navigation</a>, <a href="#command-panel" style="text-decoration:underline;">command panel</a>, and <a href="#hero-operation" style="text-decoration:underline;">hero operation</a> mobile examples.</span></div>
+            </div>
+          </div>
+          <div class="doc-grid">
+            <div class="guidelines" style="order:1;">
+              <div class="component-usage">
+                <h3 class="component-subhead">Shared behaviors (both sheets)</h3>
+                <ul>
+                  <li>The grip is the only drag handle: a 24px-tall touch target (<code>touch-action: none</code>) with a small rounded bar, pinned at the top of the sheet.</li>
+                  <li>The sheet is <code>position: fixed</code> and overlays the canvas or preview — dragging it taller covers the content behind it; it never pushes layout around, and closing it never resizes the dock.</li>
+                  <li>While the sheet is open, the content behind it re-centers in the remaining visible space: the selected object — or the bed when nothing is selected — fills the area above the sheet. The canvas applies a bottom inset equal to the sheet height (<code>Canvas.tsx</code>), and the hero preview gets <code>paddingBottom</code> equal to the sheet height (<code>ImageCommandOverlay.tsx</code>).</li>
+                  <li>Release rules, evaluated in order: <strong>close</strong> if released in the bottom 10% of the viewport; <strong>snap to 50vh</strong> if released within 12vh of the midpoint; otherwise <strong>stay at the released height</strong>, clamped to 22–88vh.</li>
+                  <li>Height transitions animate at 300ms ease-in-out when the sheet opens or closes.</li>
+                </ul>
+              </div>
+              <div class="component-usage">
+                <h3 class="component-subhead">Per-surface specs</h3>
+                <table class="component-table">
+                  <thead><tr><th>Spec</th><th>Command panel sheet</th><th>Hero sheet</th></tr></thead>
+                  <tbody>
+                    <tr><td>Mobile breakpoint</td><td><code>window.innerWidth &lt; 768</code></td><td><code>window.innerWidth &lt; 1120</code></td></tr>
+                    <tr><td>Anchored to</td><td>Top of the 72px bottom dock</td><td>Bottom of the screen (no dock)</td></tr>
+                    <tr><td>Initial height</td><td>44vh</td><td>48vh (88vh when opened expanded)</td></tr>
+                    <tr><td>Drag clamp while dragging</td><td>18–88vh</td><td>8–92vh</td></tr>
+                    <tr><td>Max height</td><td><code>calc(100% - 88px)</code></td><td>none</td></tr>
+                    <tr><td>Top corner radius</td><td>28px</td><td>24px</td></tr>
+                    <tr><td>Grip bar</td><td>40 x 6px, gray-300</td><td>36 x 4px, slate-300</td></tr>
+                    <tr><td>Reopen after close</td><td>Tap a dock item</td><td>Re-run the command</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="component-usage">
+                <h3 class="component-subhead">Agent rules</h3>
+                <ul>
+                  <li>Never render a bottom sheet on desktop; desktop uses the fixed side panel or the hero overlay's left controls column instead.</li>
+                  <li>Never invent new drag thresholds, snap points, or close bands — any new mobile surface that needs a sheet must reuse these exact behaviors.</li>
+                  <li>Pick the variant by anchor: panels that coexist with the dock use the command-panel numbers; full-screen operations use the hero numbers.</li>
+                </ul>
+              </div>
+              <div class="mode-subsection">
+                <h4>Code snippets</h4>
+                <pre class="code-sample is-active">Command panel sheet (LeftPanel.tsx):
+position fixed, top calc(100dvh - 72px - sheetHeight dvh)
+height sheetHeight dvh, max-h calc(100% - 88px)
+rounded-t-[28px] border-t z-40
+drag clamp: Math.max(18, Math.min(88, ...)) with 72px dock offset
+release: close if clientY >= viewportHeight * 0.9
+release: snap 50 if abs(releaseHeight - 50) <= 12
+release: else clamp 22-88
+
+Hero sheet (ImageCommandOverlay.tsx):
+position fixed, top calc(100dvh - sheetHeight dvh)
+height sheetHeight dvh, z-60, rounded-t-[24px] border-t
+drag clamp: Math.max(8, Math.min(92, ...)), no dock offset
+release: close if (viewportHeight - clientY) <= viewportHeight * 0.1
+release: snap 50 if abs(releaseHeight - 50) <= 12
+release: else clamp 22-88</pre>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="section" id="buttons">
+          <div class="section-header">
+            <div>
+              <p class="eyebrow">Inputs</p>
+              <h2>Buttons and icon buttons</h2>
+              <p class="body">Buttons communicate actions. Icon buttons are for compact, repeated tools with familiar symbols and accessible labels.</p>
+            </div>
+            <div class="metadata">
+              <div class="metadata-row"><strong>MUI</strong><span>Button, LoadingButton, IconButton, ButtonGroup, Tooltip.</span></div>
+              <div class="metadata-row"><strong>Variants</strong><span>In use: <code>gf-button-primary</code> (filled teal), <code>gf-button-secondary</code> (white with teal border), <code>gf-button-danger</code> (red). There are no tonal or text variants. A <code>gf-button-premium</code> (sunburst yellow) class exists in <code>index.css</code> but is not used anywhere — do not introduce it without a product decision.</span></div>
+            </div>
+          </div>
+          <div class="doc-grid">
+            <div class="demo-card card" data-demo-for="buttons-demo">
+              <div class="demo-header"><strong>States and variants</strong><span class="body">Hover and focus enabled</span></div>
+              <div class="demo-stage" id="buttons-demo" style="display:grid;gap:18px;">
+                <div class="chip-row">
+                  <button class="btn btn-primary" type="button">Print</button>
+                  <button class="btn btn-secondary" type="button">Preview</button>
+                  <button class="btn btn-danger" type="button">Delete</button>
+                </div>
+                <div class="selection-toolbar" aria-label="Icon button examples">
+                  <button class="icon-button" type="button" aria-label="Undo">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7v6h6"/><path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13"/></svg>
+                  </button>
+                  <button class="icon-button" type="button" aria-label="Redo">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 7v6h-6"/><path d="M3 17a9 9 0 0 1 9-9 9 9 0 0 1 6 2.3L21 13"/></svg>
+                  </button>
+                  <button class="icon-button" type="button" aria-label="Duplicate">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+                  </button>
+                  <button class="icon-button" type="button" aria-label="Delete">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/></svg>
+                  </button>
+                </div>
+              </div>
+              <div class="demo-context">
+                <h4>Written context</h4>
+                <ul>
+                  <li>Use one primary action per surface.</li>
+                  <li>Use icon buttons for compact canvas tools with familiar symbols and accessible labels.</li>
+                </ul>
+              </div>
+            </div>
+            <div class="guidelines">
+              <div class="component-usage"><h3 class="component-subhead">When to use which color</h3><ul><li><strong>Primary (filled teal):</strong> the single main action of a surface — Print, Create, Add text, Apply. One per surface.</li><li><strong>Secondary (white with teal border):</strong> every other non-destructive action — Preview, Cancel, alternatives next to a primary.</li><li><strong>Danger (filled red):</strong> destructive actions only, such as removing an applied filter or deleting work. Always use a clear label (never icon-only) and confirm when the action is irreversible.</li><li>Do not introduce other button colors; the unused sunburst premium style stays out of the UI until a product decision says otherwise.</li></ul></div>
+              <div class="mode-spec">
+                <div class="mode-spec-header"><h3 class="component-subhead">Mobile/Desktop</h3><div class="mode-controls" aria-label="Button written mode"><button class="mode-button is-active" type="button" data-mode-target="buttons-demo" data-mode="desktop">Desktop</button><button class="mode-button" type="button" data-mode-target="buttons-demo" data-mode="mobile">Mobile</button></div></div>
+                <div class="mode-panel is-active" data-mode-panel="buttons-demo" data-mode="desktop">
+                  <div class="mode-subsection"><h4>Interactive example</h4><ul><li>The example below shows the implemented button variants and 40px icon button rhythm.</li></ul></div>
+                  <div class="mode-subsection"><h4>Code snippets</h4><pre class="code-sample is-active">Button (.gf-button-*):
+min-height 40px
+radius 999px (pill)
+border 2px solid
+padding 8px 20px
+gap 8px
+transition 100ms (colors only)
+
+IconButton (.gf-icon-button):
+radius 4px, sized by context (40px in toolbars)
+aria-label required</pre></div>
+                  <div class="mode-subsection"><h4>Anatomy</h4><ul><li>Container with 2px border, label, optional icon, focus outline, optional loading indicator.</li><li>Icon-only controls require an aria-label and production tooltip.</li></ul></div>
+                  <div class="mode-subsection"><h4>Behaviors</h4><ul><li>Desktop can use inline button groups.</li><li>Loading disables repeat submission.</li><li>Hover changes fill and border color only — buttons never lift or cast shadows; focus uses the 2px cyan outline.</li></ul></div>
+                </div>
+                <div class="mode-panel" data-mode-panel="buttons-demo" data-mode="mobile">
+                  <div class="mode-subsection"><h4>Interactive example</h4><ul><li>The same button examples apply in mobile sheets, but primary actions become full width.</li></ul></div>
+                  <div class="mode-subsection"><h4>Code snippets</h4><pre class="code-sample is-active">Mobile actions:
+primary width 100%
+min-height 40px
+icon target 40px
+touch target stable while loading</pre></div>
+                  <div class="mode-subsection"><h4>Anatomy</h4><ul><li>Full-width primary button when it anchors a mobile sheet.</li><li>Icon buttons stay 40px square to avoid layout shift.</li></ul></div>
+                  <div class="mode-subsection"><h4>Behaviors</h4><ul><li>Stack sheet actions vertically when horizontal space is tight.</li><li>Disable repeat submission during loading.</li><li>Keep destructive actions labeled, not icon-only.</li></ul></div>
+                </div>
+              </div>
+              <div class="spec-grid">
+                <div class="card spec"><p class="spec-label">Measurements</p><p class="body">Button min height 40px, pill radius, 2px border, padding 8px 20px, gap 8px; icon buttons 40px in toolbars.</p></div>
+                <div class="card spec"><p class="spec-label">States</p><p class="body">Hover swaps to the lighter brand color (100ms); focus uses a 2px cyan outline; no elevation, lift, or shadow in any state.</p></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="section" id="context-menu">
+          <div class="section-header">
+            <div>
+              <p class="eyebrow">Canvas tools</p>
+              <h2>Context menu</h2>
+              <p class="body">The app uses a mobile selection action pill with an overflow "..." button, plus a desktop right-click context menu on canvas elements.</p>
+            </div>
+            <div class="metadata">
+              <div class="metadata-row"><strong>MUI</strong><span>Toolbar or Paper for the mobile pill, IconButton, Menu, Tooltip, Popover.</span></div>
+              <div class="metadata-row"><strong>Source</strong><span><code>MobileSelectionActionPill.tsx</code>, <code>ContextMenu.tsx</code>, and canvas right-click handlers.</span></div>
+            </div>
+          </div>
+          <div class="doc-grid">
+            <div class="demo-card card" data-demo-for="context-demo">
+              <div class="demo-header"><strong>Implemented overflow and menu</strong><span class="body">Click the &hellip; button to open the menu</span></div>
+              <div class="demo-stage" id="context-demo" style="position:relative;min-height:340px;">
+                <div class="mobile-pill">
+                  <button class="icon-button" type="button" aria-label="Edit selected object" style="color:#0d9488;">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+                  </button>
+                  <button class="icon-button" type="button" aria-label="Open layout">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.3 15.3a2.4 2.4 0 0 1 0 3.4l-2.6 2.6a2.4 2.4 0 0 1-3.4 0L2.7 8.7a2.41 2.41 0 0 1 0-3.4l2.6-2.6a2.41 2.41 0 0 1 3.4 0Z"/><path d="m14.5 12.5 2-2"/><path d="m11.5 9.5 2-2"/><path d="m8.5 6.5 2-2"/><path d="m17.5 15.5 2-2"/></svg>
+                  </button>
+                  <button class="icon-button" type="button" aria-label="Copy selected object">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+                  </button>
+                  <button class="icon-button" type="button" aria-label="Delete selected object">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/></svg>
+                  </button>
+                  <button class="icon-button" type="button" aria-label="More actions" id="demo-more">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
+                  </button>
+                </div>
+                <div class="context-menu" id="demo-context-menu">
+                  <div class="context-menu-header">
+                    <p class="panel-section-label">Selected</p>
+                    <p class="body" style="margin:4px 0 0;">Photo engraving</p>
+                  </div>
+                  <button type="button">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="3"/><path d="M8.12 8.12 12 12"/><path d="M20 4 8.12 15.88"/><circle cx="6" cy="18" r="3"/><path d="M14.8 14.8 20 20"/></svg>
+                    <span>Cut</span><span class="shortcut">&#8984;X</span>
+                  </button>
+                  <button type="button">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="15" x2="15" y1="12" y2="18"/><line x1="12" x2="18" y1="15" y2="15"/><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+                    <span>Duplicate</span><span class="shortcut">&#8984;D</span>
+                  </button>
+                  <button type="button">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/></svg>
+                    <span>Paste</span><span class="shortcut">&#8984;V</span>
+                  </button>
+                  <button type="button">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/></svg>
+                    <span>Paste as new step</span>
+                  </button>
+                </div>
+              </div>
+              <div class="demo-context">
+                <h4>Written context</h4>
+                <ul>
+                  <li>Desktop opens the same menu on right-click over an element.</li>
+                  <li>Mobile opens it from the pill overflow button — try the &hellip; button above; the menu opens at the tap position and Escape or clicking elsewhere closes it.</li>
+                  <li>The Edit action uses the teal accent; the remaining pill actions are slate.</li>
+                </ul>
+              </div>
+            </div>
+            <div class="guidelines">
+              <div class="component-usage"><h3 class="component-subhead">Usage</h3><ul><li>Use for selected-object actions that must be available directly on canvas.</li><li>Include Edit, Layout, Copy, Delete, and overflow More actions.</li><li>Use the overflow menu for actions that do not fit in the mobile pill.</li></ul></div>
+              <div class="mode-spec">
+                <div class="mode-spec-header"><h3 class="component-subhead">Mobile/Desktop</h3><div class="mode-controls" aria-label="Context menu written mode"><button class="mode-button is-active" type="button" data-mode-target="context-demo" data-mode="desktop">Desktop</button><button class="mode-button" type="button" data-mode-target="context-demo" data-mode="mobile">Mobile</button></div></div>
+                <div class="mode-panel is-active" data-mode-panel="context-demo" data-mode="desktop">
+                  <div class="mode-subsection"><h4>Interactive example</h4><ul><li>The example below shows the selected-object menu rows and shortcuts.</li></ul></div>
+                  <div class="mode-subsection"><h4>Code snippets</h4><pre class="code-sample is-active">ContextMenu desktop:
+width 224px
+open at pointer
+right-click element selects element
+Escape or outside click closes</pre></div>
+                  <div class="mode-subsection"><h4>Anatomy</h4><ul><li>Menu width is 224px.</li><li>Menu includes selected-object header and action rows.</li><li>Shortcut text aligns to the row end.</li></ul></div>
+                  <div class="mode-subsection"><h4>Behaviors</h4><ul><li>Right-click on an element selects it and opens the menu at the pointer.</li><li>Right-click on empty bed keeps the context menu closed.</li><li>Escape and outside click close the menu.</li></ul></div>
+                </div>
+                <div class="mode-panel" data-mode-panel="context-demo" data-mode="mobile">
+                  <div class="mode-subsection"><h4>Interactive example</h4><ul><li>The example below shows the mobile selection pill and its overflow button.</li></ul></div>
+                  <div class="mode-subsection"><h4>Code snippets</h4><pre class="code-sample is-active">MobileSelectionActionPill:
+width 272px
+height 54px
+button size 40px
+overflow opens ContextMenu at tap position</pre></div>
+                  <div class="mode-subsection"><h4>Anatomy</h4><ul><li>Pill is 272px wide and 54px high.</li><li>Container is rounded-full with white 95% surface.</li><li>Icon buttons are 40px circular controls.</li></ul></div>
+                  <div class="mode-subsection"><h4>Behaviors</h4><ul><li>Show the pill near the selected object.</li><li>Keep it clear of the 72px dock and any active bottom sheet.</li><li>The overflow button opens the same menu at the tap position.</li></ul></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="section" id="forms">
+          <div class="section-header">
+            <div>
+              <p class="eyebrow">Controls</p>
+              <h2>Forms and controls</h2>
+              <p class="body">Use controls for object properties, mode choices, filters, and exact values. Match control type to decision type.</p>
+            </div>
+            <div class="metadata">
+              <div class="metadata-row"><strong>MUI</strong><span>TextField, Slider, Switch, Checkbox, Select, ToggleButtonGroup, Tabs, Chip.</span></div>
+            </div>
+          </div>
+          <div class="doc-grid">
+            <div class="demo-card card" data-demo-for="forms-demo">
+              <div class="demo-header"><strong>Interactive controls</strong><span class="body" id="control-status">Cut selected, intensity 50</span></div>
+              <div class="demo-stage" id="forms-demo" style="display:grid;gap:18px;">
+                <div class="tabs" role="tablist" aria-label="Panel tabs">
+                  <button class="tab is-active" type="button" data-tab="Browse">Browse</button>
+                  <button class="tab" type="button" data-tab="Edit">Edit</button>
+                  <button class="tab" type="button" data-tab="Effects">Effects</button>
+                </div>
+                <div class="segments" aria-label="Operation mode">
+                  <button class="segment is-active" type="button" data-operation="Cut">Cut</button>
+                  <button class="segment" type="button" data-operation="Score">Score</button>
+                  <button class="segment" type="button" data-operation="Engrave">Engrave</button>
+                  <button class="segment" type="button" data-operation="Ignore">Ignore</button>
+                </div>
+                <label class="switch"><input id="preview-switch" type="checkbox" /> Show material preview</label>
+                <div class="control-row">
+                  <label for="intensity"><span>Filter intensity</span><span id="intensity-value">50</span></label>
+                  <input id="intensity" type="range" min="0" max="100" value="50" />
+                </div>
+                <div class="chip-row">
+                  <button class="chip is-active" type="button">Artistic</button>
+                  <button class="chip" type="button">Texture</button>
+                  <button class="chip" type="button">Edge</button>
+                </div>
+              </div>
+              <div class="demo-context">
+                <h4>Written context</h4>
+                <ul>
+                  <li>Match control type to the user decision: exclusive, binary, continuous, precise, or filter.</li>
+                  <li>Keep labels and current values visible when the control changes object output.</li>
+                </ul>
+              </div>
+            </div>
+            <div class="guidelines">
+              <div class="component-usage"><h3 class="component-subhead">Usage</h3><ul><li>Use sliders for continuous values.</li><li>Use numeric fields for precision.</li><li>Use switches for binary settings.</li><li>Use segmented controls for exclusive modes.</li><li>Use chips for filtering.</li></ul></div>
+              <div class="mode-spec">
+                <div class="mode-spec-header"><h3 class="component-subhead">Mobile/Desktop</h3><div class="mode-controls" aria-label="Forms written mode"><button class="mode-button is-active" type="button" data-mode-target="forms-demo" data-mode="desktop">Desktop</button><button class="mode-button" type="button" data-mode-target="forms-demo" data-mode="mobile">Mobile</button></div></div>
+                <div class="mode-panel is-active" data-mode-panel="forms-demo" data-mode="desktop">
+                  <div class="mode-subsection"><h4>Interactive example</h4><ul><li>The example below shows underline tabs, segmented controls, switch, slider, and chips in one panel rhythm.</li><li>Tabs follow the implemented Create overlay pattern: 3px cyan underline on the active tab. The pill segmented control is proposed guidance only; it has no implemented counterpart yet.</li></ul></div>
+                  <div class="mode-subsection"><h4>Code snippets</h4><pre class="code-sample is-active">Controls:
+height 40-44px
+section gap 18px
+tab: border-b-[3px] pb-4 text-sm font-semibold,
+  active border-cyan-500 text-cyan-600
+chip: rounded-full px-3 py-1.5 text-xs font-semibold,
+  active bg-slate-900 text-white
+switch: .gf-toggle 64x36px, 26px knob
+slider full row when value preview matters</pre></div>
+                  <div class="mode-subsection"><h4>Anatomy</h4><ul><li>Label, current value, input track/control, and helper text when needed.</li><li>Active tabs use a 3px cyan underline with cyan text.</li><li>Active chips use a dark slate fill with white text.</li><li>The switch is the 64x36px <code>gf-toggle</code> with a 26px knob; active fill is teal with a cyan border.</li></ul></div>
+                  <div class="mode-subsection"><h4>Behaviors</h4><ul><li>Update previews live when safe.</li><li>Use Apply for expensive, async, or destructive changes.</li></ul></div>
+                </div>
+                <div class="mode-panel" data-mode-panel="forms-demo" data-mode="mobile">
+                  <div class="mode-subsection"><h4>Interactive example</h4><ul><li>The same controls should stack vertically inside mobile sheets.</li></ul></div>
+                  <div class="mode-subsection"><h4>Code snippets</h4><pre class="code-sample is-active">Mobile controls:
+label above control
+slider width 100%
+field height 44px
+avoid side-by-side numeric pairs unless width supports both</pre></div>
+                  <div class="mode-subsection"><h4>Anatomy</h4><ul><li>Labels sit above controls.</li><li>Sliders remain full width.</li><li>Numeric pairs require enough width for two 44px-tall fields.</li></ul></div>
+                  <div class="mode-subsection"><h4>Behaviors</h4><ul><li>Keep touch targets stable while values update.</li><li>Prefer sheet-level Apply for costly operations.</li></ul></div>
+                </div>
+              </div>
+              <div class="spec-grid">
+                <div class="card spec"><p class="spec-label">Measurements</p><p class="body">Control height 40-44px, section gap 18px, chips compact (12px text, 6px vertical padding), switch 64x36px.</p></div>
+                <div class="card spec"><p class="spec-label">State colors</p><p class="body">Active tabs use a cyan underline and text; active chips use slate-900 fill with white text; switch and slider accents use the teal button color.</p></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="section" id="cards">
+          <div class="section-header">
+            <div>
+              <p class="eyebrow">Surfaces</p>
+              <h2>Cards and command tiles</h2>
+              <p class="body">Cards group previewable content. Command tiles must match the implemented size and density for their context instead of inventing a new card rhythm.</p>
+            </div>
+            <div class="metadata">
+              <div class="metadata-row"><strong>MUI</strong><span>Card, CardActionArea, ImageList, Chip, Skeleton.</span></div>
+            </div>
+          </div>
+          <div class="doc-grid">
+            <div class="demo-card card" data-demo-for="cards-demo">
+              <div class="demo-header"><strong>Implemented card sizes</strong><span class="body">Image actions and shapes</span></div>
+              <div class="demo-stage" id="cards-demo">
+                <div style="display:grid;gap:18px;">
+                  <div>
+                    <p class="panel-section-label">Image selected-action cards</p>
+                    <div class="image-actions-grid" style="margin-top:10px;">
+                      <button class="image-action-card" type="button"><span class="tile-icon">Tu</span><strong>Tune</strong><span>Adjust light and style effects</span></button>
+                      <button class="image-action-card" type="button"><span class="tile-icon">Di</span><strong>Dithering</strong><span>Create engravable dot patterns</span></button>
+                    </div>
+                  </div>
+                  <div>
+                    <p class="panel-section-label">Filter square buttons</p>
+                    <div class="filter-grid" style="margin-top:10px;max-width:260px;">
+                      <button class="filter-square is-active" type="button"><span class="filter-thumb"></span>Chalk</button>
+                      <button class="filter-square" type="button"><span class="filter-thumb"></span>Sponge</button>
+                      <button class="filter-square" type="button"><span class="filter-thumb"></span>Watercolor</button>
+                    </div>
+                  </div>
+                  <div>
+                    <p class="panel-section-label">Shapes flexible cards</p>
+                    <div class="image-actions-grid" style="margin-top:10px;">
+                      <button class="image-action-card" type="button" style="min-height:80px;"><strong style="margin-top:0;">Circle</strong><span>Flexible shape</span></button>
+                      <button class="image-action-card" type="button" style="min-height:80px;"><strong style="margin-top:0;">Rectangle</strong><span>Flexible shape</span></button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="demo-context">
+                <h4>Written context</h4>
+                <ul>
+                  <li>Use the card size and density that already exists in the matching app panel or overlay.</li>
+                  <li>Do not substitute large rectangular option buttons for implemented square filter buttons.</li>
+                </ul>
+              </div>
+            </div>
+            <div class="guidelines">
+              <div class="component-usage"><h3 class="component-subhead">Usage</h3><ul><li>Use image action cards for selected raster actions.</li><li>Use square filter buttons inside Tune.</li><li>Use shape cards for insertable flexible/vector objects.</li><li>Use See All links when the option set is too large for the panel.</li></ul></div>
+              <div class="mode-spec">
+                <div class="mode-spec-header"><h3 class="component-subhead">Mobile/Desktop</h3><div class="mode-controls" aria-label="Cards written mode"><button class="mode-button is-active" type="button" data-mode-target="cards-demo" data-mode="desktop">Desktop</button><button class="mode-button" type="button" data-mode-target="cards-demo" data-mode="mobile">Mobile</button></div></div>
+                <div class="mode-panel is-active" data-mode-panel="cards-demo" data-mode="desktop">
+                  <div class="mode-subsection"><h4>Interactive example</h4><ul><li>The example below shows selected image cards, Tune filter squares, and shape cards.</li></ul></div>
+                  <div class="mode-subsection"><h4>Code snippets</h4><pre class="code-sample is-active">Desktop cards:
+image actions: 2 columns, gap 10-12px
+radius 16px
+padding 16px
+filter square includes thumbnail + centered label
+overlay grids expand beyond 2 columns</pre></div>
+                  <div class="mode-subsection"><h4>Anatomy</h4><ul><li>Image action card: icon, title, description.</li><li>Filter square: thumbnail block and compact centered label.</li><li>Shape card: badge, icon, label.</li></ul></div>
+                  <div class="mode-subsection"><h4>Behaviors</h4><ul><li>Panel cards may insert immediately, push a subview, open hero UI, or open a browse overlay.</li><li>See All opens discovery for libraries too large for the panel.</li></ul></div>
+                </div>
+                <div class="mode-panel" data-mode-panel="cards-demo" data-mode="mobile">
+                  <div class="mode-subsection"><h4>Interactive example</h4><ul><li>The example uses the same card families; mobile reduces density without changing command meaning.</li></ul></div>
+                  <div class="mode-subsection"><h4>Code snippets</h4><pre class="code-sample is-active">Mobile cards:
+image actions: 2 columns, gap 10-12px
+radius 12px
+padding 12px
+hide descriptions
+shape cards keep 2 columns</pre></div>
+                  <div class="mode-subsection"><h4>Anatomy</h4><ul><li>Image cards keep icon and title; descriptions hide.</li><li>Shape cards remain two columns.</li><li>Filter squares stay square, not large text rectangles.</li></ul></div>
+                  <div class="mode-subsection"><h4>Behaviors</h4><ul><li>Tap inserts, opens a subview, opens hero UI, or opens the larger browse overlay.</li><li>Keep sheet scroll stable when grid content changes.</li></ul></div>
+                </div>
+              </div>
+              <div class="spec-grid">
+                <div class="card spec"><p class="spec-label">Image cards</p><p class="body">2 columns, gap 10-12px, rounded 12px mobile/16px desktop, border slate-200, p 12px mobile/16px desktop.</p></div>
+                <div class="card spec"><p class="spec-label">Shape cards</p><p class="body">Flexible shape cards use min height 5rem, 2 columns, gap 10-12px, rounded 12px mobile/16px desktop, badge at top-left.</p></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="section" id="feedback">
+          <div class="section-header">
+            <div>
+              <p class="eyebrow">Feedback</p>
+              <h2>Feedback surfaces</h2>
+              <p class="body">Feedback components tell users what happened, what is happening, or what needs attention.</p>
+            </div>
+            <div class="metadata">
+              <div class="metadata-row"><strong>MUI</strong><span>Snackbar, Alert, LinearProgress, CircularProgress, Dialog, Backdrop.</span></div>
+              <div class="metadata-row"><strong>Status</strong><span>Proposed guidance. No snackbar, alert, or progress component is implemented in <code>src/components</code> yet; follow these patterns when introducing one, and keep surfaces flat (no shadows).</span></div>
+            </div>
+          </div>
+          <div class="doc-grid">
+            <div class="demo-card card" data-demo-for="feedback-demo">
+              <div class="demo-header"><strong>Status examples</strong><button class="btn btn-primary" type="button" id="show-snackbar">Apply filter</button></div>
+              <div class="demo-stage feedback-demo" id="feedback-demo">
+                <div class="alert">Trace preview is ready. Review cut paths before applying.</div>
+                <div>
+                  <p class="spec-label">Generating background removal mask</p>
+                  <div class="progress"><span></span></div>
+                </div>
+              </div>
+              <div class="demo-context">
+                <h4>Written context</h4>
+                <ul>
+                  <li>Use feedback to tell users what happened, what is happening, or what blocks progress.</li>
+                  <li>Keep blocking warnings in persistent surfaces, not temporary snackbars.</li>
+                </ul>
+              </div>
+            </div>
+            <div class="guidelines">
+              <div class="component-usage"><h3 class="component-subhead">Usage</h3><ul><li>Use snackbars for non-blocking success.</li><li>Use alerts for in-context warnings.</li><li>Use progress indicators for async work.</li><li>Use dialogs for required decisions.</li></ul></div>
+              <div class="mode-spec">
+                <div class="mode-spec-header"><h3 class="component-subhead">Mobile/Desktop</h3><div class="mode-controls" aria-label="Feedback written mode"><button class="mode-button is-active" type="button" data-mode-target="feedback-demo" data-mode="desktop">Desktop</button><button class="mode-button" type="button" data-mode-target="feedback-demo" data-mode="mobile">Mobile</button></div></div>
+                <div class="mode-panel is-active" data-mode-panel="feedback-demo" data-mode="desktop">
+                  <div class="mode-subsection"><h4>Interactive example</h4><ul><li>The example below shows inline alert, progress, and snackbar trigger.</li></ul></div>
+                  <div class="mode-subsection"><h4>Code snippets</h4><pre class="code-sample is-active">Desktop feedback:
+snackbar non-blocking
+alert in context
+linear progress for async operations
+dialog only for required decisions</pre></div>
+                  <div class="mode-subsection"><h4>Anatomy</h4><ul><li>Message, optional icon, optional action, severity color, close or timeout behavior.</li></ul></div>
+                  <div class="mode-subsection"><h4>Behaviors</h4><ul><li>Do not use snackbars for blocking print warnings.</li><li>Do not use snackbars for irreversible errors.</li><li>Use persistent surfaces for blocking conditions.</li></ul></div>
+                </div>
+                <div class="mode-panel" data-mode-panel="feedback-demo" data-mode="mobile">
+                  <div class="mode-subsection"><h4>Interactive example</h4><ul><li>The same feedback types apply, but placement must respect bottom dock and sheets.</li></ul></div>
+                  <div class="mode-subsection"><h4>Code snippets</h4><pre class="code-sample is-active">Mobile feedback:
+anchor snackbar above 72px dock
+offset above active bottom sheet
+keep blocking warnings inside active panel or overlay</pre></div>
+                  <div class="mode-subsection"><h4>Anatomy</h4><ul><li>Snackbar avoids the bottom dock.</li><li>Blocking warnings remain inside the current sheet, panel, or overlay.</li></ul></div>
+                  <div class="mode-subsection"><h4>Behaviors</h4><ul><li>Never cover primary mobile sheet actions with transient feedback.</li><li>Keep async progress visible until the operation resolves.</li></ul></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="section" id="tokens">
+          <div class="section-header">
+            <div>
+              <p class="eyebrow">UX spec</p>
+              <h2>Visual styling, states, and measurements</h2>
+              <p class="body">Use these values when composing MUI components in the workspace theme.</p>
+            </div>
+          </div>
+          <div class="doc-grid">
+            <div class="demo-card card" data-demo-for="tokens-demo">
+              <div class="demo-header"><strong>Color roles</strong><span class="body">Workspace tokens</span></div>
+              <div class="demo-stage" id="tokens-demo">
+                <div class="swatch-grid">
+                  <div class="card swatch"><div style="background:var(--magic-button)"></div><p>Primary #1E93A5</p></div>
+                  <div class="card swatch"><div style="background:var(--magic-light)"></div><p>Active fill #A6E1EB</p></div>
+                  <div class="card swatch"><div style="background:var(--maple-light)"></div><p>Warm surface #FDF5E9</p></div>
+                  <div class="card swatch"><div style="background:var(--sunburst-base)"></div><p>Sunburst (reserved, unused) #FFE56E</p></div>
+                  <div class="card swatch"><div style="background:var(--slate-900)"></div><p>Text #12151A</p></div>
+                </div>
+              </div>
+              <div class="demo-context">
+                <h4>Written context</h4>
+                <ul>
+                  <li>Use these values when composing MUI components in the workspace theme.</li>
+                  <li>Keep mobile chrome consistent with the implemented bottom dock and sheet patterns.</li>
+                </ul>
+              </div>
+            </div>
+            <div class="guidelines">
+              <div class="component-usage"><h3 class="component-subhead">Usage</h3><ul><li>Use Space Grotesk for UI, labels, navigation, and headings.</li><li>Use Exo 2 for helper text, descriptions, and longer body copy.</li><li>Use 4px base increments for spacing.</li><li>Use implemented state colors before inventing new tokens.</li></ul></div>
+              <div class="mode-spec">
+                <div class="mode-spec-header"><h3 class="component-subhead">Mobile/Desktop</h3><div class="mode-controls" aria-label="Tokens written mode"><button class="mode-button is-active" type="button" data-mode-target="tokens-demo" data-mode="desktop">Desktop</button><button class="mode-button" type="button" data-mode-target="tokens-demo" data-mode="mobile">Mobile</button></div></div>
+                <div class="mode-panel is-active" data-mode-panel="tokens-demo" data-mode="desktop">
+                  <div class="mode-subsection"><h4>Interactive example</h4><ul><li>The swatches above show the workspace color roles used by components.</li></ul></div>
+                  <div class="mode-subsection"><h4>Code snippets</h4><pre class="code-sample is-active">Desktop tokens:
+panel padding 16px
+doc section gap 24px
+toolbar gap 4-8px
+card radius 6px
+button radius 999px
+elevation: none — index.css forces all box-shadows
+  (including arbitrary shadow-[...] classes) to none</pre></div>
+                  <div class="mode-subsection"><h4>Anatomy</h4><ul><li>Cards use 6px radius unless the surface is a hero overlay.</li><li>Buttons remain pilled.</li><li>The 2px cyan focus outline is mandatory.</li><li>The workspace renders flat: depth comes from borders and fills, never shadows. Do not add box-shadow utilities; the global suppression in <code>src/index.css</code> removes them.</li></ul></div>
+                  <div class="mode-subsection"><h4>Behaviors</h4><ul><li>Hover is subtle and color-only (no lift or shadow).</li><li>Active state uses cyan layer.</li><li>Disabled controls remain visible but muted.</li></ul></div>
+                </div>
+                <div class="mode-panel" data-mode-panel="tokens-demo" data-mode="mobile">
+                  <div class="mode-subsection"><h4>Interactive example</h4><ul><li>The same tokens apply, but mobile surfaces use implemented dock and sheet chrome.</li></ul></div>
+                  <div class="mode-subsection"><h4>Code snippets</h4><pre class="code-sample is-active">Mobile tokens:
+bottom dock height 72px
+draggable sheet radius 28px top corners
+fixed action pill
+hero controls as bottom sheet</pre></div>
+                  <div class="mode-subsection"><h4>Anatomy</h4><ul><li>Preserve 72px bottom dock.</li><li>Use draggable sheets rather than desktop side layouts.</li><li>Keep fixed action pill clear of dock and sheet.</li></ul></div>
+                  <div class="mode-subsection"><h4>Behaviors</h4><ul><li>Do not introduce desktop-only side layouts on mobile.</li><li>Keep active controls reachable when sheets are open.</li></ul></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <footer class="footer">Standalone design-system documentation for the Glowforge workspace. The implementation source of truth lives in <span class="code">gfbonny/workspace-redesign</span>.</footer>
+      </main>
+    </div>
+
+    <div class="hero-overlay" id="hero-overlay" role="dialog" aria-modal="true" aria-labelledby="overlay-title">
+      <div class="overlay-controls">
+        <button type="button" class="hero-mobile-grip" data-sheet-drag="hero" aria-label="Drag Create sheet"><span></span></button>
+        <div class="overlay-top">
+          <div>
+            <h3 id="overlay-title">Create</h3>
+            <p class="body">Describe your image</p>
+          </div>
+          <button class="icon-button" type="button" data-close-overlay aria-label="Close Create workspace">&times;</button>
+        </div>
+        <div class="overlay-body">
+          <div class="tabs" role="tablist" aria-label="Create image views">
+            <button class="tab is-active" type="button" data-create-tab="new">New</button>
+            <button class="tab" type="button" data-create-tab="recent">Recent Designs</button>
+          </div>
+          <div class="overlay-pane is-active" data-create-pane="new">
+            <section style="display:grid;gap:12px;">
+              <textarea aria-label="Describe what you want" style="min-height:112px;width:100%;resize:none;border:1px solid var(--slate-200);border-radius:16px;padding:14px;color:var(--slate-900);" placeholder="Suspenseful turtle race on a mossy log"></textarea>
+              <button class="btn btn-primary" type="button" style="width:100%;min-height:48px;">Make Magic!</button>
+            </section>
+            <section style="display:grid;gap:12px;">
+              <div class="chip-row" data-style-filters>
+                <button class="chip is-active" type="button" data-style-category="all">All Styles</button>
+                <button class="chip" type="button" data-style-category="engraving">Great for Engraving</button>
+                <button class="chip" type="button" data-style-category="artsy">Artsy</button>
+                <button class="chip" type="button" data-style-category="branding">Stylish Branding</button>
+                <button class="chip" type="button" data-style-category="kids">Fun for Kids</button>
+                <button class="chip" type="button" data-style-category="bold">Bold Graphics</button>
+                <button class="chip" type="button" data-style-category="cutting">Great for Cutting</button>
+              </div>
+              <div class="style-card-grid" data-style-grid>
+                <button class="style-card is-selected" type="button" data-style-card data-category="engraving" aria-label="Choose for me!"><span class="style-card-badge">NEW</span><div class="style-card-preview is-teal">✦</div><div class="style-card-copy"><strong>Choose for me!</strong><span>Custom to your prompt</span></div></button>
+                <button class="style-card" type="button" data-reference-card aria-label="Use a reference image"><div class="style-card-preview">↑</div><div class="style-card-copy"><strong>Use a reference image</strong><span>Start from an uploaded image</span></div></button>
+                <button class="style-card" type="button" data-style-card data-category="branding" aria-label="Benjamin"><div class="style-card-preview">100</div><div class="style-card-copy"><strong>Benjamin</strong><span>Engrave</span></div></button>
+                <button class="style-card" type="button" data-style-card data-category="engraving" aria-label="Holiday Lights"><span class="style-card-badge">NEW</span><div class="style-card-preview">◌</div><div class="style-card-copy"><strong>Holiday Lights</strong><span>Engrave</span></div></button>
+                <button class="style-card" type="button" data-style-card data-category="engraving" aria-label="Linocut"><span class="style-card-badge">NEW</span><div class="style-card-preview">◧</div><div class="style-card-copy"><strong>Linocut</strong><span>Engrave</span></div></button>
+                <button class="style-card" type="button" data-style-card data-category="engraving" aria-label="Botanical Engraving"><div class="style-card-preview">❀</div><div class="style-card-copy"><strong>Botanical Engraving</strong><span>Engrave</span></div></button>
+                <button class="style-card" type="button" data-style-card data-category="cutting" aria-label="Ribbon"><div class="style-card-preview">𝓢</div><div class="style-card-copy"><strong>Ribbon</strong><span>Cut, Score, Engrave</span></div></button>
+                <button class="style-card" type="button" data-style-card data-category="kids" aria-label="Kawaii"><div class="style-card-preview">⌂</div><div class="style-card-copy"><strong>Kawaii</strong><span>Cut, Score, Engrave</span></div></button>
+                <button class="style-card" type="button" data-style-card data-category="bold" aria-label="T-Shirt"><div class="style-card-preview">LOVE</div><div class="style-card-copy"><strong>T-Shirt</strong><span>Cut, Score, Engrave</span></div></button>
+                <button class="style-card" type="button" data-style-card data-category="artsy" aria-label="Watercolor"><div class="style-card-preview">◓</div><div class="style-card-copy"><strong>Watercolor</strong><span>Engrave</span></div></button>
+              </div>
+            </section>
+          </div>
+          <div class="overlay-pane" data-create-pane="recent">
+            <div class="recent-design-grid">
+              <button class="recent-design-card is-selected" type="button"><div class="recent-design-preview"><img class="selected-preview-image" src="./demo-photo.jpg" alt="Autumn Leaf Border preview" /></div><div class="recent-design-copy"><strong>Decorative border with layered leaves and acorns</strong><span>Autumn Leaf Border</span></div></button>
+              <button class="recent-design-card" type="button"><div class="recent-design-preview">☾</div><div class="recent-design-copy"><strong>Moon and stars crest with engraving-friendly outlines</strong><span>Celestial Crest</span></div></button>
+              <button class="recent-design-card" type="button"><div class="recent-design-preview">✿</div><div class="recent-design-copy"><strong>Elegant floral corners for a wedding sign</strong><span>Floral Corner Set</span></div></button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="overlay-preview">
+        <div class="preview-stage">
+          <img class="selected-preview-image" src="./demo-photo.jpg" alt="Selected image preview" />
+        </div>
+      </div>
+    </div>
+
+    <div class="snackbar" id="snackbar" role="status">Filter applied <button type="button" style="border:0;background:transparent;color:var(--magic-light);font-weight:700;">Undo</button></div>
+
+    <script>
+      const objectData = {
+        images: { title: "Images", sample: "Image" },
+        "my-designs": {
+          title: "My Designs",
+          sample: "Designs",
+          note: "My Designs opens the global My Designs overlay — it is not an object command panel."
+        },
+        ask: {
+          title: "Ask",
+          sample: "Ask",
+          note: "Ask opens the chat panel from the bottom of the rail — it is not an object command panel."
+        },
+        text: {
+          title: "Text",
+          sample: "Text",
+          primary: "Add text",
+          sections: [
+            { label: "Featured", cards: ["Glowforge Sans", "Glowforge Body", "Hershey Script", "Hershey Serif"], seeAll: true },
+            { label: "Font Combinations", cards: ["TATTOO studio", "GLOW", "GOLDEN HOUR", "Sweet"], seeAll: true }
+          ]
+        },
+        shapes: {
+          title: "Shapes",
+          sample: "Shape",
+          sections: [
+            { label: "Flexible Shapes", cards: ["Circle", "Rectangle", "Triangle", "Star"], seeAll: true }
+          ]
+        },
+        draw: {
+          title: "Draw",
+          sample: "Path",
+          primary: "Draw",
+          sections: [
+            { label: "Selected path actions", cards: ["Node editing", "Clip"] }
+          ]
+        },
+        templates: {
+          title: "Templates",
+          sample: "Template",
+          rows: [
+            ["Box Builder", "Parametric box layouts with adjustable dimensions."],
+            ["Stamp Maker", "Start a stamp workflow with engraving-first defaults."],
+            ["Puzzler Maker", "Generate puzzle-based templates and starting points."]
+          ]
+        },
+        layout: {
+          title: "Layout",
+          sample: "2 selected",
+          actions: ["Smart Fit", "Make Copies", "Smart Arrange"]
+        }
+      };
+
+      const commandList = document.getElementById("command-list");
+      const panelHeading = document.getElementById("panel-heading");
+      const sampleObject = document.getElementById("sample-object");
+      const overlay = document.getElementById("hero-overlay");
+      const snackbar = document.getElementById("snackbar");
+      let activeOperation = "Cut";
+      let snackbarTimer = null;
+
+      function renderCommands(key) {
+        const data = objectData[key];
+        panelHeading.textContent = data.title;
+        sampleObject.textContent = data.sample;
+        commandList.innerHTML = "";
+
+        if (key === "images") {
+          commandList.style.gap = "18px";
+          commandList.innerHTML = `
+            <button class="btn btn-primary" type="button" style="width:100%;justify-content:flex-start;">Create</button>
+            <section style="display:grid;gap:12px;">
+              <div>
+                <p class="panel-section-label">Selected image actions</p>
+                <div style="margin-top:10px;border-top:1px solid var(--slate-200);"></div>
+              </div>
+              <div class="image-actions-grid">
+                <button class="image-action-card" type="button"><span class="tile-icon">Tr</span><strong>Trace outline</strong><span>Create a clean cut path</span></button>
+                <button class="image-action-card" type="button" data-open-overlay><span class="tile-icon">Tu</span><strong>Tune</strong><span>Adjust light and style effects</span></button>
+                <button class="image-action-card" type="button"><span class="tile-icon">Di</span><strong>Dithering</strong><span>Create engravable dot patterns</span></button>
+                <button class="image-action-card" type="button"><span class="tile-icon">Rb</span><strong>Remove background</strong><span>Cut out the subject</span></button>
+                <button class="image-action-card" type="button"><span class="tile-icon">Me</span><strong>Magic Erase</strong><span>Remove unwanted image parts</span></button>
+                <button class="image-action-card" type="button"><span class="tile-icon">Gt</span><strong>Grab Text</strong><span>Pull text from images</span></button>
+              </div>
+            </section>
+          `;
+          return;
+        }
+
+        commandList.style.gap = "18px";
+
+        if (data.note) {
+          commandList.innerHTML = `<div class="implemented-note">${data.note}</div>`;
+          return;
+        }
+
+        let markup = "";
+
+        if (data.primary) {
+          markup += `<button class="btn btn-primary" type="button" style="width:100%;">${data.primary}</button>`;
+        }
+
+        (data.sections || []).forEach((section) => {
+          markup += `
+            <section style="display:grid;gap:10px;">
+              <p class="panel-section-label">${section.label}</p>
+              <div class="panel-grid">
+                ${section.cards.map((card) => `<button class="panel-card" type="button">${card}</button>`).join("")}
+              </div>
+              ${section.seeAll ? '<button class="panel-see-all" type="button">See all &rsaquo;</button>' : ""}
+            </section>
+          `;
+        });
+
+        if (data.rows) {
+          markup += `<div style="display:grid;gap:10px;">${data.rows
+            .map(([title, copy]) => `<button class="command-tile" type="button"><span class="tile-icon">${title.charAt(0)}</span><span><strong>${title}</strong><span>${copy}</span></span></button>`)
+            .join("")}</div>`;
+        }
+
+        if (data.actions) {
+          markup += `
+            <section style="display:grid;gap:10px;">
+              <p class="panel-section-label">Quick actions</p>
+              ${data.actions.map((action) => `<button class="panel-action-row" type="button">${action}</button>`).join("")}
+            </section>
+          `;
+        }
+
+        commandList.innerHTML = markup;
+      }
+
+      function openOverlay() {
+        overlay.classList.add("is-open");
+      }
+
+      function closeOverlay() {
+        overlay.classList.remove("is-open");
+      }
+
+      function showSnackbar() {
+        snackbar.classList.add("is-open");
+        window.clearTimeout(snackbarTimer);
+        snackbarTimer = window.setTimeout(() => snackbar.classList.remove("is-open"), 2600);
+      }
+
+      function syncDemoForMode(targetId, mode) {
+        const demoCard = document.querySelector(`[data-demo-for="${targetId}"]`);
+        const activeMode = mode || document.querySelector(`[data-mode-target="${targetId}"].is-active`)?.dataset.mode || "desktop";
+        const panel = document.querySelector(`[data-mode-panel="${targetId}"][data-mode="${activeMode}"]`);
+        const interactiveSection = panel?.querySelector(".mode-subsection");
+        if (!demoCard || !interactiveSection || demoCard.parentElement === interactiveSection) return;
+        interactiveSection.appendChild(demoCard);
+      }
+
+      function syncCreateTab(button) {
+        const root = button.closest(".overlay-controls");
+        if (!root) return;
+        const tabName = button.dataset.createTab;
+        root.querySelectorAll("[data-create-tab]").forEach((item) => item.classList.toggle("is-active", item.dataset.createTab === tabName));
+        root.querySelectorAll("[data-create-pane]").forEach((pane) => pane.classList.toggle("is-active", pane.dataset.createPane === tabName));
+      }
+
+      function syncStyleFilter(button) {
+        const root = button.closest(".overlay-controls");
+        if (!root) return;
+        const category = button.dataset.styleCategory || "all";
+        const row = button.closest("[data-style-filters]");
+        row?.querySelectorAll("[data-style-category]").forEach((item) => item.classList.toggle("is-active", item === button));
+
+        root.querySelectorAll("[data-style-grid]").forEach((grid) => {
+          const cards = Array.from(grid.querySelectorAll("[data-style-card]"));
+          const referenceCard = grid.querySelector("[data-reference-card]");
+          let firstVisible = null;
+
+          cards.forEach((card) => {
+            const isVisible = category === "all" || card.dataset.category === category;
+            card.hidden = !isVisible;
+            if (isVisible && !firstVisible) firstVisible = card;
+          });
+
+          if (referenceCard) {
+            referenceCard.hidden = !firstVisible;
+            if (firstVisible) firstVisible.after(referenceCard);
+          }
+        });
+      }
+
+      function selectStyleCard(card) {
+        const grid = card.closest("[data-style-grid], .recent-design-grid");
+        if (!grid) return;
+        grid.querySelectorAll(".style-card, .recent-design-card").forEach((item) => item.classList.remove("is-selected"));
+        card.classList.add("is-selected");
+      }
+
+      function setDemoSheetHeight(shell, heightPercent) {
+        const rect = shell.getBoundingClientRect();
+        shell.style.setProperty("--demo-sheet-height", `${Math.round(rect.height * (heightPercent / 100))}px`);
+        shell.dataset.sheetHeight = String(Math.round(heightPercent));
+      }
+
+      function finishDemoSheetDrag(shell, isHero, dragHeight, clientY) {
+        // The demo shell plays the role of the phone viewport: heights and the
+        // close band are computed against the shell, mirroring the app's vh math.
+        const rect = shell.getBoundingClientRect();
+        const shouldClose = (rect.bottom - clientY) <= rect.height * 0.1;
+
+        if (shouldClose) {
+          shell.classList.add("is-sheet-closed");
+          return;
+        }
+
+        const snappedHeight = Math.abs(dragHeight - 50) <= 12
+          ? 50
+          : Math.max(22, Math.min(88, dragHeight));
+        setDemoSheetHeight(shell, snappedHeight);
+      }
+
+      window.__simulateDemoSheetRelease = (selector, kind, dragHeight, clientY) => {
+        const shell = document.querySelector(selector);
+        if (!shell) return null;
+        shell.classList.remove("is-sheet-closed");
+        finishDemoSheetDrag(shell, kind === "hero", dragHeight, clientY);
+        return {
+          height: shell.style.getPropertyValue("--demo-sheet-height"),
+          closed: shell.classList.contains("is-sheet-closed"),
+        };
+      };
+
+      function startDemoSheetDrag(event, kind) {
+        const shell = event.currentTarget.closest(".workspace-demo, .panel-demo-shell, .hero-demo-shell, .hero-overlay");
+        if (!shell || !shell.classList.contains("is-mobile")) return;
+
+        event.preventDefault();
+        try {
+          event.currentTarget.setPointerCapture?.(event.pointerId);
+        } catch {
+          // Browser automation can dispatch synthetic pointer events without an active pointer capture target.
+        }
+        shell.classList.remove("is-sheet-closed");
+
+        const isHero = kind === "hero";
+        let dragHeight = isHero ? 48 : 44;
+
+        const updateHeight = (clientY) => {
+          const rect = shell.getBoundingClientRect();
+          const dockOffset = isHero ? 0 : 72;
+          const rawHeight = ((rect.bottom - dockOffset - clientY) / rect.height) * 100;
+          const nextHeight = isHero
+            ? Math.max(8, Math.min(92, rawHeight))
+            : Math.max(18, Math.min(88, rawHeight));
+          dragHeight = nextHeight;
+          setDemoSheetHeight(shell, nextHeight);
+        };
+
+        updateHeight(event.clientY);
+
+        const handlePointerMove = (moveEvent) => {
+          updateHeight(moveEvent.clientY);
+        };
+
+        const handlePointerUp = (upEvent) => {
+          document.removeEventListener("pointermove", handlePointerMove);
+          document.removeEventListener("pointerup", handlePointerUp);
+
+          finishDemoSheetDrag(shell, isHero, dragHeight, upEvent.clientY);
+        };
+
+        document.addEventListener("pointermove", handlePointerMove);
+        document.addEventListener("pointerup", handlePointerUp);
+      }
+
+      document.querySelectorAll(".rail-button").forEach((button) => {
+        button.addEventListener("click", () => {
+          const shell = button.closest(".workspace-demo, .panel-demo-shell");
+          shell?.classList.remove("is-sheet-closed");
+          const scope = shell || document;
+          scope.querySelectorAll(".rail-button").forEach((item) => {
+            item.classList.remove("is-active");
+            item.setAttribute("aria-pressed", "false");
+          });
+          button.classList.add("is-active");
+          button.setAttribute("aria-pressed", "true");
+          if (button.dataset.object) {
+            renderCommands(button.dataset.object);
+          }
+        });
+      });
+
+      document.querySelectorAll("[data-mode-target]").forEach((button) => {
+        button.addEventListener("click", () => {
+          const target = document.getElementById(button.dataset.modeTarget);
+          if (!target) return;
+          document.querySelectorAll(`[data-mode-target="${button.dataset.modeTarget}"]`).forEach((item) => {
+            item.classList.toggle("is-active", item.dataset.mode === button.dataset.mode);
+          });
+          target.classList.toggle("is-mobile", button.dataset.mode === "mobile");
+          target.classList.remove("is-sheet-closed");
+          if (button.dataset.mode === "mobile") {
+            setDemoSheetHeight(target, button.dataset.modeTarget === "hero-demo" ? 48 : 44);
+          }
+          document.querySelectorAll(`[data-mode-panel="${button.dataset.modeTarget}"]`).forEach((panel) => {
+            panel.classList.toggle("is-active", panel.dataset.mode === button.dataset.mode);
+          });
+          syncDemoForMode(button.dataset.modeTarget, button.dataset.mode);
+        });
+      });
+
+      document.querySelectorAll("[data-demo-for]").forEach((demoCard) => {
+        syncDemoForMode(demoCard.dataset.demoFor);
+      });
+
+      document.querySelectorAll("[data-code-target]").forEach((button) => {
+        button.addEventListener("click", () => {
+          const group = button.dataset.codeTarget;
+          document.querySelectorAll(`[data-code-target="${group}"]`).forEach((item) => item.classList.remove("is-active"));
+          button.classList.add("is-active");
+          document.querySelectorAll(`[id^="${group}-"]`).forEach((sample) => sample.classList.remove("is-active"));
+          document.getElementById(`${group}-${button.dataset.code}`)?.classList.add("is-active");
+        });
+      });
+
+      document.body.addEventListener("click", (event) => {
+        const target = event.target.closest("[data-open-overlay]");
+        if (target) openOverlay();
+        if (event.target.closest("[data-close-overlay]")) closeOverlay();
+        if (event.target.id === "apply-overlay") {
+          closeOverlay();
+          showSnackbar();
+        }
+      });
+
+      const demoContextMenu = document.getElementById("demo-context-menu");
+      const demoMoreButton = document.getElementById("demo-more");
+
+      demoMoreButton.addEventListener("click", (event) => {
+        event.stopPropagation();
+        const stage = document.getElementById("context-demo");
+        const stageRect = stage.getBoundingClientRect();
+        const left = Math.max(0, Math.min(event.clientX - stageRect.left, stageRect.width - 232));
+        const top = Math.min(event.clientY - stageRect.top + 10, stageRect.height - 40);
+        demoContextMenu.style.left = `${left}px`;
+        demoContextMenu.style.top = `${top}px`;
+        demoContextMenu.classList.add("is-open");
+      });
+
+      document.addEventListener("click", (event) => {
+        if (demoContextMenu.classList.contains("is-open") && !demoContextMenu.contains(event.target)) {
+          demoContextMenu.classList.remove("is-open");
+        }
+      });
+
+      demoContextMenu.querySelectorAll("button").forEach((item) => {
+        item.addEventListener("click", () => demoContextMenu.classList.remove("is-open"));
+      });
+
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") {
+          closeOverlay();
+          demoContextMenu.classList.remove("is-open");
+        }
+      });
+
+      document.querySelectorAll("[data-create-tab]").forEach((tab) => {
+        tab.addEventListener("click", () => {
+          syncCreateTab(tab);
+        });
+      });
+
+      document.querySelectorAll("[data-style-category]").forEach((chip) => {
+        chip.addEventListener("click", () => {
+          syncStyleFilter(chip);
+        });
+      });
+
+      document.querySelectorAll(".style-card, .recent-design-card").forEach((card) => {
+        card.addEventListener("click", () => {
+          selectStyleCard(card);
+        });
+      });
+
+      document.querySelectorAll("[data-sheet-drag]").forEach((handle) => {
+        handle.addEventListener("pointerdown", (event) => {
+          startDemoSheetDrag(event, handle.dataset.sheetDrag);
+        });
+      });
+
+      document.querySelectorAll(".tabs").forEach((tabs) => {
+        if (tabs.querySelector("[data-create-tab]")) return;
+        tabs.querySelectorAll(".tab").forEach((tab) => {
+          tab.addEventListener("click", () => {
+            tabs.querySelectorAll(".tab").forEach((item) => item.classList.remove("is-active"));
+            tab.classList.add("is-active");
+          });
+        });
+      });
+
+      document.querySelectorAll(".segment").forEach((segment) => {
+        segment.addEventListener("click", () => {
+          document.querySelectorAll(".segment").forEach((item) => item.classList.remove("is-active"));
+          segment.classList.add("is-active");
+          activeOperation = segment.dataset.operation;
+          updateControlStatus();
+        });
+      });
+
+      document.querySelectorAll(".chip").forEach((chip) => {
+        if (chip.dataset.styleCategory) return;
+        chip.addEventListener("click", () => {
+          const row = chip.closest(".chip-row");
+          if (!row) return;
+          row.querySelectorAll(".chip").forEach((item) => item.classList.remove("is-active"));
+          chip.classList.add("is-active");
+        });
+      });
+
+      const intensity = document.getElementById("intensity");
+      const intensityValue = document.getElementById("intensity-value");
+      const previewSwitch = document.getElementById("preview-switch");
+      const controlStatus = document.getElementById("control-status");
+
+      function updateControlStatus() {
+        intensityValue.textContent = intensity.value;
+        const preview = previewSwitch.checked ? ", preview on" : "";
+        controlStatus.textContent = `${activeOperation} selected, intensity ${intensity.value}${preview}`;
+      }
+
+      intensity.addEventListener("input", updateControlStatus);
+      previewSwitch.addEventListener("change", updateControlStatus);
+      document.getElementById("show-snackbar").addEventListener("click", showSnackbar);
+      renderCommands("images");
+    </script>
+  </body>
+</html>

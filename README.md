@@ -19,11 +19,18 @@ The `*-placeholder.svg` files remain as `onerror` fallbacks.
 Color tokens are aligned to the official Glowforge brand palette from
 `samkemmis-glowforge/design_mark` → `brand/brand.json` (teal #16A0B0
 primary, cream surfaces, ink #12151A, purple #821AAB accent, rust). The
-brand spec marks typography/radius `needsConfirmation`, so display type and
-the pill CTA follow the hero art. Interactive-element specs from the
-private `Glowforge/gf-design-system` repo are NOT yet applied — that repo
-isn't accessible from this session (see chat); revisit once its docs are
-available.
+brand spec marks typography/radius `needsConfirmation`, so display type
+follows the hero art.
+
+Interactive elements follow the **gf-design-system Workspace Component
+System** (vendored copy: `docs/gf-design-system-workspace-components.html`):
+pill buttons filled #1E93A5 with color-only hover to #26B8CE, flat surfaces
+(no box-shadows on interactive components — depth from borders/fills),
+mandatory 2px cyan focus outline, 6px card radius, #A6E1EB cyan active
+fill, Space Grotesk for UI labels / Exo 2 for helper text, one primary
+button per surface. The demo widget is styled as a mini-workspace so the
+signup → app handoff feels continuous; decorative marketing chrome (hero
+composition, pipeline cards) keeps the LIKE → THAT art direction.
 
 ## Funnel (xTool AImake-style "the page is the demo", with a result gate)
 
