@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300">
+  <!-- Stand-in for assets/milo.jpg (drop the real photo in to replace) -->
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#a8bfc9"/><stop offset="1" stop-color="#ded3c0"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="300" fill="url(#bg)"/>
+  <ellipse cx="200" cy="290" rx="230" ry="40" fill="#8a9b78"/>
+  <g>
+    <path d="M135 262 q-12 -66 20 -101 q-24 -20 -16 -51 q28 4 39 23 q16 -11 43 -11 t43 11 q11 -19 39 -23 q8 31 -16 51 q32 35 20 101 q-4 19 -27 23 l-118 0 q-23 -4 -27 -23z" fill="#7a5a3f"/>
+    <ellipse cx="198" cy="185" rx="50" ry="42" fill="#97744e"/>
+    <ellipse cx="182" cy="171" rx="6" ry="7.4" fill="#221810"/>
+    <ellipse cx="214" cy="171" rx="6" ry="7.4" fill="#221810"/>
+    <ellipse cx="198" cy="191" rx="9" ry="6.4" fill="#221810"/>
+    <path d="M186 197 q12 13 24 0 q-4 15 -12 15 t-12 -15z" fill="#221810"/>
+  </g>
+  <text x="200" y="32" text-anchor="middle" font-family="monospace" font-size="13" fill="#5d564c">placeholder — drop milo.jpg into assets/</text>
+</svg>

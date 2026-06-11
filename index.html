@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Magic Engraver — Put any picture on anything you own | Glowforge Premium</title>
+<title>Magic Engraver — One photo in. An heirloom out. | Glowforge Premium</title>
 <meta name="description" content="Magic Engraver turns any photo into a laser-ready engraving — traced, fitted, and tuned for any laser. Try it free with your own image.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Archivo:wght@500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -15,12 +15,12 @@
 <header class="site-header">
   <div class="wrap header-inner">
     <div class="brand">
-      <span class="brand-mark" aria-hidden="true">◇</span>
-      <span class="brand-name">Magic&nbsp;Engraver</span>
+      <span class="brand-mark" aria-hidden="true">✦</span>
+      <span class="brand-name">MAGIC&nbsp;ENGRAVER</span>
       <span class="brand-by">by Glowforge&nbsp;Premium</span>
     </div>
     <nav class="header-nav">
-      <span class="works-chip">Works with any laser</span>
+      <span class="works-chip">works with any laser</span>
       <a class="signin-link" href="#" data-auth-link>Sign in</a>
     </nav>
   </div>
@@ -28,30 +28,71 @@
 
 <main>
 
-  <!-- ============ HERO + WIDGET ============ -->
-  <section class="hero">
-    <div class="wrap hero-grid">
-      <div class="hero-copy">
-        <p class="eyebrow">Glowforge Premium · Universal</p>
-        <h1>Put any picture<br>on anything you own.</h1>
-        <p class="hero-sub">
-          Magic Engraver turns a photo into a laser-ready engraving —
-          traced into clean vectors, fitted to your object, and tuned
-          for <em>your</em> machine. xTool, OmTech, Creality, K40, anything.
-        </p>
-        <ul class="hero-points">
-          <li><span class="pt-mono">01</span> Upload any picture — photo, sketch, logo</li>
-          <li><span class="pt-mono">02</span> We trace it &amp; fit it to your object</li>
-          <li><span class="pt-mono">03</span> Burn it with dialed-in settings</li>
-        </ul>
-        <p class="hero-trial-note">Free for 14 days in the app. No credit card.</p>
+  <!-- ============ HERO: LIKE → THAT ============ -->
+  <section class="hero" aria-label="Magic Engraver — turn a photo into an engraving, like that">
+    <div class="wrap">
+      <p class="hero-eyebrow">Magic Engraver</p>
+
+      <h1 class="visually-hidden" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);">
+        Magic Engraver: put any photo on anything you own — like that. One photo in. An heirloom out.
+      </h1>
+
+      <div class="liketh">
+        <span class="lt-mark mark-sparkle"><img src="assets/layer-sparkle.png" alt=""></span>
+        <span class="lt-mark mark-swoosh"><img src="assets/layer-swoosh-arrow.png" alt=""></span>
+        <span class="lt-mark mark-ticks"><img src="assets/layer-snap-ticks.png" alt=""></span>
+
+        <div class="lt-row row-like" aria-hidden="true">
+          <span class="lt-word"><img src="assets/layer-word-like.png" alt="LIKE"></span>
+          <figure class="lt-panel panel-photo">
+            <img class="panel-img" src="assets/milo.jpg"
+                 onerror="this.onerror=null;this.src='assets/milo-placeholder.svg'"
+                 alt="A snapshot of Milo the dog">
+            <figcaption class="panel-caption">milo.jpg</figcaption>
+          </figure>
+        </div>
+
+        <div class="lt-row row-that" aria-hidden="true">
+          <figure class="lt-panel panel-board">
+            <img class="panel-img" src="assets/milo-engraved.svg"
+                 onerror="this.onerror=null;this.src='assets/milo-engraved-placeholder.svg'"
+                 alt="Milo engraved on a maple board">
+          </figure>
+          <span class="lt-word"><img src="assets/layer-word-that.png" alt="THAT"></span>
+        </div>
       </div>
 
-      <!-- The widget -->
+      <p class="hero-tagline">One photo in. An heirloom out.</p>
+
+      <div class="hero-ctas">
+        <a class="cta-btn" href="#try">Try it with your photo</a>
+        <p class="hero-fine">free to try · works with any laser · no credit card</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ MACHINE STRIP ============ -->
+  <section class="machine-strip" aria-label="Compatible laser brands">
+    <div class="wrap strip-inner">
+      <span class="strip-label">Tuned settings for</span>
+      <div class="strip-logos">
+        <span>xTool</span><span>OmTech</span><span>Creality Falcon</span><span>Thunder</span><span>K40</span><span>Epilog</span><span>LaserPecker</span><span>Atomstack</span><span>Glowforge</span><span class="strip-more">+ any GCode laser</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ TRY IT (widget) ============ -->
+  <section class="try" id="try">
+    <div class="wrap">
+      <div class="try-head">
+        <h2>Your photo. <span class="accent">Right now.</span></h2>
+        <p class="section-sub" style="margin-inline:auto;">No account needed to try. Your image stays on your device for this demo.</p>
+      </div>
+
       <div class="widget" id="widget" aria-label="Try Magic Engraver">
         <div class="widget-titlebar">
           <span class="widget-dot"></span>
-          <span class="widget-title">Try it now — no account needed</span>
+          <span class="widget-title">magic engraver — live demo</span>
           <button class="widget-reset" id="widget-reset" hidden>start over</button>
         </div>
 
@@ -60,7 +101,7 @@
           <p class="step-label"><span class="step-num">1/2</span> Pick a picture</p>
           <label class="dropzone" id="dropzone">
             <input type="file" id="file-input" accept="image/*" hidden>
-            <svg viewBox="0 0 24 24" class="dz-icon" aria-hidden="true"><path d="M12 16V4m0 0l-4 4m4-4l4 4M4 16v3a1 1 0 001 1h14a1 1 0 001-1v-3" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <svg viewBox="0 0 24 24" class="dz-icon" aria-hidden="true"><path d="M12 16V4m0 0l-4 4m4-4l4 4M4 16v3a1 1 0 001 1h14a1 1 0 001-1v-3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
             <span class="dz-main">Drop a photo here, or click to upload</span>
             <span class="dz-sub">stays on your device for this demo</span>
           </label>
@@ -77,7 +118,7 @@
             <button class="mini-link" id="change-art">change</button>
           </div>
           <div class="object-grid" id="object-grid"><!-- populated by JS --></div>
-          <button class="cta-btn" id="engrave-btn" disabled>Generate my engraving →</button>
+          <button class="cta-btn" id="engrave-btn" disabled>Make it an heirloom →</button>
         </div>
 
         <!-- STEP 3: processing -->
@@ -100,7 +141,7 @@
               <p class="gate-ready"><span class="gate-check">✓</span> Your engraving is ready</p>
               <p class="gate-meta" id="gate-meta"></p>
               <a class="cta-btn gate-cta" href="#" data-auth-link data-deeplink>
-                Create a free account to reveal it →
+                Create a free account to see it →
               </a>
               <p class="gate-fine">Includes a 14-day Glowforge Premium trial — engrave this on the real thing. No credit card. Your design will be waiting in the app.</p>
             </div>
@@ -110,20 +151,10 @@
     </div>
   </section>
 
-  <!-- ============ MACHINE STRIP ============ -->
-  <section class="machine-strip" aria-label="Compatible laser brands">
-    <div class="wrap strip-inner">
-      <span class="strip-label">Tuned settings for</span>
-      <div class="strip-logos">
-        <span>xTool</span><span>OmTech</span><span>Creality Falcon</span><span>Thunder</span><span>K40</span><span>Epilog</span><span>LaserPecker</span><span>Atomstack</span><span>Glowforge</span><span class="strip-more">+ any GCode laser</span>
-      </div>
-    </div>
-  </section>
-
   <!-- ============ PIPELINE SHOWCASE ============ -->
   <section class="pipeline" id="how">
     <div class="wrap">
-      <p class="eyebrow">How the magic actually works</p>
+      <p class="eyebrow"><span class="tick">///</span> How the magic actually works</p>
       <h2>Photo in. Vectors out. Object engraved.</h2>
       <p class="section-sub">No prompt-roulette. Magic Engraver works from the picture you already have and shows its work at every step.</p>
 
@@ -139,7 +170,7 @@
               </defs>
               <rect width="200" height="160" fill="url(#sky)"/>
               <ellipse cx="100" cy="150" rx="110" ry="24" fill="#7d8f6e"/>
-              <g id="dog-shape">
+              <g>
                 <path d="M70 132 q-6 -34 10 -52 q-12 -10 -8 -26 q14 2 20 12 q8 -6 22 -6 t22 6 q6 -10 20 -12 q4 16 -8 26 q16 18 10 52 q-2 10 -14 12 l-60 0 q-12 -2 -14 -12 z" fill="#8a6a4f"/>
                 <ellipse cx="100" cy="96" rx="26" ry="22" fill="#a8855f"/>
                 <ellipse cx="91" cy="88" rx="3.4" ry="4" fill="#241a12"/>
@@ -152,24 +183,24 @@
           </div>
         </figure>
 
-        <div class="pipe-arrow" aria-hidden="true">→</div>
+        <div class="pipe-arrow" aria-hidden="true"><img src="assets/layer-swoosh-arrow.png" alt=""></div>
 
         <figure class="pipe-card">
           <figcaption><span class="pipe-num">2</span> The vector we make</figcaption>
           <div class="pipe-visual pipe-vector">
             <svg viewBox="0 0 200 160" role="img" aria-label="The same dog traced as vector line art">
-              <rect width="200" height="160" fill="#101418"/>
-              <g fill="none" stroke="#7df2c8" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round">
+              <rect width="200" height="160" fill="#fffdf8"/>
+              <g fill="none" stroke="#1c1813" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round">
                 <path d="M70 132 q-6 -34 10 -52 q-12 -10 -8 -26 q14 2 20 12 q8 -6 22 -6 t22 6 q6 -10 20 -12 q4 16 -8 26 q16 18 10 52 q-2 10 -14 12 l-60 0 q-12 -2 -14 -12 z"/>
                 <ellipse cx="100" cy="96" rx="26" ry="22"/>
                 <path d="M93 102 q7 7 14 0"/>
               </g>
-              <g fill="#7df2c8">
+              <g fill="#1c1813">
                 <ellipse cx="91" cy="88" rx="3" ry="3.8"/>
                 <ellipse cx="109" cy="88" rx="3" ry="3.8"/>
                 <ellipse cx="100" cy="99" rx="4.6" ry="3.2"/>
               </g>
-              <g fill="#39424d">
+              <g fill="#16a0b0">
                 <rect x="68" y="78" width="4" height="4"/><rect x="128" y="78" width="4" height="4"/>
                 <rect x="68" y="128" width="4" height="4"/><rect x="128" y="128" width="4" height="4"/>
               </g>
@@ -178,7 +209,7 @@
           </div>
         </figure>
 
-        <div class="pipe-arrow" aria-hidden="true">→</div>
+        <div class="pipe-arrow" aria-hidden="true"><img src="assets/layer-swoosh-arrow.png" alt=""></div>
 
         <figure class="pipe-card">
           <figcaption><span class="pipe-num">3</span> The object you engrave</figcaption>
@@ -189,9 +220,9 @@
                   <stop offset="0" stop-color="#e4c293"/><stop offset="1" stop-color="#caa06b"/>
                 </linearGradient>
               </defs>
-              <rect width="200" height="160" fill="#181d23"/>
+              <rect width="200" height="160" fill="#f3ecdf"/>
               <rect x="22" y="14" width="156" height="132" rx="14" fill="url(#maple)"/>
-              <circle cx="160" cy="32" r="7" fill="#181d23"/>
+              <circle cx="160" cy="32" r="7" fill="#f3ecdf"/>
               <g stroke="#b88e58" stroke-width="1" opacity="0.5">
                 <path d="M30 40 q70 6 140 0M30 70 q70 -6 140 0M30 100 q70 6 140 0M30 130 q70 -6 140 0" fill="none"/>
               </g>
@@ -216,7 +247,7 @@
   <!-- ============ PROOF / GALLERY ============ -->
   <section class="gallery">
     <div class="wrap">
-      <p class="eyebrow">Made with Magic Engraver</p>
+      <p class="eyebrow"><span class="tick">///</span> Made with Magic Engraver</p>
       <h2>Pictures people had. Objects they own.</h2>
       <div class="gallery-grid">
         <div class="g-card"><div class="g-img g-1"></div><p>Kid's drawing → oak serving board</p></div>
@@ -253,10 +284,10 @@
   <!-- ============ FINAL CTA ============ -->
   <section class="final-cta">
     <div class="wrap final-inner">
-      <h2>Your picture is one pass away.</h2>
+      <h2>Your photo is one pass away.</h2>
       <p>Try it with your own image above — or jump straight in.</p>
-      <a class="cta-btn big" href="#" data-auth-link>Start my free 14-day trial →</a>
-      <p class="gate-fine">Works with any laser. No credit card.</p>
+      <a class="cta-btn" href="#" data-auth-link>Start my free 14-day trial →</a>
+      <p class="hero-fine final-fine">works with any laser · no credit card</p>
     </div>
   </section>
 

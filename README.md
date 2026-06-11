@@ -6,6 +6,18 @@ starts, using a try-it-now widget whose **result is auth-gated**.
 
 Static page, no build step: open `index.html` in a browser.
 
+## Art direction
+
+Implements Sam's "LIKE → THAT" hero design (Canva, exported as layers in
+`assets/layer-*.png`): warm paper background, heavy ink display type
+(#1c1813, Archivo Black), hand-drawn teal marks (#16a0b0 — sparkle, dotted
+swoosh arrow, snap ticks), tagline "One photo in. An heirloom out."
+
+Two hero images are referenced but not committed (too large to transfer in
+this session): `assets/milo.jpg` and `assets/milo-engraved.svg` (both in
+Sam's Drive folder). The page falls back to `*-placeholder.svg` stand-ins
+until the real files are dropped into `assets/`.
+
 ## Funnel (xTool AImake-style "the page is the demo", with a result gate)
 
 1. **Hero widget, no account needed.** Visitor uploads a picture (or picks a
