@@ -1,25 +1,35 @@
 /* Magic Engraver landing — "LIKE → THAT" art direction.
    Warm paper, heavy ink type, hand-drawn teal marks.
-   Palette and type lifted from the hero design (assets/layer-*.png). */
+   Color tokens aligned to the official Glowforge brand palette
+   (design_mark/brand/brand.json): teal #16A0B0 primary, cream family
+   surfaces, ink #12151A, purple #821AAB high-energy accent, rust for
+   wood/burn notes. Radius/type tokens are needsConfirmation in the brand
+   spec, so the pill CTA and Archivo display follow the hero art instead. */
 
 :root {
-  --paper: #faf6ee;
-  --paper-deep: #f3ecdf;
-  --card: #fffdf8;
-  --ink: #1c1813;
-  --ink-soft: #5d564c;
+  --paper: #fdf8f1;        /* cream tint */
+  --paper-deep: #f9e7cb;   /* cream base */
+  --card: #ffffff;
+  --ink: #12151a;
+  --ink-soft: #5d564b;     /* cream shade */
   --teal: #16a0b0;
-  --teal-deep: #0d7d8b;
-  --burn: #6b4a2b;
+  --teal-tint: #c9edf2;
+  --teal-deep: #0e454d;    /* teal shade */
+  --purple: #821aab;
+  --burn: #63241a;         /* rust */
   --wood: #d9b780;
-  --line: #e3d9c6;
+  --line: #e8dec9;
   --mono: "IBM Plex Mono", ui-monospace, monospace;
   --display: "Archivo Black", "Archivo", sans-serif;
   --sans: "Archivo", system-ui, sans-serif;
-  --radius: 14px;
+  --radius: 16px;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* interactive-state defaults: visible keyboard focus on everything */
+:focus-visible { outline: 3px solid var(--teal); outline-offset: 2px; border-radius: 4px; }
+.cta-btn:focus-visible { outline-color: var(--ink); }
 
 html { scroll-behavior: smooth; }
 
@@ -104,7 +114,7 @@ a { color: inherit; }
   padding: 10px 10px 30px;
   border: 1.5px solid var(--line);
   border-radius: 8px;
-  box-shadow: 0 10px 30px rgba(28, 24, 19, 0.16);
+  box-shadow: 0 10px 30px rgba(18, 21, 26, 0.16);
   transform: rotate(-3deg);
 }
 .panel-photo .panel-caption {
@@ -113,7 +123,7 @@ a { color: inherit; }
 }
 .panel-board {
   transform: rotate(2deg);
-  filter: drop-shadow(0 12px 24px rgba(28, 24, 19, 0.2));
+  filter: drop-shadow(0 12px 24px rgba(18, 21, 26, 0.2));
 }
 
 .lt-mark { position: absolute; pointer-events: none; }
@@ -148,7 +158,7 @@ a { color: inherit; }
 /* ---------- widget section ---------- */
 .try { padding: 56px 0 72px; background: var(--paper-deep); border-block: 2px solid var(--ink); }
 .try-head { text-align: center; margin-bottom: 30px; }
-.try-head h2 .accent { color: var(--teal); }
+.try-head h2 .accent { color: var(--purple); }
 
 .widget {
   max-width: 560px; margin: 0 auto;
@@ -156,7 +166,7 @@ a { color: inherit; }
   border: 2px solid var(--ink);
   border-radius: var(--radius);
   overflow: hidden;
-  box-shadow: 8px 8px 0 rgba(28, 24, 19, 0.12);
+  box-shadow: 8px 8px 0 rgba(18, 21, 26, 0.12);
 }
 .widget-titlebar {
   display: flex; align-items: center; gap: 10px;
@@ -261,7 +271,7 @@ a { color: inherit; }
   position: absolute; inset: 0;
   display: flex; flex-direction: column; justify-content: center; align-items: center;
   gap: 10px; padding: 24px; text-align: center;
-  background: linear-gradient(180deg, rgba(250,246,238,0.3), rgba(250,246,238,0.88));
+  background: linear-gradient(180deg, rgba(253,248,241,0.3), rgba(253,248,241,0.88));
 }
 .gate-ready { font-weight: 800; font-size: 1.08rem; }
 .gate-check { color: var(--teal-deep); }
@@ -286,7 +296,7 @@ a { color: inherit; }
 .pipe-card {
   background: var(--card); border: 2px solid var(--ink);
   border-radius: var(--radius); overflow: hidden;
-  box-shadow: 6px 6px 0 rgba(28, 24, 19, 0.1);
+  box-shadow: 6px 6px 0 rgba(18, 21, 26, 0.1);
 }
 .pipe-card figcaption {
   padding: 12px 16px; font-weight: 700; font-size: 0.92rem;
@@ -352,9 +362,9 @@ a { color: inherit; }
   background: var(--card); color: var(--ink);
   border: 2px solid var(--ink); border-radius: var(--radius);
   padding: 28px;
-  box-shadow: 8px 8px 0 rgba(28, 24, 19, 0.15);
+  box-shadow: 8px 8px 0 rgba(18, 21, 26, 0.15);
 }
-#auth-modal::backdrop { background: rgba(28, 24, 19, 0.45); }
+#auth-modal::backdrop { background: rgba(18, 21, 26, 0.45); }
 #auth-modal h3 { margin: 8px 0 12px; font-family: var(--display); font-weight: 400; }
 #auth-modal p { color: var(--ink-soft); font-size: 0.9rem; margin-bottom: 10px; }
 #auth-modal code {

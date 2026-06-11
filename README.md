@@ -10,13 +10,20 @@ Static page, no build step: open `index.html` in a browser.
 
 Implements Sam's "LIKE → THAT" hero design (Canva, exported as layers in
 `assets/layer-*.png`): warm paper background, heavy ink display type
-(#1c1813, Archivo Black), hand-drawn teal marks (#16a0b0 — sparkle, dotted
-swoosh arrow, snap ticks), tagline "One photo in. An heirloom out."
+(Archivo Black), hand-drawn teal marks (sparkle, dotted swoosh arrow, snap
+ticks), tagline "One photo in. An heirloom out." Real hero images are
+committed: `assets/milo.jpg` and `assets/milo-engraved.svg` (an actual
+xTool Creative Space trace export — on-brand for "works with any laser").
+The `*-placeholder.svg` files remain as `onerror` fallbacks.
 
-Two hero images are referenced but not committed (too large to transfer in
-this session): `assets/milo.jpg` and `assets/milo-engraved.svg` (both in
-Sam's Drive folder). The page falls back to `*-placeholder.svg` stand-ins
-until the real files are dropped into `assets/`.
+Color tokens are aligned to the official Glowforge brand palette from
+`samkemmis-glowforge/design_mark` → `brand/brand.json` (teal #16A0B0
+primary, cream surfaces, ink #12151A, purple #821AAB accent, rust). The
+brand spec marks typography/radius `needsConfirmation`, so display type and
+the pill CTA follow the hero art. Interactive-element specs from the
+private `Glowforge/gf-design-system` repo are NOT yet applied — that repo
+isn't accessible from this session (see chat); revisit once its docs are
+available.
 
 ## Funnel (xTool AImake-style "the page is the demo", with a result gate)
 
