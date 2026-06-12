@@ -11,39 +11,6 @@
   const AUTH_BASE = "https://app.glowforge.com/signup";
   const UTM = "utm_source=magic-engraver-lp&utm_medium=widget";
 
-  // ---------- sample art (inline SVG → data URIs) ----------
-  const svgUri = (svg) => "data:image/svg+xml," + encodeURIComponent(svg);
-
-  const SAMPLES = [
-    {
-      // the hero dog — same photo the triptych starts from
-      name: "milo.jpg",
-      uri: "assets/milo.jpg",
-    },
-    {
-      name: "kid's drawing",
-      uri: svgUri(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 150">
-        <rect width="200" height="150" fill="#f4eee2"/>
-        <g fill="none" stroke="#3a59c7" stroke-width="4" stroke-linecap="round">
-          <circle cx="100" cy="60" r="22"/>
-          <path d="M100 82 v34 M100 95 l-20 14 M100 95 l20 14 M100 116 l-14 22 M100 116 l14 22"/>
-        </g>
-        <g fill="#e0533a"><circle cx="92" cy="56" r="3"/><circle cx="108" cy="56" r="3"/></g>
-        <path d="M90 66 q10 8 20 0" fill="none" stroke="#e0533a" stroke-width="3.5" stroke-linecap="round"/>
-        <path d="M30 30 l8 -14 8 14z M164 32 q6 -16 12 0" fill="#f0b429"/>
-      </svg>`),
-    },
-    {
-      name: "shop logo",
-      uri: svgUri(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 150">
-        <rect width="200" height="150" fill="#1d242c"/>
-        <circle cx="100" cy="70" r="42" fill="none" stroke="#e8edf2" stroke-width="5"/>
-        <path d="M80 84 l14 -36 6 16 8 -10 12 30z" fill="#e8edf2"/>
-        <text x="100" y="132" text-anchor="middle" font-family="monospace" font-size="15" fill="#e8edf2" letter-spacing="4">SUMMIT CO.</text>
-      </svg>`),
-    },
-  ];
-
   // ---------- objects ----------
   const OBJECTS = [
     {
@@ -109,16 +76,6 @@
   }
 
   // ---------- step 1: art ----------
-  const sampleRow = $("sample-row");
-  SAMPLES.forEach((s) => {
-    const card = document.createElement("button");
-    card.className = "sample-card";
-    card.type = "button";
-    card.innerHTML = `<img src="${s.uri}" alt="${s.name} sample"><span>${s.name}</span>`;
-    card.addEventListener("click", () => selectArt(s.uri, s.name));
-    sampleRow.appendChild(card);
-  });
-
   const dropzone = $("dropzone");
   const fileInput = $("file-input");
   dropzone.addEventListener("click", () => fileInput.click());
