@@ -310,17 +310,12 @@ a { color: inherit; }
 .pipe-num { color: var(--teal); margin-right: 10px; }
 .pipe-note { margin-top: 8px; color: var(--ink-soft); font-weight: 600; font-size: 0.95rem; max-width: 30ch; }
 
-/* crops of the hero triptych (1920×1080, three 640px panels);
-   swap for dedicated PNGs when provided */
-.pipe-crop {
-  aspect-ratio: 1; border: 3px solid var(--ink); border-radius: 14px;
-  background-image: url("assets/hero-triptych.png");
-  background-repeat: no-repeat;
-  background-size: 506% auto;
+/* dedicated stage images, preprocessed so the nose is centered in each square */
+.pipe-img {
+  display: block; width: 100%; aspect-ratio: 1; object-fit: cover;
+  border: 3px solid var(--ink); border-radius: 14px;
+  background: #fff;
 }
-.pipe-crop--photo  { background-position: 0% 78%; }
-.pipe-crop--vector { background-position: 50% 12%; }
-.pipe-crop--object { background-position: 99% 42%; }
 
 .pipe-arrow { text-align: center; }
 .pipe-arrow img { width: clamp(44px, 6vw, 84px); height: auto; transform: rotate(-18deg); }
