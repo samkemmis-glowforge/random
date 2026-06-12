@@ -41,8 +41,9 @@ composition, pipeline cards) keeps the LIKE → THAT art direction.
 
 ## Funnel (xTool AImake-style "the page is the demo", with a result gate)
 
-1. **Hero widget, no account needed.** Visitor uploads a picture (or picks a
-   sample), picks an object (cutting board, slate, leather, tumbler).
+1. **Hero widget invites a real upload.** Visitor picks a picture (or a
+   sample) and an object. In production, an account-signup modal appears
+   when they try to use the tool — inputs are preserved through the modal.
 2. **Processing with honest intermediate signals** — trace, fit, settings —
    so the result feels earned, not theater.
 3. **Result rendered but blurred** behind a gate: *"Create a free account to
@@ -50,7 +51,7 @@ composition, pipeline cards) keeps the LIKE → THAT art direction.
 4. **Deeplink into the app** with the design already processing/processed.
 
 Below the fold: any-laser brand strip → photo → vector → object pipeline
-showcase → gallery → FAQ → final CTA.
+showcase → FAQ → final CTA.
 
 ## What's placeholder vs. real
 
@@ -60,7 +61,6 @@ showcase → gallery → FAQ → final CTA.
 | Widget interaction flow | Real (fully client-side; uploads never leave the browser) |
 | Image processing | Faked (scripted log + CSS-composited blurred preview) |
 | Auth gate | Stub modal showing the URL the CTA would hit |
-| Gallery images | CSS gradient placeholders |
 | Sample art / object renders | Inline SVG placeholders |
 
 ## Auth gating contract (to implement)
@@ -68,10 +68,10 @@ showcase → gallery → FAQ → final CTA.
 The stub in `app.js` (`AUTH_BASE`, `data-auth-link` handler) encodes the
 intended contract:
 
-1. **Anonymous design creation.** When the visitor hits "Generate my
-   engraving", POST the inputs to an unauthenticated endpoint that returns a
-   short-lived `design_id` (claim token). Rate-limit / size-cap this endpoint;
-   processing can be queued — the gate hides the result anyway.
+1. **Use-time signup modal.** Widget inputs (picture + object) are held
+   client-side; when the visitor tries to use the tool, the signup modal
+   appears. After auth, POST the preserved inputs to create the design —
+   no unauthenticated processing endpoint needed.
 2. **Gate → signup redirect.**
    `https://app.glowforge.com/signup?design=<design_id>&trial=premium-14d&next=/magic-engraver/<design_id>&utm_…`
 3. **On signup:** account created, 14-day Premium trial auto-activated
