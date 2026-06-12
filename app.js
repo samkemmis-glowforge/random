@@ -16,17 +16,9 @@
 
   const SAMPLES = [
     {
-      name: "pet photo",
-      uri: svgUri(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 150">
-        <rect width="200" height="150" fill="#c9b8a0"/>
-        <ellipse cx="100" cy="146" rx="100" ry="18" fill="#a08a6c"/>
-        <path d="M70 128 q-6 -32 10 -49 q-12 -9 -8 -24 q13 2 19 11 q8 -6 21 -6 t21 6 q6 -9 19 -11 q4 15 -8 24 q16 17 10 49 q-2 9 -13 11 l-58 0 q-11 -2 -13 -11z" fill="#7a5a3f"/>
-        <ellipse cx="99" cy="93" rx="24" ry="20" fill="#97744e"/>
-        <ellipse cx="91" cy="86" rx="3" ry="3.6" fill="#221810"/>
-        <ellipse cx="107" cy="86" rx="3" ry="3.6" fill="#221810"/>
-        <ellipse cx="99" cy="96" rx="4.4" ry="3" fill="#221810"/>
-        <path d="M93 99 q6 6 12 0 q-2 7 -6 7 t-6 -7z" fill="#221810"/>
-      </svg>`),
+      // the hero dog — same photo the triptych starts from
+      name: "milo.jpg",
+      uri: "assets/milo.jpg",
     },
     {
       name: "kid's drawing",

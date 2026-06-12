@@ -8,13 +8,20 @@ Static page, no build step: open `index.html` in a browser.
 
 ## Art direction
 
-Implements Sam's "LIKE → THAT" hero design (Canva, exported as layers in
-`assets/layer-*.png`): warm paper background, heavy ink display type
-(Archivo Black), hand-drawn teal marks (sparkle, dotted swoosh arrow, snap
-ticks), tagline "One photo in. An heirloom out." Real hero images are
-committed: `assets/milo.jpg` and `assets/milo-engraved.svg` (an actual
-xTool Creative Space trace export — on-brand for "works with any laser").
-The `*-placeholder.svg` files remain as `onerror` fallbacks.
+Hero is Sam's "JUST LIKE THAT" triptych (`assets/hero-triptych.png`,
+1920×1080): photo → vector → engraved board in three panels. High-level
+sensibility: BIG and fun (inspired by the scale/energy of Lenny's Product
+Pass, no specific elements lifted) — oversized Archivo Black display type,
+full-width hero image, scrolling any-laser marquee on the triptych's pine
+teal (#0E454D), hand-drawn teal marks reused from the earlier hero layers
+(`assets/layer-sparkle/swoosh-arrow`). The pipeline section crops the
+triptych's three panels via CSS `background-position` — swap for dedicated
+PNGs when provided. `assets/milo.jpg` doubles as the widget's first sample.
+Triptych colors are the official brand tokens (cream tint #FDF8F1, teal
+shade #0E454D).
+
+Earlier-iteration assets still in `assets/`: `layer-*.png` word/tagline
+layers, `milo-engraved.svg` (xTool trace export), `*-placeholder.svg`.
 
 Color tokens are aligned to the official Glowforge brand palette from
 `samkemmis-glowforge/design_mark` → `brand/brand.json` (teal #16A0B0
