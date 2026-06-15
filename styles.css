@@ -305,7 +305,8 @@ a { color: inherit; }
 }
 
 .pipe-arrow { text-align: center; }
-.pipe-arrow img { width: clamp(44px, 6vw, 84px); height: auto; transform: rotate(-18deg); }
+/* official teal swoosh already flows left→right-and-up; no rotation needed */
+.pipe-arrow img { width: clamp(54px, 7vw, 100px); height: auto; }
 
 /* ---------- faq ---------- */
 .faq { padding: 0 0 clamp(64px, 9vw, 110px); }
@@ -367,7 +368,8 @@ a { color: inherit; }
 @media (max-width: 920px) {
   .pipe-grid { grid-template-columns: 1fr; gap: 8px; }
   .pipe-card { max-width: 420px; margin-inline: auto; }
-  .pipe-arrow img { transform: rotate(35deg); }
+  /* point the swoosh downward when cards stack vertically */
+  .pipe-arrow img { transform: rotate(58deg); width: clamp(64px, 16vw, 96px); }
 }
 @media (max-width: 540px) {
   .proc-stage { grid-template-columns: 1fr; }
