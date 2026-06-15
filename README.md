@@ -8,20 +8,21 @@ Static page, no build step: open `index.html` in a browser.
 
 ## Art direction
 
-Hero is the canonical "JUST LIKE THAT" composition (`assets/hero-1920.png`,
-1920×1080) — photo → vector → engraved plaque, with eyebrow, value prop,
-and doodle marks baked in. High-level sensibility: BIG and fun (inspired by
-the scale/energy of Lenny's Product Pass, no specific elements lifted) —
-oversized Archivo Black display type, full-width hero, scrolling any-laser
-marquee on pine teal (#0E454D).
+Hero is Sam's "JUST LIKE THAT" triptych (`assets/hero-triptych.png`,
+1920×1080) — photo → vector → engraved board in three panels — with an
+Archivo Black eyebrow + "Put any picture on anything" tagline below.
+High-level sensibility: BIG and fun (inspired by the scale/energy of
+Lenny's Product Pass, no specific elements lifted) — oversized display
+type, full-width hero, scrolling any-laser marquee on pine teal (#0E454D).
+(The manifest's flattened `hero-1920` and `milo-coaster-composite` were
+tried and rejected in favor of these.)
 
-All Milo/hero imagery and the hand-drawn marks are sourced from one place:
-the `samkemmis-glowforge/design_mark` asset manifest
-(`assets/manifest.json` on branch `claude/gifted-davinci-YFc85`),
-fetched via its raw URLs and committed here:
-- `hero-1920.png` — hero composition
-- `milo-photo-popout.png`, `milo-trace-transparent.png`,
-  `milo-coaster-composite.png` — the three pipeline cards
+The doodle marks and the two photo/vector pipeline cards are sourced from
+the `samkemmis-glowforge/design_mark` asset manifest (`assets/manifest.json`
+on branch `claude/gifted-davinci-YFc85`), fetched via raw URLs and
+committed here:
+- `milo-photo-popout.png`, `milo-trace-transparent.png` — pipeline cards
+  1 & 2; the coaster card 3 uses `milo-3-coaster.png`
 - `mark-arrow-swoosh-teal.png` — pipeline connectors
 - `mark-burst-teal.png` (hero CTA accent), `mark-burst-cream.png` (on the
   pine final-CTA), `mark-underline-squiggle-teal.png` (under "any laser")
