@@ -323,13 +323,14 @@ a { color: inherit; }
   object-fit: cover; border-radius: 14px;
 }
 
-/* swoosh connector: locked to the image's vertical center, sitting in the
-   gap; flipped vertically (scaleY -1) so the arrowhead points down at the
-   next image instead of up into the space above it */
+/* swoosh connector points right at the next image: its tip is at the
+   asset's right edge / 93.1% down, so place the right edge at the next
+   image's left edge and lift by 93.1% to land the tip on the image's
+   vertical center */
 .pipe-arrow {
-  position: absolute; top: 50%; left: 100%;
-  transform: translate(calc(var(--pgap) / 2 - 50%), -50%) scaleY(-1);
-  width: clamp(72px, 9vw, 132px); height: auto;
+  position: absolute; top: 50%; left: calc(100% + var(--pgap) - 8px);
+  transform: translate(-100%, -93.1%);
+  width: clamp(116px, 13.5vw, 172px); height: auto;
   pointer-events: none; z-index: 4;
 }
 /* earlier cards stack above later ones so a connector is never clipped by
@@ -405,10 +406,10 @@ a { color: inherit; }
 @media (max-width: 920px) {
   .pipe-grid { grid-template-columns: 1fr; gap: 28px; }
   .pipe-card { max-width: 420px; margin-inline: auto; }
-  /* stacked: drop the swoosh below each image, pointing down to the next step */
+  /* stacked: drop the swoosh below each image, rotated to point down at the next */
   .pipe-arrow {
-    position: static; display: block; margin: 14px auto 0;
-    transform: rotate(60deg); width: clamp(76px, 18vw, 112px);
+    position: static; display: block; margin: 16px auto 0;
+    transform: rotate(80deg); width: clamp(104px, 24vw, 150px);
   }
 }
 @media (max-width: 540px) {
