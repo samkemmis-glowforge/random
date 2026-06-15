@@ -8,20 +8,27 @@ Static page, no build step: open `index.html` in a browser.
 
 ## Art direction
 
-Hero is Sam's "JUST LIKE THAT" triptych (`assets/hero-triptych.png`,
-1920×1080): photo → vector → engraved board in three panels. High-level
-sensibility: BIG and fun (inspired by the scale/energy of Lenny's Product
-Pass, no specific elements lifted) — oversized Archivo Black display type,
-full-width hero image, scrolling any-laser marquee on the triptych's pine
-teal (#0E454D), hand-drawn teal marks reused from the earlier hero layers
-(`assets/layer-sparkle/swoosh-arrow`). The pipeline section crops the
-triptych's three panels via CSS `background-position` — swap for dedicated
-PNGs when provided. `assets/milo.jpg` doubles as the widget's first sample.
-Triptych colors are the official brand tokens (cream tint #FDF8F1, teal
-shade #0E454D).
+Hero is the canonical "JUST LIKE THAT" composition (`assets/hero-1920.png`,
+1920×1080) — photo → vector → engraved plaque, with eyebrow, value prop,
+and doodle marks baked in. High-level sensibility: BIG and fun (inspired by
+the scale/energy of Lenny's Product Pass, no specific elements lifted) —
+oversized Archivo Black display type, full-width hero, scrolling any-laser
+marquee on pine teal (#0E454D).
 
-Earlier-iteration assets still in `assets/`: `layer-*.png` word/tagline
-layers, `milo-engraved.svg` (xTool trace export), `*-placeholder.svg`.
+All Milo/hero imagery and the hand-drawn marks are sourced from one place:
+the `samkemmis-glowforge/design_mark` asset manifest
+(`assets/manifest.json` on branch `claude/gifted-davinci-YFc85`),
+fetched via its raw URLs and committed here:
+- `hero-1920.png` — hero composition
+- `milo-photo-popout.png`, `milo-trace-transparent.png`,
+  `milo-coaster-composite.png` — the three pipeline cards
+- `mark-arrow-swoosh-teal.png` — pipeline connectors
+- `mark-burst-teal.png` (hero CTA accent), `mark-burst-cream.png` (on the
+  pine final-CTA), `mark-underline-squiggle-teal.png` (under "any laser")
+
+The manifest also offers `currentColor` SVG marks, all three mark colorways
+(ink/teal/cream), and separated hero layers — available if we want to
+recolor or animate later.
 
 Color tokens are aligned to the official Glowforge brand palette from
 `samkemmis-glowforge/design_mark` → `brand/brand.json` (teal #16A0B0
