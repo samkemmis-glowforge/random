@@ -299,11 +299,11 @@ a { color: inherit; }
 /* ---------- pipeline ---------- */
 .pipeline { padding: clamp(64px, 9vw, 110px) 0; }
 .pipe-grid {
-  --pgap: clamp(28px, 5vw, 76px);
+  --pgap: clamp(40px, 6.5vw, 112px);
   display: grid; grid-template-columns: repeat(3, 1fr);
   gap: var(--pgap); align-items: start; margin-top: 48px;
 }
-.pipe-card { margin: 0; }
+.pipe-card { margin: 0; position: relative; }
 .pipe-card figcaption {
   margin-top: 16px;
   font-family: var(--display); font-size: clamp(1.05rem, 1.8vw, 1.35rem);
@@ -323,14 +323,20 @@ a { color: inherit; }
   object-fit: cover; border-radius: 14px;
 }
 
-/* swoosh connector: locked to the image's vertical center, sized big,
-   sitting in the gap between cards (overflows the square to the right) */
+/* swoosh connector: locked to the image's vertical center, sitting in the
+   gap; flipped vertically (scaleY -1) so the arrowhead points down at the
+   next image instead of up into the space above it */
 .pipe-arrow {
   position: absolute; top: 50%; left: 100%;
-  transform: translate(calc(var(--pgap) / 2 - 50%), -50%);
+  transform: translate(calc(var(--pgap) / 2 - 50%), -50%) scaleY(-1);
   width: clamp(72px, 9vw, 132px); height: auto;
-  pointer-events: none;
+  pointer-events: none; z-index: 4;
 }
+/* earlier cards stack above later ones so a connector is never clipped by
+   the next (opaque) image — its head can ride onto the next card */
+.pipe-card:nth-of-type(1) { z-index: 3; }
+.pipe-card:nth-of-type(2) { z-index: 2; }
+.pipe-card:nth-of-type(3) { z-index: 1; }
 
 /* ---------- faq ---------- */
 .faq { padding: 0 0 clamp(64px, 9vw, 110px); }
