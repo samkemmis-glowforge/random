@@ -138,13 +138,14 @@ a { color: inherit; }
   font-size: clamp(1.05rem, 2vw, 1.4rem); font-weight: 600;
   color: var(--ink-soft);
 }
-/* hand-drawn squiggle underline under "any laser" */
+/* hand-drawn squiggle underline under "any laser" — extra gap below the
+   text and a touch wider than the words so the waves read loose, not tight */
 .hero-sub strong.squiggle {
   color: var(--ink); position: relative;
   display: inline-block; line-height: 1.1;
-  padding-bottom: 0.42em;
+  padding-bottom: 0.72em;
   background: url("assets/mark-underline-squiggle-teal.png") no-repeat center bottom;
-  background-size: 100% auto;
+  background-size: 116% auto;
 }
 .hero-ctas { display: flex; flex-direction: column; align-items: center; gap: 12px; margin-top: 30px; }
 .hero-fine { font-family: var(--mono); font-size: 0.78rem; color: var(--ink-soft); }
@@ -298,8 +299,9 @@ a { color: inherit; }
 /* ---------- pipeline ---------- */
 .pipeline { padding: clamp(64px, 9vw, 110px) 0; }
 .pipe-grid {
-  display: grid; grid-template-columns: 1fr auto 1fr auto 1fr;
-  gap: clamp(10px, 2vw, 22px); align-items: center; margin-top: 48px;
+  --pgap: clamp(28px, 5vw, 76px);
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: var(--pgap); align-items: start; margin-top: 48px;
 }
 .pipe-card { margin: 0; }
 .pipe-card figcaption {
@@ -313,6 +315,7 @@ a { color: inherit; }
 /* popout stage images — transparent PNGs float on the cream; full image
    shown (contain) so nothing crops. The coaster is a photo, so it gets a
    soft rounded frame to sit cohesively with the two floating popouts. */
+.pipe-shot { position: relative; }
 .pipe-img {
   display: block; width: 100%; aspect-ratio: 1; object-fit: contain;
 }
@@ -320,9 +323,14 @@ a { color: inherit; }
   object-fit: cover; border-radius: 14px;
 }
 
-.pipe-arrow { text-align: center; }
-/* official teal swoosh already flows left→right-and-up; no rotation needed */
-.pipe-arrow img { width: clamp(54px, 7vw, 100px); height: auto; }
+/* swoosh connector: locked to the image's vertical center, sized big,
+   sitting in the gap between cards (overflows the square to the right) */
+.pipe-arrow {
+  position: absolute; top: 50%; left: 100%;
+  transform: translate(calc(var(--pgap) / 2 - 50%), -50%);
+  width: clamp(72px, 9vw, 132px); height: auto;
+  pointer-events: none;
+}
 
 /* ---------- faq ---------- */
 .faq { padding: 0 0 clamp(64px, 9vw, 110px); }
@@ -389,10 +397,13 @@ a { color: inherit; }
 
 /* ---------- responsive ---------- */
 @media (max-width: 920px) {
-  .pipe-grid { grid-template-columns: 1fr; gap: 8px; }
+  .pipe-grid { grid-template-columns: 1fr; gap: 28px; }
   .pipe-card { max-width: 420px; margin-inline: auto; }
-  /* point the swoosh downward when cards stack vertically */
-  .pipe-arrow img { transform: rotate(58deg); width: clamp(64px, 16vw, 96px); }
+  /* stacked: drop the swoosh below each image, pointing down to the next step */
+  .pipe-arrow {
+    position: static; display: block; margin: 14px auto 0;
+    transform: rotate(60deg); width: clamp(76px, 18vw, 112px);
+  }
 }
 @media (max-width: 540px) {
   .proc-stage { grid-template-columns: 1fr; }
