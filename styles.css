@@ -294,11 +294,14 @@ a { color: inherit; }
 .pipe-num { color: var(--teal); margin-right: 10px; }
 .pipe-note { margin-top: 8px; color: var(--ink-soft); font-weight: 600; font-size: 0.95rem; max-width: 30ch; }
 
-/* dedicated stage images, preprocessed so the nose is centered in each square */
+/* popout stage images — transparent PNGs float on the cream; full image
+   shown (contain) so nothing crops. The coaster is a photo, so it gets a
+   soft rounded frame to sit cohesively with the two floating popouts. */
 .pipe-img {
-  display: block; width: 100%; aspect-ratio: 1; object-fit: cover;
-  border: 3px solid var(--ink); border-radius: 14px;
-  background: #fff;
+  display: block; width: 100%; aspect-ratio: 1; object-fit: contain;
+}
+.pipe-img--framed {
+  object-fit: cover; border-radius: 14px;
 }
 
 .pipe-arrow { text-align: center; }
