@@ -1,3 +1,5 @@
+import { asset } from "@/lib/base";
+
 export default function Hero() {
   return (
     <section
@@ -17,7 +19,7 @@ export default function Hero() {
         <figure className="relative mx-auto max-w-[min(100%,var(--hero-max,880px))]">
           <img
             className="block h-auto w-full rounded-[18px] border-[3px] border-ink"
-            src="/assets/hero-triptych.png"
+            src={asset("/assets/hero-triptych.png")}
             alt="Triptych: a photo of Milo the dog, the same dog as traced vector line art, and the dog engraved on a round wooden board — captioned JUST LIKE THAT"
           />
         </figure>

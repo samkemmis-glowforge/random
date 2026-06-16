@@ -1,3 +1,5 @@
+import { asset } from "@/lib/base";
+
 const STEPS = [
   {
     img: "/assets/milo-photo-popout.png",
@@ -45,9 +47,9 @@ export default function Pipeline() {
           {STEPS.map((s) => (
             <figure className="pipe-card m-0" key={s.num}>
               <div className="pipe-shot">
-                <img className={`pipe-img${s.framed ? " pipe-img--framed" : ""}`} src={s.img} alt={s.alt} />
+                <img className={`pipe-img${s.framed ? " pipe-img--framed" : ""}`} src={asset(s.img)} alt={s.alt} />
                 {s.arrow && (
-                  <img className="pipe-arrow" src="/assets/mark-arrow-swoosh.png" alt="" aria-hidden="true" />
+                  <img className="pipe-arrow" src={asset("/assets/mark-arrow-swoosh.png")} alt="" aria-hidden="true" />
                 )}
               </div>
               <figcaption className="mt-4 font-display text-[clamp(1.05rem,1.8vw,1.35rem)] uppercase tracking-[-0.01em]">

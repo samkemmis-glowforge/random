@@ -1,9 +1,11 @@
+import { asset } from "@/lib/base";
+
 export default function FinalCta() {
   return (
     <section className="relative overflow-hidden border-t-[3px] border-ink bg-pine px-6 py-[clamp(80px,12vw,140px)] text-paper">
       <img
         className="pointer-events-none absolute right-[clamp(20px,8vw,110px)] top-[clamp(18px,5vw,54px)] w-[clamp(54px,9vw,116px)] opacity-90"
-        src="/assets/mark-burst-cream.png"
+        src={asset("/assets/mark-burst-cream.png")}
         alt=""
         aria-hidden="true"
       />
