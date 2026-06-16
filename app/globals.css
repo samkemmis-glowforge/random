@@ -432,6 +432,22 @@
     object-fit: cover;
     border-radius: 14px;
   }
+  /* coaster shows as a pannable background so its framing is tweakable */
+  .coaster-shot {
+    display: block;
+    width: 100%;
+    aspect-ratio: 1;
+    border-radius: 14px;
+    background-image: var(--img-coaster);
+    background-repeat: no-repeat;
+    background-position: var(--coaster-x, 50%) var(--coaster-y, 33%);
+    background-size: var(--coaster-zoom, 100%);
+  }
+  /* tweak-panel: highlight the element(s) a hovered slider affects */
+  .tw-highlight {
+    outline: 2.5px dashed #e0497b !important;
+    outline-offset: 3px;
+  }
   /* tip is at the asset's right edge / 93.1% down: place the right edge at
      the next image's left edge and lift 93.1% so the tip lands on center */
   .pipe-arrow {

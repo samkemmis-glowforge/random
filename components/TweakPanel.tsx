@@ -4,16 +4,18 @@ import { useEffect, useState } from "react";
 
 /**
  * Scoped visual tweak panel — a dev-only direct-manipulation surface for the
- * knobs we actually iterate on. Each slider live-sets a CSS variable that the
- * stylesheet reads (with the committed value as fallback). Nothing is applied
- * until you move a slider; "Copy CSS" gives you only what you changed, which
- * Claude bakes into the stylesheet.
+ * knobs we iterate on. Each slider live-sets a CSS variable the stylesheet
+ * reads (with the committed value as fallback). Hovering/focusing a slider
+ * outlines the element(s) it affects. Nothing applies until you move a
+ * slider; "Copy CSS" emits only what you changed, to paste back and commit.
  *
  * Visible in `npm run dev`, or on the static build via ?tweak in the URL.
  */
 type Knob = {
   var: string;
   label: string;
+  desc: string;
+  sel: string;
   min: number;
   max: number;
   step: number;
@@ -22,16 +24,23 @@ type Knob = {
 };
 
 const KNOBS: Knob[] = [
-  { var: "--hero-max", label: "Hero image width", min: 600, max: 1200, step: 10, def: 880, unit: "px" },
-  { var: "--hero-pad", label: "Hero bottom pad", min: 0, max: 120, step: 2, def: 56, unit: "px" },
-  { var: "--pgap-set", label: "Pipeline gap", min: 24, max: 180, step: 2, def: 112, unit: "px" },
-  { var: "--arrow-w", label: "Arrow width", min: 90, max: 220, step: 2, def: 172, unit: "px" },
-  { var: "--arrow-x", label: "Arrow X nudge", min: -40, max: 40, step: 1, def: -8, unit: "px" },
-  { var: "--arrow-y", label: "Arrow Y offset", min: -120, max: -60, step: 0.5, def: -93.1, unit: "%" },
-  { var: "--squiggle-pad", label: "Squiggle gap", min: 0.2, max: 1.2, step: 0.02, def: 0.72, unit: "em" },
-  { var: "--squiggle-w", label: "Squiggle width", min: 90, max: 140, step: 1, def: 116, unit: "%" },
-  { var: "--marquee-dur", label: "Marquee speed", min: 8, max: 60, step: 1, def: 28, unit: "s" },
+  { var: "--hero-max", label: "Hero image width", desc: "the JUST LIKE THAT hero image", sel: '[data-tw="hero-img"]', min: 600, max: 1200, step: 10, def: 880, unit: "px" },
+  { var: "--hero-pad", label: "Hero bottom space", desc: "gap below the hero, before the banner", sel: '[data-tw="hero"]', min: 0, max: 120, step: 2, def: 56, unit: "px" },
+  { var: "--pgap-set", label: "Pipeline gap", desc: "space between the 3 steps", sel: ".pipe-grid", min: 24, max: 180, step: 2, def: 112, unit: "px" },
+  { var: "--arrow-w", label: "Arrow size", desc: "the swoosh arrows between steps", sel: ".pipe-arrow", min: 90, max: 220, step: 2, def: 172, unit: "px" },
+  { var: "--arrow-x", label: "Arrow nudge X", desc: "move arrows left/right in the gap", sel: ".pipe-arrow", min: -40, max: 40, step: 1, def: -8, unit: "px" },
+  { var: "--arrow-y", label: "Arrow nudge Y", desc: "move the arrow tip up/down", sel: ".pipe-arrow", min: -120, max: -60, step: 0.5, def: -93.1, unit: "%" },
+  { var: "--squiggle-pad", label: "Squiggle gap", desc: "space under “any laser”", sel: ".squiggle", min: 0.2, max: 1.2, step: 0.02, def: 0.72, unit: "em" },
+  { var: "--squiggle-w", label: "Squiggle width", desc: "how wide the squiggle spreads", sel: ".squiggle", min: 90, max: 140, step: 1, def: 116, unit: "%" },
+  { var: "--marquee-dur", label: "Banner speed", desc: "laser-brands scroll (higher = slower)", sel: ".marquee-track", min: 8, max: 60, step: 1, def: 28, unit: "s" },
+  { var: "--coaster-zoom", label: "Coaster zoom", desc: "zoom into the coaster photo", sel: '[data-tw="coaster"]', min: 100, max: 180, step: 1, def: 100, unit: "%" },
+  { var: "--coaster-x", label: "Coaster pan X", desc: "pan coaster left/right (zoom in first)", sel: '[data-tw="coaster"]', min: 0, max: 100, step: 1, def: 50, unit: "%" },
+  { var: "--coaster-y", label: "Coaster pan Y", desc: "pan coaster up/down", sel: '[data-tw="coaster"]', min: 0, max: 100, step: 1, def: 33, unit: "%" },
 ];
+
+function highlight(sel: string, on: boolean) {
+  document.querySelectorAll(sel).forEach((el) => el.classList.toggle("tw-highlight", on));
+}
 
 export default function TweakPanel() {
   const [mounted, setMounted] = useState(false);
@@ -43,6 +52,8 @@ export default function TweakPanel() {
   const [copied, setCopied] = useState(false);
 
   useEffect(() => setMounted(true), []);
+  // clear any stray highlights on unmount
+  useEffect(() => () => KNOBS.forEach((k) => highlight(k.sel, false)), []);
 
   if (!mounted) return null;
   const enabled =
@@ -58,7 +69,10 @@ export default function TweakPanel() {
   }
 
   function reset() {
-    KNOBS.forEach((k) => document.documentElement.style.removeProperty(k.var));
+    KNOBS.forEach((k) => {
+      document.documentElement.style.removeProperty(k.var);
+      highlight(k.sel, false);
+    });
     setVals(Object.fromEntries(KNOBS.map((k) => [k.var, k.def])));
     setTouched({});
     setCopied(false);
@@ -73,45 +87,36 @@ export default function TweakPanel() {
     setCopied(true);
   }
 
-  const wrap: React.CSSProperties = {
-    position: "fixed",
-    right: 16,
-    bottom: 16,
-    zIndex: 9999,
-    width: 268,
-    maxHeight: "82vh",
-    overflowY: "auto",
-    background: "rgba(10,12,16,0.94)",
-    color: "#e8edf2",
-    border: "1px solid #2b333d",
-    borderRadius: 12,
-    padding: open ? 14 : "8px 12px",
-    font: '12px/1.4 ui-monospace, "IBM Plex Mono", monospace',
-    boxShadow: "0 12px 40px rgba(0,0,0,0.45)",
-  };
-
   return (
     <div style={wrap}>
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
         <strong style={{ letterSpacing: "0.08em", textTransform: "uppercase", fontSize: 11 }}>
           Tweak panel
         </strong>
-        <button onClick={() => setOpen((o) => !o)} style={btn}>
+        <button onClick={() => setOpen((o) => !o)} style={btn} aria-label="toggle panel">
           {open ? "–" : "+"}
         </button>
       </div>
 
       {open && (
         <>
+          <p style={{ margin: "6px 0 2px", color: "#8b95a1" }}>Hover a slider to see what it changes.</p>
+
           {KNOBS.map((k) => (
-            <label key={k.var} style={{ display: "block", marginTop: 12 }}>
-              <span style={{ display: "flex", justifyContent: "space-between" }}>
+            <div
+              key={k.var}
+              style={{ marginTop: 12 }}
+              onMouseEnter={() => highlight(k.sel, true)}
+              onMouseLeave={() => highlight(k.sel, false)}
+            >
+              <div style={{ display: "flex", justifyContent: "space-between" }}>
                 <span>{k.label}</span>
                 <span style={{ color: touched[k.var] ? "#7df2c8" : "#8b95a1" }}>
                   {vals[k.var]}
                   {k.unit}
                 </span>
-              </span>
+              </div>
+              <div style={{ color: "#6b7682", fontSize: 11, marginBottom: 2 }}>{k.desc}</div>
               <input
                 type="range"
                 min={k.min}
@@ -119,9 +124,11 @@ export default function TweakPanel() {
                 step={k.step}
                 value={vals[k.var]}
                 onChange={(e) => set(k, parseFloat(e.target.value))}
+                onFocus={() => highlight(k.sel, true)}
+                onBlur={() => highlight(k.sel, false)}
                 style={{ width: "100%", accentColor: "#16a0b0" }}
               />
-            </label>
+            </div>
           ))}
 
           <div style={{ display: "flex", gap: 8, marginTop: 14 }}>
@@ -140,6 +147,23 @@ export default function TweakPanel() {
     </div>
   );
 }
+
+const wrap: React.CSSProperties = {
+  position: "fixed",
+  right: 16,
+  bottom: 16,
+  zIndex: 9999,
+  width: 268,
+  maxHeight: "86vh",
+  overflowY: "auto",
+  background: "rgba(10,12,16,0.94)",
+  color: "#e8edf2",
+  border: "1px solid #2b333d",
+  borderRadius: 12,
+  padding: 14,
+  font: '12px/1.4 ui-monospace, "IBM Plex Mono", monospace',
+  boxShadow: "0 12px 40px rgba(0,0,0,0.45)",
+};
 
 const btn: React.CSSProperties = {
   background: "#1c2530",

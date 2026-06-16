@@ -25,6 +25,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           {
             "--img-squiggle": `url(${BASE}/assets/mark-underline-squiggle-teal.png)`,
             "--img-burst": `url(${BASE}/assets/mark-burst-teal.png)`,
+            "--img-coaster": `url(${BASE}/assets/milo-coaster-src.png)`,
           } as React.CSSProperties
         }
       >

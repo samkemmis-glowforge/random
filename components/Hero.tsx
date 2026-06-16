@@ -4,6 +4,7 @@ export default function Hero() {
   return (
     <section
       className="px-6 pb-[var(--hero-pad,56px)] pt-9"
+      data-tw="hero"
       aria-label="Magic Engraver — photo to vector to engraved object, just like that"
     >
       <div className="mx-auto max-w-[1400px]">
@@ -16,7 +17,7 @@ export default function Hero() {
           Magic Engraver: your photo, traced to vector art, engraved on anything — just like that.
         </h1>
 
-        <figure className="relative mx-auto max-w-[min(100%,var(--hero-max,880px))]">
+        <figure className="relative mx-auto max-w-[min(100%,var(--hero-max,880px))]" data-tw="hero-img">
           <img
             className="block h-auto w-full rounded-[18px] border-[3px] border-ink"
             src={asset("/assets/hero-triptych.png")}

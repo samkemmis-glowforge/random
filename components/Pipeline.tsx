@@ -47,7 +47,11 @@ export default function Pipeline() {
           {STEPS.map((s) => (
             <figure className="pipe-card m-0" key={s.num}>
               <div className="pipe-shot">
-                <img className={`pipe-img${s.framed ? " pipe-img--framed" : ""}`} src={asset(s.img)} alt={s.alt} />
+                {s.framed ? (
+                  <div className="coaster-shot" data-tw="coaster" role="img" aria-label={s.alt} />
+                ) : (
+                  <img className="pipe-img" src={asset(s.img)} alt={s.alt} />
+                )}
                 {s.arrow && (
                   <img className="pipe-arrow" src={asset("/assets/mark-arrow-swoosh.png")} alt="" aria-hidden="true" />
                 )}
