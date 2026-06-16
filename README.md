@@ -16,6 +16,25 @@ npm run dev     # local dev server at http://localhost:3000
 npm run build   # static export to out/
 ```
 
+### Live preview
+
+`.github/workflows/deploy.yml` builds the static export and publishes it to
+GitHub Pages on every push to `claude/loving-tesla-jzwtln`. Project Pages
+serve under a subpath, so the Pages build sets `NEXT_PUBLIC_BASE_PATH=/random`
+and asset URLs route through `lib/base.ts` (`asset()` for JSX, CSS variables
+on `<body>` for the two CSS-referenced marks). Live URL:
+**https://samkemmis-glowforge.github.io/random/**
+
+### Tweak panel
+
+A dev-only control panel (bottom-right) with live sliders for the recurring
+knobs (hero image width/pad, pipeline gap, arrow width/x/y, squiggle
+gap/width, marquee speed), each bound to a CSS variable with the committed
+value as fallback. Move a slider → live update; **Copy CSS** emits only what
+you changed, to paste back and commit. Shown in `npm run dev`, or on the live
+URL by appending **`?tweak`** (e.g. `…/random/?tweak`). Add a knob in
+`components/TweakPanel.tsx` (~3 lines) + a `var(--knob, default)` in CSS.
+
 **Onlook (visual editing for the last 5%).** Run Onlook locally against this
 project (`npm run dev`) to drag/space/recolor elements like Figma; it writes
 Tailwind class changes back into the `.tsx` files via AST. Commit those and
