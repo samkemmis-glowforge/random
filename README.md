@@ -4,7 +4,40 @@ Interactive landing page for the Magic Engraver feature of Glowforge Premium
 (Universal — works with any laser). Goals: account signups and 14-day trial
 starts, using a try-it-now widget whose **result is auth-gated**.
 
-Static page, no build step: open `index.html` in a browser.
+## Stack & workflow
+
+Next.js (App Router) + Tailwind CSS + TypeScript, configured for **static
+export** (`output: "export"` → `out/`), so it still ships as plain
+HTML/CSS/JS.
+
+```bash
+npm install
+npm run dev     # local dev server at http://localhost:3000
+npm run build   # static export to out/
+```
+
+**Onlook (visual editing for the last 5%).** Run Onlook locally against this
+project (`npm run dev`) to drag/space/recolor elements like Figma; it writes
+Tailwind class changes back into the `.tsx` files via AST. Commit those and
+push so the changes land here. Onlook is Next.js + Tailwind only and v0.x —
+use it for layout/styling, come back to Claude Code for logic.
+
+What Onlook can drive vs. not:
+- **Editable (Tailwind utilities in JSX):** the page chrome — header, hero,
+  marquee, pipeline layout, headings, FAQ, footer, buttons' placement.
+- **In code, not Onlook (`app/globals.css` component classes):** the demo
+  widget internals, marquee/scanline keyframes, the blurred gate, and the
+  hand-drawn mark placements (squiggle, CTA burst, pipeline arrow transform).
+
+## Layout
+
+- `app/layout.tsx` — html shell, fonts (Google Fonts via `<link>`), metadata
+- `app/page.tsx` — composes the sections + mounts `<TryWidget/>` and `<AuthModal/>`
+- `app/globals.css` — Tailwind directives + custom component classes
+- `tailwind.config.ts` — brand + gf-design-system tokens (colors, fonts)
+- `components/` — `Header`, `Hero`, `Marquee`, `Pipeline`, `Faq`, `FinalCta`,
+  `Footer` (static), plus client `TryWidget` and `AuthModal`
+- `public/assets/` — images (served at `/assets/...`)
 
 ## Art direction
 
