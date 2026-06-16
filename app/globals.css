@@ -90,7 +90,7 @@
     position: relative;
     display: inline-block;
     line-height: 1.1;
-    padding-bottom: var(--squiggle-pad, 0.72em);
+    padding-bottom: var(--squiggle-pad, 0.84em);
     background-image: var(--img-squiggle);
     background-repeat: no-repeat;
     background-position: center bottom;
@@ -440,8 +440,8 @@
     border-radius: 14px;
     background-image: var(--img-coaster);
     background-repeat: no-repeat;
-    background-position: var(--coaster-x, 50%) var(--coaster-y, 33%);
-    background-size: var(--coaster-zoom, 100%);
+    background-position: var(--coaster-x, 100%) var(--coaster-y, 67%);
+    background-size: var(--coaster-zoom, 114%);
   }
   /* tweak-panel: highlight the element(s) a hovered slider affects */
   .tw-highlight {
@@ -453,8 +453,8 @@
   .pipe-arrow {
     position: absolute;
     top: 50%;
-    left: calc(100% + var(--pgap) + var(--arrow-x, -8px));
-    transform: translate(-100%, var(--arrow-y, -93.1%));
+    left: calc(100% + var(--pgap) + var(--arrow-x, 16px));
+    transform: translate(-100%, var(--arrow-y, -60%));
     width: var(--arrow-w, clamp(116px, 13.5vw, 172px));
     height: auto;
     pointer-events: none;

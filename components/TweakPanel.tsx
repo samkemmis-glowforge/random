@@ -28,14 +28,14 @@ const KNOBS: Knob[] = [
   { var: "--hero-pad", label: "Hero bottom space", desc: "gap below the hero, before the banner", sel: '[data-tw="hero"]', min: 0, max: 120, step: 2, def: 56, unit: "px" },
   { var: "--pgap-set", label: "Pipeline gap", desc: "space between the 3 steps", sel: ".pipe-grid", min: 24, max: 180, step: 2, def: 112, unit: "px" },
   { var: "--arrow-w", label: "Arrow size", desc: "the swoosh arrows between steps", sel: ".pipe-arrow", min: 90, max: 220, step: 2, def: 172, unit: "px" },
-  { var: "--arrow-x", label: "Arrow nudge X", desc: "move arrows left/right in the gap", sel: ".pipe-arrow", min: -40, max: 40, step: 1, def: -8, unit: "px" },
-  { var: "--arrow-y", label: "Arrow nudge Y", desc: "move the arrow tip up/down", sel: ".pipe-arrow", min: -120, max: -60, step: 0.5, def: -93.1, unit: "%" },
-  { var: "--squiggle-pad", label: "Squiggle gap", desc: "space under “any laser”", sel: ".squiggle", min: 0.2, max: 1.2, step: 0.02, def: 0.72, unit: "em" },
+  { var: "--arrow-x", label: "Arrow nudge X", desc: "move arrows left/right in the gap", sel: ".pipe-arrow", min: -40, max: 40, step: 1, def: 16, unit: "px" },
+  { var: "--arrow-y", label: "Arrow nudge Y", desc: "move the arrow tip up/down", sel: ".pipe-arrow", min: -120, max: -60, step: 0.5, def: -60, unit: "%" },
+  { var: "--squiggle-pad", label: "Squiggle gap", desc: "space under “any laser”", sel: ".squiggle", min: 0.2, max: 1.2, step: 0.02, def: 0.84, unit: "em" },
   { var: "--squiggle-w", label: "Squiggle width", desc: "how wide the squiggle spreads", sel: ".squiggle", min: 90, max: 140, step: 1, def: 116, unit: "%" },
   { var: "--marquee-dur", label: "Banner speed", desc: "laser-brands scroll (higher = slower)", sel: ".marquee-track", min: 8, max: 60, step: 1, def: 28, unit: "s" },
-  { var: "--coaster-zoom", label: "Coaster zoom", desc: "zoom into the coaster photo", sel: '[data-tw="coaster"]', min: 100, max: 180, step: 1, def: 100, unit: "%" },
-  { var: "--coaster-x", label: "Coaster pan X", desc: "pan coaster left/right (zoom in first)", sel: '[data-tw="coaster"]', min: 0, max: 100, step: 1, def: 50, unit: "%" },
-  { var: "--coaster-y", label: "Coaster pan Y", desc: "pan coaster up/down", sel: '[data-tw="coaster"]', min: 0, max: 100, step: 1, def: 33, unit: "%" },
+  { var: "--coaster-zoom", label: "Coaster zoom", desc: "zoom into the coaster photo (also lets pan X work)", sel: '[data-tw="coaster"]', min: 100, max: 180, step: 1, def: 114, unit: "%" },
+  { var: "--coaster-x", label: "Coaster pan X", desc: "pan coaster left/right", sel: '[data-tw="coaster"]', min: 0, max: 100, step: 1, def: 100, unit: "%" },
+  { var: "--coaster-y", label: "Coaster pan Y", desc: "pan coaster up/down", sel: '[data-tw="coaster"]', min: 0, max: 100, step: 1, def: 67, unit: "%" },
 ];
 
 function highlight(sel: string, on: boolean) {
