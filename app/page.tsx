@@ -7,6 +7,7 @@ import Hero from "@/components/Hero";
 import Marquee from "@/components/Marquee";
 import Pipeline from "@/components/Pipeline";
 import TryWidget from "@/components/TryWidget";
+import TweakPanel from "@/components/TweakPanel";
 
 export default function Page() {
   return (
@@ -39,6 +40,7 @@ export default function Page() {
       </main>
       <Footer />
       <AuthModal />
+      <TweakPanel />
     </>
   );
 }

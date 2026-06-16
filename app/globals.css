@@ -90,9 +90,9 @@
     position: relative;
     display: inline-block;
     line-height: 1.1;
-    padding-bottom: 0.72em;
+    padding-bottom: var(--squiggle-pad, 0.72em);
     background: url("/assets/mark-underline-squiggle-teal.png") no-repeat center bottom;
-    background-size: 116% auto;
+    background-size: var(--squiggle-w, 116%) auto;
   }
 
   /* teal burst poking off the hero CTA's top-right corner */
@@ -115,7 +115,7 @@
   .marquee-track {
     display: flex;
     width: max-content;
-    animation: marquee 28s linear infinite;
+    animation: marquee var(--marquee-dur, 28s) linear infinite;
     will-change: transform;
     backface-visibility: hidden;
   }
@@ -399,7 +399,7 @@
 
   /* ---------- pipeline image + swoosh connector ---------- */
   .pipe-grid {
-    --pgap: clamp(40px, 6.5vw, 112px);
+    --pgap: var(--pgap-set, clamp(40px, 6.5vw, 112px));
     gap: var(--pgap);
   }
   .pipe-card {
@@ -432,9 +432,9 @@
   .pipe-arrow {
     position: absolute;
     top: 50%;
-    left: calc(100% + var(--pgap) - 8px);
-    transform: translate(-100%, -93.1%);
-    width: clamp(116px, 13.5vw, 172px);
+    left: calc(100% + var(--pgap) + var(--arrow-x, -8px));
+    transform: translate(-100%, var(--arrow-y, -93.1%));
+    width: var(--arrow-w, clamp(116px, 13.5vw, 172px));
     height: auto;
     pointer-events: none;
     z-index: 4;
